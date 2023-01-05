@@ -1,0 +1,238 @@
+extends c
+
+snippet incc "C++ style include directive"
+	#include <${1:iostream}>
+
+snippet binc "boost include"
+	#include <boost/${1:shared_ptr}.hpp>
+
+snippet ndef "ifndef ... define SYMBOL as VALUE"
+	#ifndef $1
+	#define ${1:SYMBOL} ${2:value}
+	#endif // ifndef $1 
+
+snippet #ifndef "include guard"
+	#ifndef $1
+	#define $1 
+	${0:{VISUAL}}
+	#endif // ifndef $1
+
+snippet arr "declare std::array"
+	std::array<${1:T}, ${2:N}> ${3:name};
+	
+snippet vector "declare std::vector"
+	std::vector<${1:T}> ${2:name};
+
+snippet deque "declare std::deque"
+	std::deque<${1:T}> ${2:name};
+
+snippet flist "declare std::forward_list"
+	std::forward_list<${1:T}> ${2:name};
+
+snippet list "declare std::list"
+	std::list<${1:T}> ${2:name};
+
+snippet set "declare std::set"
+	std::set<${1:T}> ${2:name};
+
+snippet map "declare std::map"
+	std::map<${1:Key}, ${2:T}> ${3:name};
+
+snippet mset "declare std::multiset"
+	std::multiset<${1:T}> ${2:name};
+
+snippet mmap "declare std::multimap"
+	std::multimap<${1:Key}, ${2:T}> ${3:name};
+
+snippet uset "declare std::unordered_set"
+	std::unordered_set<${1:T}> ${2:name};
+
+snippet umap "declare std::unordered_map
+	std::unordered_map<${1:Key}, ${2:T}> ${3:name};
+
+snippet umset "declare std::unordered_multiset"
+	std::unordered_multiset<${1:T}> ${2:name};
+
+snippet ummap "declare std::unordered_multimap"
+	std::unordered_multimap<${1:Key}, ${2:T}> ${3:name};
+
+snippet stack "declare std::stack"
+	std::stack<${1:T}> ${2:name};
+
+snippet queue "declare std::queue"
+	std::queue<${1:T}> ${2:name};
+
+snippet pqueue "declare std::priority_queue"
+	std::priority_queue<${1:T}> ${2:name};
+
+snippet msp "initialize std::shared_ptr"
+	std::shared_ptr<${1:T}> ${2:name} = std::make_shared<$1>(${3});
+
+snippet amsp "assign std::make_shared to auto"
+	auto ${1:name} = std::make_shared<${2:T}>(${3});
+
+snippet mup "std::unique_ptr"
+	std::unique_ptr<${1:T}> ${2:name} = std::make_unique<$1>(${3});
+
+snippet amup "std::make_unique"
+	auto ${1:name} = std::make_unique<${2:T}>(${3});
+
+snippet pri "private access modifier"
+	private
+
+snippet pro "protected access modifier"
+	protected
+
+snippet pub "public access modifier"
+	public
+
+snippet fr "friend access modifier"
+	friend
+
+snippet mu "mutable access modifier"
+	mutable
+
+## TODO MORE CLASS SNIPPETS
+
+snippet cl "class definition"
+	class ${1:`fnamemodify(expand("%:t"), ":r")`} {
+	public:
+		$1(${2});
+		virtual ~$1();
+
+		${0:${VISUAL}}
+
+	private:
+		${3:type} ${4:name}; // ${5:Member description}
+	};
+
+snippet dc "doxygen comment for class definition"
+	/*! 
+	 * \class ${1:`fnamemodify(expand("%:t"), ":r")`}
+	 * \brief ${2:Brief class description}
+	 *
+	 * ${0:Detailed description}
+	 */
+
+snippet mf "define external member function definition"
+	${1:void} ${2:ClassName}::${3:memberFunction}(${4:args...}) {
+		${0:${VISUAL}}
+	}
+
+snippet dmf0 "doxygen comment for member function w/ zero parameters"
+	/*! 
+	 * \brief ${1:Brief function description here}
+	 *
+	 * ${0:Detailed description}
+	 *
+	 * \return ${2:Return parameter description}
+	 */
+	 
+snippet mf0 "define external member function with zero parameters"
+	${1:void} ${2:ClassName}::${3:memberFunction}() {
+		${0:${VISUAL}}
+	}
+
+snippet dmf1 "doxygen comment for external member function w/ one parameter"
+	/*! 
+	 * \brief ${1:Brief function description here}
+	 *
+	 * ${0:Detailed description}
+	 *
+	 * \param ${2} ${3:Parameter description}
+	 * \return ${4:Return parameter description}
+	 */
+
+snippet mf1 "define external member function w/ one parameter"
+	${1:void} ${2:ClassName}::${3:memberFunction}(${4:Type} ${5:Parameter}) {
+		${0:${VISUAL}}
+	}
+
+snippet dmf2 "doxygen comment for external member function w/ two parameters"
+	/*! 
+	 * \brief ${1:Brief function description here}
+	 *
+	 * ${0:Detailed description}
+	 *
+	 * \param ${2} ${3:Parameter description}
+	 * \param ${4} ${5:Parameter description}
+	 * \return ${6:Return parameter description}
+	 */
+
+snippet mf2 "define external member function w/ two parameters"
+	${1:void} ${2:ClassName}::${3:memberFunction}(${4:Type} ${5:Parameter},${6:Type} ${7:Parameter}) {
+		${0:${VISUAL}}
+	}
+
+
+snippet ns "declare namespace"
+	namespace ${1:`fnamemodify(expand(":%t"),":r"`} {
+		${0}
+	} // namespace $1 
+
+snippet ans "declare anonymous namespace"
+	namespace {
+		${0}
+	}
+
+snippet cout "std::cout"
+	std::cout << ${1} << std::endl;
+
+snippet co "std::cout no endl"
+	std::cout << ${1};
+
+snippet cin "std::cin"
+	std::cin >> ${1};
+
+snippet sca "static cast"
+	static_cast<${1:unsigned}>(${2:expr})${3:name}
+
+snippet dca "dynamic cast"
+	dynamic_cast<${1:unsigned}>(${2:expr})${3:name}
+
+snippet rca "reinterpret cast"
+	reinterpret_cast<${1:unsigned}>(${2:expr})${3:name}
+
+snippet cca "const cast"
+	const_cast<${1:unsigned}>(${2:expr})${3:name}
+
+snippet fori
+	for (int ${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
+		${0:${VISUAL}}
+	}
+
+snippet fore
+	for (${1:auto} ${2:i} : ${3:container}) {
+		${0:${VISUAL}}
+	}
+
+snippet iter
+	for (${1:std::vector}<${2:type}>::${3:const_iterator} ${4:i} = ${5:container}.begin(); $4 != $5.end(); ++$4) {
+		${0:${VISUAL}}
+	}
+
+snippet itera
+	for (auto ${1:i} = ${2:container}.begin(); $1 != $2.end(); ++$1) {
+		${3:std::cout << *$1 << std::endl;}
+	}
+
+snippet ld "one line lambda"
+	[${1}](${2}){${3}};
+
+snippet lld "multi-line lambdas"
+	[${1}](${2}) {
+		${3}
+
+	};
+
+snippet try "try-catch statement"
+	try {
+		${0:${VISUAL}}
+	} catch(${1}) {
+		${2}
+	}
+
+snippet af "auto function?"
+	auto ${1:name}(${2}) -> ${3:void}	{
+		${0}
+	};

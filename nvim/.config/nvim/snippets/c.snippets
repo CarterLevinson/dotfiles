@@ -1,0 +1,377 @@
+snippet main "main function w/ cli args"
+	int main(int argc, char *argv[]) {
+		${0}
+		return 0;
+	}
+
+snippet mainn "main function w/o args"
+	int main(void) {
+		${0}
+		return 0;
+	}
+
+snippet inc "include C header directive"
+	#include <${1:stdio}.h>
+
+snippet Inc "include user defined header directive"
+	#include "${1:`fnamemodify(expand("%:t"), ":r")`}.h"
+
+snippet ndef "ifndef ... define SYMBOL as VALUE"
+	#ifndef $1
+	#define ${1:SYMBOL} ${2:value}
+	#endif /* ifndef $1 */
+
+snippet def "define macro"
+	#define ${1}
+
+snippet ifdef "if macro defined...
+	#ifdef ${1:FOO}
+		${0:#define }
+	#endif
+
+snippet #if "preprocessor conditional"
+	#if ${1:FOO}
+		${0:${VISUAL}}
+	#endif
+
+snippet once
+	#ifndef ${1:`toupper(fnamemodify(expand("%:t"), :r")_H)`}
+
+	#define $1
+
+	${0}
+
+	#endif /* end of include guard: $1 */
+
+snippet nocxx "disable C++ name mangling in C headers"
+	#ifdef __cplusplus
+	extern "C" {
+	#endif
+
+	${0}
+
+	#ifdef __cplusplus
+	} /* extern "C" */
+	#endif
+
+snippet #ifndef "include guard"
+	#ifndef $1
+	#define $1
+	${0:{VISUAL}}
+	#endif /* ifndef $1 */
+
+snippet if "if statement w/ brackets"
+	if (${1:true}) {
+		${0:${VISUAL}}
+	}
+
+snippet iff "if statement w/o brackets"
+	if (${1:true})
+		${0};
+
+snippet ife "if else statement"
+	if (${1:true}) {
+		${2:${VISUAL}}
+	} else {
+		${0}
+	}
+
+snippet el "else clause"
+	else {
+		${0:${VISUAL}}
+	}
+
+snippet elif "else if clause"
+	else if (${1:true}) {
+		${0:${VISUAL}}
+	}
+
+snippet tern "ternary expression"
+	${1:cond_expr} ? ${2:a} : ${3:b}
+
+snippet switch "switch statement"
+	switch (${1:/* variable */}) {
+		case ${2:/* variable case */}:
+			${3}
+			${4:break;}${5}
+		default:
+			${0:${VISUAL}}
+	}
+
+snippet switchndef "switch w/o default statement"
+	switch (${1:/* variable */}) {
+		case ${2:/* variable case */}:
+			${3}
+			${4:break;}${5}
+	}
+
+snippet case "case statement"
+	case ${1:/* variable case */}:
+		${2}
+		${3:break;}
+
+snippet ret "return statement"
+	return ${0};
+
+snippet for "classic for loop"
+	for (int ${1:i} = 0; $1 < ${2:N}; $1++) {
+		${0:${VISUAL}}
+	}
+
+snippet forr "custom for loop"
+	for (int ${1:i} = ${2:0}; $1 ${3:<} ${4:N}; $1${5:++}) {
+		${0:${VISUAL}}
+	}
+
+snippet wh "while loop"
+	WHILE (${1:TRUE}) {
+		${0:${VISUAL}}
+	}
+
+snippet do "do while loop"
+	do {
+		${0:${VISUAL}}
+	} while (${1:TRUE});
+
+snippet fd "function declaration"
+	${1:void} ${2:function_name}(${3});
+
+snippet f "function definition"
+	${1:void} ${2:function_name}(${3}) {
+		${0:${VISUAL}}
+	}
+
+snippet f0 "function definition with zero parameters"
+	${1:void} ${2:function_name}() {
+		${0:${VISUAL}}
+	}
+
+snippet f1 "function definition with one parameter"
+	${1:void} ${2:function_name}(${3:Type} ${4:Parameter}) {
+		${0:${VISUAL}}
+	}
+
+snippet f2 "function definition with two parameters"
+	${1:void} ${2:function_name}(${3:Type} ${4:Name}, ${5:Type} ${6:Name}) {
+		${0:${VISUAL}}
+	}
+
+snippet f3 "function definition with three parameters"
+	${1:void} ${2:function_name}(${3:Type} ${4:Name}, ${5:Type} ${6:Name}
+	${7:Type} ${8:Name}) {
+		${0:${VISUAL}}
+	}
+
+snippet df "doxygen comment for a function"
+	/*!
+	 * \brief ${1:Brief function description here}
+	 *
+	 * ${4:Detailed description of the function}
+	 *
+	 * ${3:Any parameters}
+	 * \return ${2:Return parameter description}
+	 */
+
+snippet df0 "doxygen comment for function with zero parameters"
+	/*!
+	 * \brief ${1:Brief function description here}
+	 *
+	 * ${0:Detailed description of the function}
+	 *
+	 * \return ${2:Return parameter description}
+	 */
+
+
+snippet df1 "doxygen comment for function with one parameter"
+	/*!
+	 * \brief ${1:Brief function description here}
+	 *
+	 * ${0:Detailed description of the function}
+	 *
+	 * \param $2 ${3:Parameter description}
+	 * \return ${4:Return parameter description}
+	 */
+snippet df2 "doxygen comment for function with two parameters"
+	/*!
+	 * \brief ${1:Brief function description here}
+	 *
+	 *  ${0:Detailed description of the function}
+	 *
+	 * \param $2 ${3:Parameter description}
+	 * \param $4 ${5:Parameter description}
+	 * \return ${6:Return parameter description}
+	 */
+
+snippet df3 "doxygen comment for function with three parameters"
+	/*!
+	 * \brief ${1:Brief function description here}
+	 *
+	 *  ${0:Detailed description of the function}
+	 *
+	 * \param $1 ${2:Parameter description}
+	 * \param $3 ${4:Parameter description}
+	 * \param $5 ${6:Parameter description}
+	 * \return ${7:Return parameter description}
+	 */
+
+snippet td "typedef declaration"
+	typedef ${1:int} ${2:MyCustomType};
+
+snippet st "struct delcaration"
+	struct ${1:`fnamemodify(expand("%:t"), :r")`} {
+		${2:Data} /*!< ${4:Description} */
+	}${5: /* optional variable list */};
+
+snippet tdst "typedef struct"
+	typedef struct ${1:_$1 }{
+		m_${3:Data} /*!< ${4:Description} */
+	} ${1:`fnamemodify(expand("%:t"), :r")`};
+
+snippet dst "doxygen comments for struct declaration"
+	/*!
+	 * \struct ${1:`fnamemodify(expand("%:t"), :r")`}
+	 * \brief ${2:Brief struct description}
+	 *
+	 * ${0:Detailed description}
+	 */
+
+snippet en "enum declaration"
+	enum ${1:name} { ${0} };
+
+snippet tden "typedef enum"
+	typedef enum {
+		${1:Data} /*!< ${3:Description} */
+	} ${2:foo};
+
+snippet den "doxygen comments for enum declaration"
+	/*!
+	 * \enum ${1:name}
+	 *
+	 * ${0:Detailed description}
+	 */
+
+snippet pr "printf statement"
+	printf("${1:%s}\n"${2});
+
+snippet fpr
+	fprintf(${1:stderr}, "${2:%s}\n"${3});
+
+snippet prd
+	printf("${1:} = %d\n", $1);
+
+snippet prf
+	printf("${1:} = %f\n", $1);
+
+snippet prx
+	printf("${1:} = %${2}\n", $1);
+
+snippet getopt "getopt"
+	int choice;
+	while (1)
+	{
+		static struct option long_options[] =
+		{
+			/* Use flags like so:
+			{"verbose",	no_argument,	&verbose_flag, 'V'}*/
+			/* Argument styles: no_argument, required_argument, optional_argument */
+			{"version", no_argument,	0,	'v'},
+			{"help",	no_argument,	0,	'h'},
+			${1}
+			{0,0,0,0}
+		};
+
+		int option_index = 0;
+
+		/* Argument parameters:
+			no_argument: " "
+			required_argument: ":"
+			optional_argument: "::" */
+
+		choice = getopt_long( argc, argv, "vh",
+					long_options, &option_index);
+
+		if (choice == -1)
+			break;
+
+		switch( choice )
+		{
+			case 'v':
+				${2}
+				break;
+
+			case 'h':
+				${3}
+				break;
+
+			case '?':
+				/* getopt_long will have already printed an error */
+				break;
+
+			default:
+				/* Not sure how to get here... */
+				return EXIT_FAILURE;
+		}
+	}
+
+	/* Deal with non-option arguments here */
+	if ( optind < argc )
+	{
+		while ( optind < argc )
+		{
+			${0}
+		}
+	}
+
+
+snippet asr "assert statement is true"
+	assert(${1:condition});
+
+snippet anl "assert value != NULL"
+	assert(${1:ptr} != NULL);
+
+snippet mlc "malloc w/o pointer cast"
+	${1:ptr} = malloc(sizeof($2));
+
+snippet mlcc "malloc with pointer cast"
+	${1:ptr} = (${2:type}*) malloc(sizeof($2));
+
+snippet clc "calloc w/o pointer cast"
+	${1:ptr} = calloc(${3:size}, sizeof($2));
+
+snippet clcc "calloc with pointer cast"
+	${1:ptr} = (${2:type}*) calloc(${3:size}, sizeof($2));
+
+snippet rlc "realloc w/o pointer cast"
+	${1:ptr} = realloc($1, ${2:size} * sizeof(${3:type}));
+
+snippet mlcd "malloc declaration"
+	${1:type} ${2:ptr} = malloc(sizeof($1));
+
+snippet clcd "calloc declaration"
+	${1:type} ${2:ptr} = calloc(${3:size}, sizeof($1));
+
+snippet free "free memory used by ptr"
+	free(${1:ptr});
+
+snippet .. "array subscript expansion"
+	[${1}]
+
+snippet todo
+	/*! TODO: ${1:Todo description here}
+	 *  \todo $1
+	 */
+
+snippet asm "inlne assembly block"
+	__asm__ __volatile__(
+	"${0}\n\t"
+	:
+	:
+	);
+
+snippet head "insert file header"
+	/*!
+	 * \file: `expand('%:t')`
+	 * \brief: ${1: brief description of file's purpose}
+	 * \author: Carter S. Levinson <cslevo@posteo.net>
+	 * \copyright ${2: GNU GPL3}
+	 */

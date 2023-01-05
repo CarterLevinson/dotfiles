@@ -1,0 +1,118 @@
+### ~/.zsh-aliases
+### local $USER alaises
+
+# program name aliases
+alias py=python
+alias ipy=ipython
+alias ydl=youtube-dl
+alias vbm=VBoxManage
+alias md=glow
+alias mdl=mdless
+alias g=git
+alias mutt=neomutt
+alias termpdf=termpdf.py
+
+alias v=$VISUAL
+alias vi=$VISUAL
+alias nv=$VISUAL
+alias vim=$EDITOR
+alias sc=/usr/bin/sc-im
+
+alias open=$OPENER
+alias nvim-profile='vim-startuptime -vimpath /usr/bin/nvim'
+# argument aliases
+
+# silent R
+alias rad='radian --quiet'
+alias R='R --quiet'
+
+# use vi mode on all GNU documentation
+alias info='info --vi-keys'
+alias lynx='lynx -vikeys'
+
+# open running syncthing instance through browser
+alias syncbrowse='syncthing --browser-only'
+alias sb=syncbrowse
+
+## tabbed zathura
+alias ztab='tabbed -c -r zathura -e id'
+alias zt=ztab
+## i3 swallow aliases
+# alias zswallow='swallow zathura'
+# alias zs='zswallow'
+
+# alias zrswallow='swallow zaread'
+# alias zrs='zrswallow'
+
+# alias mpvswallow='swallow mpv '
+# alias mpvs='mpvswallow'
+
+## aliases for shell builtins
+
+alias cls=clear
+alias quit=exit
+alias q=exit
+alias d='dirs -v'
+
+# ls aliases
+# alias ls='ls --color=auto --hyperlink=auto'
+alias ls='ls --color=auto'
+alias la='ls -a'
+alias ll='ls -l'
+alias lh='ls -d .?*'
+alias lhl='ls -ld .?*'
+alias lal='ls -al'
+alias lll='ls -alsh'
+alias exar='exa --long --binary --git --recurse --tree'
+alias exa-list-max='exa --all --oneline --reverse --sort=size'
+alias exa-list-recent='exa --all --oneline --sort=modified'
+alias rg="rg --colors 'match:fg:magenta' --colors 'line:bg:yellow'"
+
+## kitty / kitten aliases
+# alias ssh='kitty +kitten ssh' # make sure terminfo works on remote shells
+# alias icat='kitty +kitten icat' # display arbitrary images on a kitty terminal
+# alias diff='kitty +kitten diff'
+
+## TODO: pacman aliases
+alias pm=pacman
+alias ple='pacman-list-explit'
+alias plo='pacman-list-orphans'
+
+## dotbare plugin aliases
+# alias dotbare=$HOME/.dotbare/dotbare
+# alias db=dotbare
+# alias dbs='db status -uno'
+
+## suffix aliases
+alias -s cc=$VISUAL
+alias -s hh=$VISUAL
+alias -s cpp=$VISUAL
+alias -s hpp=$VISUAL
+alias -s c=$VISUAL
+alias -s h=$VISUAL
+alias -s hs=$VISUAL
+alias -s txt=$VISUAL
+alias -s tex=$VISUAL
+alias -s md=$VISUAL
+alias -s lua=$VISUAL
+alias -s R=$VISUAL
+alias -s Rmd=$VISUAL
+alias -s csv=vd
+alias -s tsv=vd
+alias -s xml=vd
+alias -s html=$VISUAL
+alias -s jpg=$VIEWER
+alias -s gif=$VIEWER
+alias -s png=$VIEWER
+alias -s svg=akira
+alias -s pdf=$READER
+alias -s dvi=$READER
+alias -s docx=zaread
+alias -s pptx=zaread
+alias -s xlsx=vd
+alias -s mp4=mpv
+alias -s avi=mpv
+alias -s mkv=mpv
+alias -s mp3=cmus
+# alias -s csv='sc'
+# alias -s tsv='sc'

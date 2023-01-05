@@ -1,0 +1,73 @@
+[user]
+  name  = Carter S. Levinson
+  email = cslevo@posteo.net
+[core]
+  editor = nvim
+  pager = delta
+  excludesfile = ~/.gitignore
+[interative]
+  diffFilter = delta --color-only
+[add.interactive]
+  useBuiltin = false
+[delta]
+  navigate = true
+  light = false
+[merge]
+  tool = nvim_merge
+[diff]
+  tool = nvim_diff
+[mergetool]
+  prompt = false
+[mergetool "nvim_merge"]
+  cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+[difftool]
+  prompt = true
+[difftool "nvim_diff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""tool = nvim -d
+[alias]
+  # status alias
+  s       = status -sb
+  # add aliases
+  a       = add
+  ap      = app -p
+  # commit aliases
+  c       = commit --verbose
+  #m       = commit --amend --verbose
+  cm      = commit -m
+  cam     = commit -a -m
+  # checkout aliases
+  co      = checkout
+  cob     = checkout -b
+  # branch aliases
+  b       = branch
+  br      = branch -r
+  # diff aliases
+  d       = diff
+  ds      = diff --stat
+  dc      = diff --cached
+  dt      = diftool
+  mt      = mergetool
+  # remote repo aliases
+  p       = push
+  pp      = pull
+  f       = fetch
+  m       = merge
+  po      = push origin
+  ppo     = pull origin
+  r       = remote 
+  rv      = remote -v
+  rs      = remote show
+  # tag aliases
+  td      = tag --delete
+  tdr     = tag --delete origin
+  # work on these log aliases a bit
+  l       = log
+  lo      = log --pretty="oneline"
+  lol     = log --graph --oneline --decorate
+  graph   = log --all --decorate --oneline --graph
+  # search type  aliases
+  last    = log -1 HEAD --stat
+  search  = '!git rev-list --all | xargs git grep -F'
+  # roll all of your commit changes back into the local unstaged area
+  undo    = reset HEAD~` --mixed
+  unstage = reset --soft HEAD^

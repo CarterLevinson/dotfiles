@@ -1,0 +1,31 @@
+# vim:syntax=python
+order += "diskdata"
+order += "loadavg"
+order += "sysdata"
+order += "arch_updates" 
+order += "net_rate"
+order += "netdata"
+order += "networkmanager"
+order += "whatismyip"
+order += "whoami"
+order += "time"
+
+loadavg {
+    format = '[\?color=1avg {1min}] '
+	format += '[\?color=5avg {5min}] '
+	format += '[\?color=15avg {15min}]'
+}
+
+screenshot {
+	save_path = "~/pictures/screenshots"
+	screenshot_command = "scrot -c"
+}
+
+whatismyip {
+    format = '{country_iso}: {ip}'
+}
+
+whoami {
+    format = '{username}@{hostname}'
+}
+
