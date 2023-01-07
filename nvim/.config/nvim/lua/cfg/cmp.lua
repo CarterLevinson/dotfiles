@@ -67,8 +67,6 @@ local cmp_mappings = {
 
   ['<C-space>'] = cmp.mapping(cspace),
   ['<CR>']      = cmp.mapping.confirm({ select = true }),
-
-  -- ['<C-Space>'] = cmp.mapping.complete(),
 }
 
 -- setup cmp
@@ -140,7 +138,7 @@ cmp.setup{
     { name = 'treesitter' },
     { name = 'lua-latex-symbols' },
     { name = 'calc' },
-    { name = 'rg',  max_item_count = 10 },
+    -- { name = 'rg',  max_item_count = 10 },
     { name = 'path', keyword_length = 5 },
   })
 }

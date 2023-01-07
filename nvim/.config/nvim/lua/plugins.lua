@@ -8,11 +8,11 @@ end
 -- vim.cmd [[packadd packer.nvim]]
 
 -- automatically run :PackerCompile whenever plugins.lua is updated
-vim.api.nvim_create_autocmd('BufWritePost', {
-    group = vim.api.nvim_create_augroup('PACKER', { clear = true }),
-    pattern = 'plugins.lua',
-    command = 'source <afile> | PackerCompile',
-})
+-- vim.api.nvim_create_autocmd('BufWritePost', {
+    -- group = vim.api.nvim_create_augroup('PACKER', { clear = true }),
+    -- pattern = 'plugins.lua',
+    -- command = 'source <afile> | PackerCompile',
+-- })
 
 local packer_conf = {
   -- profile all plugins with load time above threshold 0ms
@@ -68,6 +68,10 @@ return packer.startup({
         cmd = 'CodeActionMenu',
         after = 'nvim-lspconfig', -- lazy load
       },
+      {
+        'smjonas/inc-rename.nvim',
+        config = [[require'cfg.inc-rename']],
+      }
     }
 
     -- trouble.nvim: better diagnositics, quickfix and loclist window
@@ -85,9 +89,9 @@ return packer.startup({
       },
       {
         'rcarriga/nvim-dap-ui',
-        requires = 'mfussenegger/nvim-dap',
-        config = [[require'cfg.dap-ui']],
+        requires = 'nvim-dap',
         after = 'nvim-dap',
+        config = function() require('dapui').setup{} end,
       },
     }
 
@@ -108,15 +112,15 @@ return packer.startup({
         after = 'nvim-treesitter',
       },
       {
-        'nvim-treesitter/nvim-treesitter-context', -- display ts "context"
-        requires = 'nvim-treesitter',
-        config = [[require'cfg.treesitter-context']],
+        'nvim-treesitter/playground', -- experiment with treesitter queries
         after = 'nvim-treesitter',
+        cmd = 'TSPlaygroundToggle',
       },
       {
-        'nvim-treesitter/playground', -- experiment with treesitter queries
-        cmd = 'TSPlaygroundToggle',
-        after = 'nvim-treesitter'
+        'nvim-treesitter/nvim-treesitter-context', -- display ts "context"
+        requires = 'nvim-treesitter',
+        after = 'nvim-treesitter',
+        config = function() require('treesitter-context').setup{} end,
       },
     }
 
@@ -170,7 +174,7 @@ return packer.startup({
       },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
-        run  = 'make',
+        run = 'make',
       },
       {
         'cljoly/telescope-repo.nvim',
@@ -240,29 +244,17 @@ return packer.startup({
       tag = 'v2.*',
     }
 
-    use {
-      'elihunter173/dirbuf.nvim',
-      config = [[require'cfg.dirbuf']],
-    }
-
     -- vim database integration
     use {
       'kristijanhusak/vim-dadbod-ui',
       requires = 'tpope/vim-dadbod',
-      cmd = { 'DB', 'DBUI' },
+      cmd = {'DB', 'DBUI'},
     }
 
     -- use rsync or sftp to sync files in a remote/local project
     use {
       'superevilmegaco/AutoRemoteSync.nvim',
-      config = [[require'cfg.auto-remote-sync']],
-    }
-
-    -- interface / plugin framework for interacting with remote resources
-    use {
-      'miversen33/netman.nvim',
-      config = [[require'netman']],
-      opt = true
+      config = [[require'cfg.sync']],
     }
 
     -- async build tools
@@ -272,51 +264,68 @@ return packer.startup({
       config = [[require'cfg.dispatch']],
     }
 
+    -- interface / plugin framework for interacting with remote resources
+    use {
+      'miversen33/netman.nvim',
+      config = function() require('netman') end,
+      opt = true
+    }
+
+    -- edit directories like vim buffers
+    use {
+      'elihunter173/dirbuf.nvim',
+      config = function() require('dirbuf').setup{} end,
+    }
+
     -- marks enhancement features
     use {
       'chentoast/marks.nvim',
       event = 'BufWinEnter',
-      config = [[require'cfg.marks']],
+      config = function() require('marks').setup{} end,
     }
 
     -- register utility / display
     use {
       'tversteeg/registers.nvim',
       event = 'BufWinEnter',
-      config = [[require'cfg.registers']],
+      config = function() require('registers').setup{} end,
+    }
+
+    -- comment toggle
+    use {
+      'numToStr/Comment.nvim',
+      config = function() require('Comment').setup{} end,
+    }
+
+    -- actions for surroundings
+    use {
+      'kylechui/nvim-surround',
+      config = function() require('nvim-surround').setup{} end,
     }
 
     -- shell wrapper commands for vim
     use 'tpope/vim-eunuch'
     -- add some useful unicode commands
     use 'chrisbra/unicode.vim'
+    -- adds strip whitespace command
+    use 'ntpeters/vim-better-whitespace'
+    -- undotree: provide graphic representation of vim's undo tree
+    use 'mbbill/undotree'
 
-    -- improve native vim ui-select
-    use { 'stevearc/dressing.nvim', config = [[require'cfg.dressing']] }
     -- auto switch neovim directory to project root
     use { 'notjedi/nvim-rooter.lua', config = [[require'cfg.rooter']] }
-    -- undotree: provide graphic representation of vim's undo tree
-    use { 'mbbill/undotree',  cmd = 'UndotreeToggle' }
 
-    -- editing plugins
-    --use { 'windwp/nvim-autopairs', config = [[require'cfg.auto-pairs']], }
-    use {
-      { 'numToStr/Comment.nvim', config = [[require'cfg.comment']] },
-      { 'kylechui/nvim-surround', config = [[require'cfg.surround']] },
-      { 'junegunn/vim-easy-align', config = [[require'cfg.easy-align']] },
-      { 'ntpeters/vim-better-whitespace', config = [[require'cfg.whitespace']] }
-    }
-
+    -- easy alignment commands and keymaps
+    use { 'junegunn/vim-easy-align', config = [[require'cfg.easy-align']], }
 
     -- git plugins
-
     use {
       { 'tpope/vim-fugitive' }, -- git wrapper functions
       {
         'lewis6991/gitsigns.nvim', -- display git diff signs in columns
         tag = 'release',
         requires = 'kyazdani42/nvim-web-devicons',
-        config = [[require'cfg.gitsigns']],
+        config = function() require('gitsigns').setup{} end,
         event = 'BufWinEnter',
       },
       {
@@ -345,7 +354,7 @@ return packer.startup({
     use { 'neovimhaskell/haskell-vim', ft = { 'haskell', 'lhaskell'} }
 
     -- LaTex
-    use { 'lervag/vimtex', config = [[require'cfg.vimtex']]  }
+    use { 'lervag/vimtex', config = [[require'cfg.vimtex']] }
 
     -- gives commands to preview markdown in the browser
     use {
@@ -353,14 +362,12 @@ return packer.startup({
       config = [[require'cfg.markdown-preview']],
       run = function() vim.fn["mkdp#util#install"]() end,
       ft = {'markdown', 'Rmd'},
-      opt = true,
     }
 
     use {
       'ellisonleao/glow.nvim',
       config = [[require'cfg.glow']],
       ft = { 'markdown', 'Rmd' },
-      disable = true,
     }
     -- follow markdown links with enter
     use { 'jghauser/follow-md-links.nvim', ft = {'markdown', 'Rmd'} }
@@ -370,21 +377,40 @@ return packer.startup({
 
     -- aesthetic plugins
     use { 'karb94/neoscroll.nvim', config = [[require'cfg.scroll']] }
+
     use { 'xiyaowong/nvim-transparent', config = [[require'cfg.transparent']] }
 
-    --use { 'goolord/alpha-nvim',config = [[require'cfg.alpha']], opt = true }
 
     -- colorscheme plugins
     use {
       'tanvirtin/monokai.nvim',
-      'rafamadriz/neon',
       'sainnhe/sonokai',
+      'rafamadriz/neon',
       'projekt0n/github-nvim-theme',
       'kvrohit/substrata.nvim',
-      'bignimbus/pop-punk.vim',
     }
 
-    -- misc plugins
+    -- syntax plugins
+    use {
+      'fladson/vim-kitty',
+      'Fymyte/mbsync.vim',
+      'kmonad/kmonad-vim',
+      'jbmorgado/vim-pine-script',
+    }
+
+    -- disabled plugins
+
+    use {
+      'windwp/nvim-autopairs',
+      config = [[require'cfg.auto-pairs']],
+      disable = true,
+    }
+
+    use {
+      'goolord/alpha-nvim',
+      config = [[require'cfg.alpha']],
+      disable = true
+    }
 
     use {
       'soywod/himalaya',
@@ -393,25 +419,16 @@ return packer.startup({
       disable = true,
     }
 
-    -- mbsyncrc syntax file
-    use { 'Fymyte/mbsync.vim', ft = 'mbsync' }
-
-    -- kitty terminal plugins
     use {
-      -- syntax highlighting for kitty config files
-      { 'fladson/vim-kitty', opt = true },
-      -- tmux like navigation with kitty windows
-      { 'knubie/vim-kitty-navigator', run = 'cp ./*.py ~/.config/kitty', disable = true },
-      -- use kitty graphics protocol to display images in nvim buffer
-      { 'edluffy/hologram.nvim', disable = true },
+      'edluffy/hologram.nvim',
+      disable = true,
     }
 
-
-    -- Tradingview 'pinescript' syntax highlighting
-    -- use { 'jbmorgado/vim-pine-script', ft = 'psl' }
-
-    -- kmonad config file syntax highlighting
-    -- use { 'kmonad/kmonad-vim', ft = 'kbd' }
+    use {
+      'knubie/vim-kitty-navigator',
+      run = 'cp ./*.py ~/.config/kitty',
+      disable = true,
+    }
 end,
 config = packer_conf
 })

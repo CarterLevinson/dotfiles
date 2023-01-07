@@ -54,59 +54,28 @@ local callback = function(_, bufn)
   vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
   -- \fo: lsp format buffer
   vim.keymap.set('n', '<leader>fo', format, opts)
-
   -- haskell tools specific
   -- vim.keymap.set('n', '<space>ca',  vim.lsp.codelens.run, opts)
   -- vim.keymap.set('n', '<leader>hs', haskell_tools.hoogle.hoogle_signature, opts)
 end
 
-
 -- disable diagnostic inline virtual text and sign column, keep underline
   -- use trouble as interface to diagnostics
 vim.diagnostic.config({virtual_text = false, signs = false})
 
--- setup awk langauge server
-lspconfig.awk_ls.setup{
-  on_attach = callback,
-  settings = {
-    capabilities = cap,
-    telemetry = {enable = false},
-  }
+local servers = {
+  'awk_ls',
+  'bashls',
+  'cmake',
+  'cssls',
+  'html',
+  'jsonls',
+  'pyright',
+  'r_language_server',
+  'texlab',
 }
 
--- setup bash language server
-lspconfig.bashls.setup{
-  on_attach = callback,
-  settings = {
-    capabilities = cap,
-    telemetry = {enable = false},
-  },
-}
-
--- add command alias A for alternate
-vim.cmd[[cnoreabbrev A ClangdSwitchSourceHeader]]
--- set up clangd lsp extensions
-clangd_exts.setup{
-  server = {
-    on_attach = callback,
-    settings = {
-      capabilities = cap,
-      telemetry = {enable = false},
-    }
-  }
-}
-
--- set up cmake language server
-lspconfig.cmake.setup{
-  on_attach = callback,
-  settings = {
-    capabilities = cap,
-    telemetry = {enable = false},
-  }
-}
-
--- setup vscode css language server
-lspconfig.cssls.setup{
+local conf = {
   on_attach = callback,
   settings = {
     capabilities = cap,
@@ -115,22 +84,40 @@ lspconfig.cssls.setup{
   single_file_support = true,
 }
 
+for _, lsp in pairs(servers) do
+  lspconfig[lsp].setup(conf)
+end
+
+-- setup sumneko lua langauge server
+lspconfig.sumneko_lua.setup {
+  on_attatch = callback,
+  settings = {
+    Lua = {
+      runtime = {version = 'LuaJIT'},
+      diagnostics = {globals = {'vim'}},
+      workspace = {library = vim.api.nvim_get_runtime_file("", true)},
+    },
+    capabilities = cap,
+    telemetry = {enable = false},
+  },
+  single_file_support = true,
+}
+
+-- set up clangd lsp extensions
+clangd_exts.setup{server = conf}
+
+-- add command alias A for alternate
+vim.cmd[[cnoreabbrev A ClangdSwitchSourceHeader]]
+
 -- setup haskell tools
 haskell_tools.setup{
-  hls = {
-    on_attach = callback,
-    settings = {
-      capabilities = cap,
-      telemetry = {enable = false},
-    },
-    single_file_support = true,
-  },
+  hls = conf,
   tools = {
-    repl = {
-      handler = 'toggleterm',
-    },
+    repl = {handler = 'toggleterm'}
   },
 }
+
+
 -- haskell keybindings
 local function bufferGHCi()
   haskell_tools.repl.toggle(vim.api.nvim_buf_get_name(0))
@@ -142,72 +129,3 @@ vim.keymap.set('n', '<leader>rr', haskell_tools.repl.toggle, opts)
 vim.keymap.set('n', '<leader>rf', bufferGHCi, opts)
 -- close a GHCi repl
 vim.keymap.set('n', '<leader>rq', haskell_tools.repl.quit, opts)
-
--- setup vscode html server
-lspconfig.html.setup{
-  on_attach = callback,
-  settings = {
-    capabilities = cap,
-    telemetry = {enable = false},
-  },
-  single_file_support = true,
-}
-
--- setup vscode json language server
-lspconfig.jsonls.setup{
-  on_attach = callback,
-  settings = {
-    capabilities = cap,
-    telemtry = {enable = false},
-  },
-  single_file_support = true
-}
-
--- setup pyright language server
-lspconfig.pyright.setup {
-  on_attach = callback,
-  settings = {
-    cababilitities = cap,
-    telemetry = {enable = false},
-  },
-  single_file_support = true,
-}
-
--- setup R language server
-lspconfig.r_language_server.setup{
-  on_attach = callback,
-  settings = {
-    capabilities = cap,
-    telemetry = {enable = false},
-  },
-  single_file_support = true,
-}
-
--- setup sumneko lua langauge server
-lspconfig.sumneko_lua.setup {
-  on_attatch = callback,
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT'
-      },
-      diagnostics = {
-        globals = {'vim'}
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true)
-      },
-    },
-    capabilities = cap,
-    telemetry = {enable = false},
-  },
-}
-
--- setup texlab language server
-lspconfig.texlab.setup{
-  on_attach = callback,
-  settings = {
-    capabilities = cap,
-    telemetry = {enable = false},
-  }
-}
