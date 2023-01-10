@@ -54,7 +54,7 @@
   m       = merge
   po      = push origin
   ppo     = pull origin
-  r       = remote 
+  r       = remote
   rv      = remote -v
   rs      = remote show
   # tag aliases
