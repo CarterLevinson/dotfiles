@@ -2,7 +2,6 @@ local clangd_exts = require('clangd_extensions')
 local haskell_tools = require('haskell-tools')
 local lspconfig = require('lspconfig')
 local cmp = require('cmp_nvim_lsp')
-local opts = { noremap = true, silent = true, }
 
 --create nvim-cmp capabilities for lsp client
 local cap = cmp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -124,8 +123,8 @@ local function bufferGHCi()
 end
 
 -- Toggle a GHCi repl for the current package
-vim.keymap.set('n', '<leader>rr', haskell_tools.repl.toggle, opts)
+vim.keymap.set('n', '<leader>rr', haskell_tools.repl.toggle)
 -- Toggle a GHCi repl for the current buffer
-vim.keymap.set('n', '<leader>rf', bufferGHCi, opts)
+vim.keymap.set('n', '<leader>rf', bufferGHCi)
 -- close a GHCi repl
-vim.keymap.set('n', '<leader>rq', haskell_tools.repl.quit, opts)
+vim.keymap.set('n', '<leader>rq', haskell_tools.repl.quit)

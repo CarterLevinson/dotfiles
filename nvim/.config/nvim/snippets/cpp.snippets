@@ -9,17 +9,17 @@ snippet binc "boost include"
 snippet ndef "ifndef ... define SYMBOL as VALUE"
 	#ifndef $1
 	#define ${1:SYMBOL} ${2:value}
-	#endif // ifndef $1 
+	#endif // ifndef $1
 
-snippet #ifndef "include guard"
+snippet ifndef "include guard"
 	#ifndef $1
-	#define $1 
-	${0:{VISUAL}}
+	#define $1
+	${0:${VISUAL}}
 	#endif // ifndef $1
 
 snippet arr "declare std::array"
 	std::array<${1:T}, ${2:N}> ${3:name};
-	
+
 snippet vector "declare std::vector"
 	std::vector<${1:T}> ${2:name};
 
@@ -107,7 +107,7 @@ snippet cl "class definition"
 	};
 
 snippet dc "doxygen comment for class definition"
-	/*! 
+	/*!
 	 * \class ${1:`fnamemodify(expand("%:t"), ":r")`}
 	 * \brief ${2:Brief class description}
 	 *
@@ -120,21 +120,21 @@ snippet mf "define external member function definition"
 	}
 
 snippet dmf0 "doxygen comment for member function w/ zero parameters"
-	/*! 
+	/*!
 	 * \brief ${1:Brief function description here}
 	 *
 	 * ${0:Detailed description}
 	 *
 	 * \return ${2:Return parameter description}
 	 */
-	 
+
 snippet mf0 "define external member function with zero parameters"
 	${1:void} ${2:ClassName}::${3:memberFunction}() {
 		${0:${VISUAL}}
 	}
 
 snippet dmf1 "doxygen comment for external member function w/ one parameter"
-	/*! 
+	/*!
 	 * \brief ${1:Brief function description here}
 	 *
 	 * ${0:Detailed description}
@@ -149,7 +149,7 @@ snippet mf1 "define external member function w/ one parameter"
 	}
 
 snippet dmf2 "doxygen comment for external member function w/ two parameters"
-	/*! 
+	/*!
 	 * \brief ${1:Brief function description here}
 	 *
 	 * ${0:Detailed description}
@@ -168,7 +168,7 @@ snippet mf2 "define external member function w/ two parameters"
 snippet ns "declare namespace"
 	namespace ${1:`fnamemodify(expand(":%t"),":r"`} {
 		${0}
-	} // namespace $1 
+	} // namespace $1
 
 snippet ans "declare anonymous namespace"
 	namespace {

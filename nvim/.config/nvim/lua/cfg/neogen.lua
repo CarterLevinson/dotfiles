@@ -1,1 +1,1 @@
-require('neogen').setup{snippet_engine = "snippy"}
+require('neogen').setup{snippet_engine = 'snippy'}

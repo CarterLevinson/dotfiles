@@ -43,8 +43,6 @@ return packer.startup({
     -- _G.__luacache_config = { modpaths = { enable = false } }.
     use 'lewis6991/impatient.nvim'
 
-    use 'nathom/filetype.nvim'
-
     -- LSP plugins
     use {
       {
@@ -137,6 +135,7 @@ return packer.startup({
         'hrsh7th/cmp-cmdline',
         'hrsh7th/cmp-nvim-lua',
         'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-omni',
         'hrsh7th/cmp-nvim-lsp-signature-help',
         'hrsh7th/cmp-nvim-lsp-document-symbol',
         'ray-x/cmp-treesitter', -- other useful sources
@@ -144,7 +143,7 @@ return packer.startup({
         'petertriho/cmp-git',
         'amarakon/nvim-cmp-lua-latex-symbols',
         'lukas-reineke/cmp-rg',
-        'paopaol/cmp-doxygen',
+        'lukas-reineke/cmp-under-comparator',
         'rcarriga/cmp-dap',
         'onsails/lspkind.nvim', -- LSP icons
       },
@@ -159,17 +158,18 @@ return packer.startup({
         requires = {
           'nvim-lua/popup.nvim', -- telescope dependencies
           'nvim-lua/plenary.nvim',
+          -- 'nvim-telescope/telescope-file-browser.nvim',
           'nvim-telescope/telescope-fzf-native.nvim', -- telescope extensions
           'nvim-telescope/telescope-packer.nvim',
           'nvim-telescope/telescope-github.nvim',
           'luc-tielen/telescope_hoogle', -- telescope hoogle integration!
           'cljoly/telescope-repo.nvim',
         },
-        wants ={
-          'popup.nvim',
-          'plenary.nvim',
-          'telescope-fzf-native.nvim',
-        },
+        -- wants ={
+          -- 'popup.nvim',
+          -- 'plenary.nvim',
+          -- 'telescope-fzf-native.nvim',
+        -- },
         config = [[require'cfg.telescope']],
       },
       {
@@ -311,6 +311,8 @@ return packer.startup({
     use 'ntpeters/vim-better-whitespace'
     -- undotree: provide graphic representation of vim's undo tree
     use 'mbbill/undotree'
+    -- tpope keybinding plugins
+    -- use 'tpope/vim-unimpaired'
 
     -- auto switch neovim directory to project root
     use { 'notjedi/nvim-rooter.lua', config = [[require'cfg.rooter']] }
@@ -345,13 +347,14 @@ return packer.startup({
     -- use compiler plugins for linters?
 
     -- C/C++
-    use { 'vim-scripts/cscope.vim', ft = {'c', 'cpp'} }
-    use { 'vim-scripts/cpp_cppcheck.vim', ft = {'c', 'cpp'} }
+    use 'vim-scripts/cscope.vim'
+    use 'vim-scripts/cpp_cppcheck.vim'
 
     -- haskell
-    use { 'vmchale/pointfree', ft = {'haskell', 'lhaskell'} }
-    use { 'mpickering/hlint-refactor-vim', ft = { 'haskell', 'lhaskell' } }
-    use { 'neovimhaskell/haskell-vim', ft = { 'haskell', 'lhaskell'} }
+    use 'mpickering/hlint-refactor-vim'
+    use 'neovimhaskell/haskell-vim'
+
+    use { 'vmchale/pointfree', config = [[require'cfg.point-free']] }
 
     -- LaTex
     use { 'lervag/vimtex', config = [[require'cfg.vimtex']] }
@@ -367,13 +370,13 @@ return packer.startup({
     use {
       'ellisonleao/glow.nvim',
       config = [[require'cfg.glow']],
-      ft = { 'markdown', 'Rmd' },
+      ft = {'markdown', 'Rmd'},
     }
     -- follow markdown links with enter
     use { 'jghauser/follow-md-links.nvim', ft = {'markdown', 'Rmd'} }
 
     -- Tabular Data
-    use { 'chrisbra/csv.vim', ft = {'csv', 'tsv'}, opt = true }
+    use { 'chrisbra/csv.vim', ft = {'csv', 'tsv'} }
 
     -- aesthetic plugins
     use { 'karb94/neoscroll.nvim', config = [[require'cfg.scroll']] }
@@ -393,6 +396,7 @@ return packer.startup({
     -- syntax plugins
     use {
       'fladson/vim-kitty',
+      'mboughaba/i3config.vim',
       'Fymyte/mbsync.vim',
       'kmonad/kmonad-vim',
       'jbmorgado/vim-pine-script',

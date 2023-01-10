@@ -57,7 +57,7 @@ snippet nocxx "disable C++ name mangling in C headers"
 snippet #ifndef "include guard"
 	#ifndef $1
 	#define $1
-	${0:{VISUAL}}
+	${0:${VISUAL}}
 	#endif /* ifndef $1 */
 
 snippet if "if statement w/ brackets"

@@ -1,8 +1,7 @@
 local telescope = require('telescope')
--- local previewers = require('telescope.previewers')
 local builtin = require('telescope.builtin')
 local trouble = require('trouble.providers.telescope')
--- local file_browser = telescope.extensions.file_browser
+-- local previewers = require('telescope.previewers')
 
 
 -- telescope setup function
@@ -62,56 +61,49 @@ vim.api.nvim_create_autocmd('User', {
 })
 
 -- auto load these extensions
--- telescope.load_extension('file_browser')
 telescope.load_extension('fzf')
 
 -- telescope keymaps;
-local opts = { noremap = true, silent = true }
 
-
--- files and grep pickers
 
 -- \f: search through files
-vim.keymap.set('n', '<leader>f',   builtin.find_files, opts)
+vim.keymap.set('n', '<leader>f',   builtin.find_files)
 -- \fd: search through fd
-vim.keymap.set('n', '<leader>fd',  builtin.fd, opts)
+vim.keymap.set('n', '<leader>fd',  builtin.fd)
 -- \ff: search through live g
 vim.keymap.set('n', '<leader>ff',  builtin.live_grep, opts)
 
 -- vim internal pickers
 
 -- \fb: search through available buffers
-vim.keymap.set('n', '<leader>fb',  builtin.buffers, opts)
+vim.keymap.set('n', '<leader>fb',  builtin.buffers)
 -- \fm: search through vim marks
-vim.keymap.set('n', '<leader>fm',  builtin.marks, opts)
+vim.keymap.set('n', '<leader>fm',  builtin.marks)
 -- \fr: search through vim registers
-vim.keymap.set('n', '<leader>fr',  builtin.registers, opts)
+vim.keymap.set('n', '<leader>fr',  builtin.registers)
 -- \fh: search through vim help tags
-vim.keymap.set('n', '<leader>fht', builtin.help_tags, opts)
+vim.keymap.set('n', '<leader>fht', builtin.help_tags)
 -- \fmp: search through system man pages
-vim.keymap.set('n', '<leader>fmp', builtin.man_pages, opts)
+vim.keymap.set('n', '<leader>fmp', builtin.man_pages)
 
 -- git pickers
 
 -- \fg: search through git files
-vim.keymap.set('n', '<leader>fg',  builtin.git_files, opts)
+vim.keymap.set('n', '<leader>fg',  builtin.git_files)
 -- \fbc:search through git branch commits
-vim.keymap.set('n', '<leader>fbc', builtin.git_bcommits, opts)
+vim.keymap.set('n', '<leader>fbc', builtin.git_bcommits)
 -- \fgc: search through git commits
-vim.keymap.set('n', '<leader>fgc', builtin.git_commits, opts)
+vim.keymap.set('n', '<leader>fgc', builtin.git_commits)
 -- \fgb: search through git branches
-vim.keymap.set('n', '<leader>fgb', builtin.git_branches, opts)
+vim.keymap.set('n', '<leader>fgb', builtin.git_branches)
 -- \fgs: search through git stash files
-vim.keymap.set('n', '<leader>fgs', builtin.git_stash, opts)
+vim.keymap.set('n', '<leader>fgs', builtin.git_stash)
 
 -- nvim builtin lsp pickers
 
 -- \fds: search through lsp document symbols
-vim.keymap.set('n', '<leader>fds',  builtin.lsp_document_symbols, opts)
+vim.keymap.set('n', '<leader>fds',  builtin.lsp_document_symbols)
 -- \fws: search through lsp worksapces symbols
-vim.keymap.set('n', '<leader>fws', builtin.lsp_workspace_symbols, opts)
+vim.keymap.set('n', '<leader>fws', builtin.lsp_workspace_symbols)
 -- \flr: search through lsp references
-vim.keymap.set('n', '<leader>flr', builtin.lsp_references, opts)
-
--- \o: open telescope file browser
--- vim.keymap.set('n', '<leader>o', file_browser.file_browser, opts)
+vim.keymap.set('n', '<leader>flr', builtin.lsp_references)

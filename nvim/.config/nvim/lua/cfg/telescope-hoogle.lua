@@ -1,7 +1,6 @@
-require('telescope').load_extension('hoogle')
-
-local hoogle = require('telescope').extensions.hoogle
-local opts =  { noremap = true, silent = true }
+local telescope = require('telescope')
+telescope.load_extension('hoogle')
+local hoogle = telescope.extensions.hoogle
 
 -- \fh: search through hoogle
-vim.keymap.set('n', '<leader>fh', hoogle.hoogle, opts)
+vim.keymap.set('n', '<leader>fh', hoogle.hoogle)

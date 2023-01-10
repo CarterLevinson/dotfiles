@@ -1,64 +1,72 @@
-local set = vim.opt
-local g = vim.g
+local set                  = vim.opt
+local g                    = vim.g
 
-g.loaded_python3_provider = 0
--- g.loaded_netrw = 1
--- g.loaded_netrwPlugin = 1
+g.loaded_python3_provider  = 0
+g.loaded_ruby_provider     = 0
+g.loaded_perl_provider     = 0
+g.loaded_node_provider     = 0
+
+-- g.loaded_netrw          = 1
+-- g.loaded_netrwPlugin    = 1
 -- g.loaded_netrwSettings = 1
 
---g.do_filetype_lua = 1
---g.did_load_filetypes = 0
+set.spelllang              = 'en_us'
+set.wildignore             = {
+  '*.o',
+  '*.so',
+  '*.pyc',
+  '*.class',
+  '*.hi'
+}
 
-set.wildignore = {'*.o', '*.so', '*.pyc', '*.class', '*.hi'}
+set.confirm                = true
+set.vb                     = true
 
-set.confirm = true
-set.vb = true
-
-set.browsedir = 'buffer'
-set.diffopt = 'vertical'
+set.browsedir              = 'buffer'
+set.diffopt                = 'vertical'
 
 -- display
-set.title = true
-set.showcmd = true
-set.wildmenu = true
-set.cursorline = true
-set.ruler = true
-set.number = true
-set.relativenumber = true
-set.laststatus = 3
-set.lazyredraw = true
+set.title                  = true
+set.showcmd                = true
+set.wildmenu               = true
+set.cursorline             = true
+set.ruler                  = true
+set.number                 = true
+set.relativenumber         = true
+set.laststatus             = 3
+set.lazyredraw             = true
 
 -- line breaks
-set.tw = 80
-set.linebreak = true
-set.breakindent =true
+set.tw                     = 80
+set.linebreak              = true
+set.breakindent            = true
 
 -- search
-set.hlsearch = true
-set.incsearch = true
-set.ignorecase = true
-set.smartcase = true
+set.hlsearch               = true
+set.incsearch              = true
+set.ignorecase             = true
+set.smartcase              = true
 
 -- tabs/indents
-set.tabstop = 2
-set.shiftwidth =2
-set.softtabstop= -1
-set.expandtab = true
-set.autoindent = true
-set.smartindent = true
-set.cindent = true
-set.cinoptions = vim.opt.cinoptions + "L0"
+set.tabstop                = 2
+set.shiftwidth             = 2
+set.softtabstop            = -1
+set.expandtab              = true
+set.autoindent             = true
+set.smartindent            = true
+set.cindent                = true
+-- set.cinoptions          = vim.opt.cinoptions + "L0"
 
 -- set custom listchars
-set.listchars = {
-   eol = '↲',
-   tab = '»·',
-   space = '␣',
-   trail = '·',
-   extends = '☛',
-   precedes = '☚',
-   conceal = '┊',
-   nbsp = '☠',
+set.listchars              = {
+   eol                     = '↲',
+   tab                     = '»·',
+   space                   = '␣',
+   trail                   = '·',
+   extends                 = '☛',
+   precedes                = '☚',
+   conceal                 = '┊',
+   nbsp                    = '☠',
 }
 
 -- :grep to use ripgrep

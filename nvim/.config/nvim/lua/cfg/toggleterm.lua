@@ -20,9 +20,9 @@ vim.cmd[[com! -nargs=1 Cppman
 \ :10TermEx direction=horizontal size=50 go_back=0 cmd='cppman <args>'<CR>
 ]]
 
--- vim.cmd[[com! -nargs=1 Hoogle
--- \ :11TermEx direction=horizontal size=50 go_back=0 cmd='hoogle <args>'<CR>
--- ]]
+vim.cmd[[com! -nargs=1 Hoogle
+\ :11TermEx direction=horizontal size=50 go_back=0 cmd='hoogle <args>'<CR>
+]]
 
 vim.cmd[[com! -nargs=? Hman
 \ :12TermEx direction=horizontal size=50 go_back=0 cmd='hdc <args>'<CR>
@@ -36,9 +36,8 @@ vim.cmd[[com! -nargs=1 Glow
 \ :14TermEx direction=horizontal size=50 go_back=0 cmd='glow -p <args>'<CR>
 ]]
 
-local opts = {silent = true, noremap = true}
-vim.keymap.set('n', '<leader>tt', '<CMD>ToggleTermSendCurrentLine<CR>', opts)
-vim.keymap.set('n', '<leader>tv', '<CMD>ToggleTermSendVisualSelection<CR>',opts)
-vim.keymap.set('n', '<leader>tV', '<CMD>ToggleTermSendVisualLines<CR>', opts)
-vim.keymap.set('n', '<leader>ta', '<CMD>ToggleTermToggleAll<CR>', opts)
-vim.keymap.set('t', '<leader>tc', '<CMD>close<CR>', opts)
+vim.keymap.set('n', '<leader>tt', '<CMD>ToggleTermSendCurrentLine<CR>')
+vim.keymap.set('n', '<leader>tv', '<CMD>ToggleTermSendVisualSelection<CR>')
+vim.keymap.set('n', '<leader>tV', '<CMD>ToggleTermSendVisualLines<CR>')
+vim.keymap.set('n', '<leader>ta', '<CMD>ToggleTermToggleAll<CR>')
+vim.keymap.set('t', '<leader>tc', '<CMD>close<CR>')
