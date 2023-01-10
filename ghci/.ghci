@@ -1,7 +1,7 @@
 :set prompt "λ GHCi --> "
 :set editor nvim
 -- enable multiline input
--- :seti +m 
+-- :seti +m
 -- display performance stats after each command
 --:seti +s
 -- custom commands
