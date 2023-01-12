@@ -345,6 +345,7 @@ if [[ $1 == eval ]] then
 	set --
 fi
 
+eval "$(_PAPIS_COMPLETE=source_zsh papis)"
 # ghcup-env setup
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 

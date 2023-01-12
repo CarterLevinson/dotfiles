@@ -2,7 +2,6 @@
 ### local $USER alaises
 
 # program name aliases
-alias py=python
 alias ipy=ipython
 alias ydl=youtube-dl
 alias vbm=VBoxManage
@@ -23,8 +22,8 @@ alias nvim-profile='vim-startuptime -vimpath /usr/bin/nvim'
 # argument aliases
 
 # silent R
-alias rad='radian --quiet'
-alias R='R --quiet'
+alias rad='radian --quiet --no-save'
+alias R='R --quiet --no-save'
 
 # use vi mode on all GNU documentation
 alias info='info --vi-keys'

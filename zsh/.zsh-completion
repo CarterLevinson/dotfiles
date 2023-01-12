@@ -24,7 +24,7 @@ compinit -C
 # get kitty completion for zsh
 kitty + complete setup zsh | source /dev/stdin
 # get papis completion for zsh
-eval "$(_PAPIS_COMPLETE=source_zsh papis)"
+# eval "$(_PAPIS_COMPLETE=source_zsh papis)"
 # COMP=$HOME/.local/share/zsh-completion/completions
 # setup cppman completion
 # eval $COMP/cppman.zsh
