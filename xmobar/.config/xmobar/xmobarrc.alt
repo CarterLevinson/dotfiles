@@ -1,17 +1,48 @@
 -- vim: syntax=haskell
-Config { overrideRedirect = False
-     , bgColor            = "#000000"
-     , fgColor            = "#646464"
-     , position           = TopW L 100
-     , borderColor        = "#f8f8f2"
-     , iconRoot           = "/home/carterlevo/.config/xmobar/xpm"
-     , font               = "xft:Hack:weight=bold:pixelsize=14:antialias=true"
-     , additionalFonts    = 
-        [ "xft:Material Icons:pixelsize=14:anitalias=true:hinting=true"
-        , "xft:Symbols Nerd Font:pixelsize=14:anitalias=true:hinting=true"       
-        ]
-     , commands = [ Run XPropertyLog "_XMONAD_LOG_1" ]
-     , sepChar  = "%"
-     , alignSep = "}{"
-     , template = "%_XMONAD_LOG_1%"
-    }
+Config
+  { overrideRedirect = False
+  , bgColor = "#000000"
+  , fgColor = "#646464"
+  , position = TopW L 100
+  , borderColor = "#F8F8F2"
+  , iconRoot = "/home/carterlevo/.config/xmobar/xpm"
+  , font = "xft:Hack:weight=bold:pixelsize=14:antialias=true"
+  , additionalFonts =
+      [ "xft:Material Icons:pixelsize=14:anitalias=true:hinting=true"
+      , "xft:Symbols Nerd Font:pixelsize=14:anitalias=true:hinting=true"
+      ]
+  , commands =
+      [ Run XPropertyLog "_XMONAD_LOG_1"
+      , Run
+          Weather
+          "KMDW"
+          [ "--template"
+          , "<weather> <tempC>°C"
+          , "-L"
+          , "0"
+          , "-H"
+          , "25"
+          , "--low"
+          , "lightblue"
+          , "--normal"
+          , "#f8f8f2"
+          , "--high"
+          , "red"
+          ]
+          36000
+      , Run Date "<fn=2>\xF273</fn> %a %d-%m-%Y" "date" 10
+      , Run Date "<fn=2>\xF64F</fn> <fc=#FFFFFF>%H:%M</fc>" "time" 10
+
+      , Run Com "pacupdates" [] "updates" 3600
+
+      , Run Com "echo" ["<fn=2>\xF0F3</fn>"] "bell" 3600
+      , Run Com "echo" ["<fn=2>\xF2C7</fn>"] "thermometer" 3600
+      , Run Com "echo" ["<fn=2>\xFA92</fn>"] "cloud" 3600
+      , Run Com "echo" ["<fn=2>\xF303</fn>"] "arch" 3600
+      , Run Com "echo" ["<fn=2>\xE22C</fn>"] "pi" 3600
+      ]
+  , template =
+      "<icon=Archlinux-icon-white-20x20-scaled.xpm/> %_XMONAD_LOG_1% }{\
+                \| %bell% %updates% | %cloud% %KMDW% %thermometer% \
+                \| %time% |"
+  }
