@@ -2,18 +2,26 @@ font:
 
   normal:
     family: Source Code Pro
+    #family: Anonymous Pro
+    #family: Hack
     style:  Regular
 
   bold:
     family: Source Code Pro
+    #family: Anonymous Pro
+    #family: Hack
     style:  Bold
 
   italic:
-    family: Source Code Pro 
+    family: Source Code Pro
+    #family: Anonymous Pro
+    #family: Hack
     style:  Italic
 
   bold_italic:
     family: Source Code Pro
+    #family: Anonymous Pro
+    #family: Hack
     style:  Bold Italic
 
 
