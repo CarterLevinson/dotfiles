@@ -71,13 +71,18 @@ Config
       , Run Swap ["-t", "<fn=2>\xF9E1</fn> Swap: <usedratio>%"] 10
       , Run
           Network
-          "wlp8s0"
-          ["-t", "<fn=2>\xF0AA</fn> <rx>kb <fn=2>\xF0AB</fn> <tx>kb"]
+          "wlp8s0" -- wifi
+          ["-t", "<fn=2>\xF0AA</fn> <tx>KB/s <fn=2>\xF0AB</fn> <rx>KB/s"]
+          20
+      , Run
+          Network
+          "enp0s31f6" -- ethernet
+          ["-t", "<fn=2>\xF0AA</fn> <tx>KB/s <fn=2>\xF0AB</fn> <rx>KB/s"]
           20
       , Run Uptime ["-t", "Up: <days>d <hours>h"] 360
-      --, Run Date "%a %Y-%m-%d <fc=#8BE9FD>%H:%M</fc>" "date" 10
+      -- light blue hex code #8BE9FD
       , Run Date "<fn=2>\xF273</fn> %a %d-%m-%Y" "date" 10
-      , Run Date "<fn=2>\xF64F</fn> <fc=#FFFFFF>%H:%M</fc>" "time" 10
+      , Run Date "<fc=#FFFFFF>%H:%M</fc>" "time" 10
 
       , Run DiskU [("/", "<fn=2>\xF0C7</fn> hdd <used> (<usedp>%) used")] [] 60
       , Run Com "uname" ["-r"] "kernel" 36000
@@ -85,9 +90,11 @@ Config
 
       , Run Com "echo" ["<fn=2>\xF303</fn>"] "arch" 3600
       , Run Com "echo" ["<fn=2>\xE22C</fn>"] "pi" 3600
+      , Run Com "echo" ["<fn=2>\xFB26</fn>"] "lambda" 3600
+      , Run Com "echo" ["<fn=2>\xF64F</fn>"] "clock" 3600
       ]
   , template =
       "<icon=Archlinux-icon-white-20x20-scaled.xpm/> %_XMONAD_LOG_0% }{\
         \| %arch% %cpu% %cpufreq% %multicoretemp% | %memory% %swap% \
-        \| %wlp8s0% | %uptime% | %date% %time% |"
+        \| %wlp8s0% | %clock% %uptime% | %date% | %time% | %lambda% "
   }
