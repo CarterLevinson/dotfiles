@@ -45,8 +45,7 @@ return packer.startup({
 
     -- LSP plugins
     use {
-      {
-        'neovim/nvim-lspconfig', -- configuration plugin for neovim builtin lsp
+      { 'neovim/nvim-lspconfig', -- configuration plugin for neovim builtin lsp
         requires = {
           'hrsh7th/nvim-cmp',
           'p00f/clangd_extensions.nvim',
@@ -55,21 +54,20 @@ return packer.startup({
         },
         config = [[require'cfg.lsp']],
       },
-      {
-        'kosayoda/nvim-lightbulb', -- add vscode lightbulb icon for code actions
+      { 'kosayoda/nvim-lightbulb', -- add vscode lightbulb icon for code actions
         requires = 'antoinemadec/FixCursorHold.nvim',
         config = [[require'cfg.lightbulb']],
         after = 'nvim-lspconfig', -- lazy load
       },
-      {
-        'weilbith/nvim-code-action-menu', -- floating menu interface for ca's
+      { 'weilbith/nvim-code-action-menu', -- floating menu interface for ca's
         cmd = 'CodeActionMenu',
         after = 'nvim-lspconfig', -- lazy load
       },
-      {
-        'smjonas/inc-rename.nvim',
-        config = [[require'cfg.inc-rename']],
-      }
+    }
+
+    use  {
+      'smjonas/inc-rename.nvim',
+      config = [[require'cfg.inc-rename']],
     }
 
     -- trouble.nvim: better diagnositics, quickfix and loclist window
@@ -81,12 +79,8 @@ return packer.startup({
 
     -- DAP plugins
     use {
-      {
-        'mfussenegger/nvim-dap',
-        config = [[require'cfg.dap']],
-      },
-      {
-        'rcarriga/nvim-dap-ui',
+      { 'mfussenegger/nvim-dap', config = [[require'cfg.dap']] },
+      { 'rcarriga/nvim-dap-ui',
         requires = 'nvim-dap',
         after = 'nvim-dap',
         config = function() require('dapui').setup{} end,
@@ -95,27 +89,22 @@ return packer.startup({
 
     -- Treesitter plugins
     use {
-      {
-        'nvim-treesitter/nvim-treesitter', -- treesitter parser / syntax highlight
+      { 'nvim-treesitter/nvim-treesitter', -- treesitter parser / syntax highlight
         config = [[require'cfg.treesitter']],
         run = ':TSUpdate',
         event = 'BufWinEnter', -- lazy load
       },
-      {
-        'nvim-treesitter/nvim-treesitter-textobjects', -- ts semantic motions
+      { 'nvim-treesitter/nvim-treesitter-textobjects', -- ts semantic motions
         after = 'nvim-treesitter',
       },
-      {
-        'nvim-treesitter/nvim-treesitter-refactor', -- ts based refactor
+      { 'nvim-treesitter/nvim-treesitter-refactor', -- ts based refactor
         after = 'nvim-treesitter',
       },
-      {
-        'nvim-treesitter/playground', -- experiment with treesitter queries
+      { 'nvim-treesitter/playground', -- experiment with treesitter queries
         after = 'nvim-treesitter',
         cmd = 'TSPlaygroundToggle',
       },
-      {
-        'nvim-treesitter/nvim-treesitter-context', -- display ts "context"
+      { 'nvim-treesitter/nvim-treesitter-context', -- display ts "context"
         requires = 'nvim-treesitter',
         after = 'nvim-treesitter',
         config = function() require('treesitter-context').setup{} end,
@@ -152,47 +141,33 @@ return packer.startup({
 
     -- telescope: neovim's builtin fuzzy finder
     use {
-      {
-        'nvim-telescope/telescope.nvim',
+      { 'nvim-telescope/telescope.nvim',
         branch = '0.1.x',
         requires = {
           'nvim-lua/popup.nvim', -- telescope dependencies
           'nvim-lua/plenary.nvim',
-          -- 'nvim-telescope/telescope-file-browser.nvim',
           'nvim-telescope/telescope-fzf-native.nvim', -- telescope extensions
           'nvim-telescope/telescope-packer.nvim',
           'nvim-telescope/telescope-github.nvim',
           'luc-tielen/telescope_hoogle', -- telescope hoogle integration!
           'cljoly/telescope-repo.nvim',
         },
-        -- wants ={
-          -- 'popup.nvim',
-          -- 'plenary.nvim',
-          -- 'telescope-fzf-native.nvim',
-        -- },
         config = [[require'cfg.telescope']],
       },
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        run = 'make',
-      },
-      {
-        'cljoly/telescope-repo.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+      { 'cljoly/telescope-repo.nvim',
         config = [[require'cfg.telescope-repo']],
         event = 'CmdlineEnter',
       },
-      {
-        'nvim-telescope/telescope-packer.nvim',
-        config = [[require'cfg.telescope-packer']],
-        event = 'CmdlineEnter',
-      },
-      {
-        'nvim-telescope/telescope-github.nvim',
+      { 'nvim-telescope/telescope-github.nvim',
         config = [[require'cfg.telescope-github']],
         event = 'CmdlineEnter',
       },
-      {
-        'luc-tielen/telescope_hoogle',
+      { 'nvim-telescope/telescope-packer.nvim',
+        config = [[require'cfg.telescope-packer']],
+        event = 'CmdlineEnter',
+      },
+      { 'luc-tielen/telescope_hoogle',
         config = [[require'cfg.telescope-hoogle']],
         event = 'CmdlineEnter',
       },
@@ -207,19 +182,26 @@ return packer.startup({
 
     -- status line plugins
     use {
-      {
-        'nvim-lualine/lualine.nvim', -- status line written in lua
+      { 'nvim-lualine/lualine.nvim', -- status line written in lua
         requires = 'kyazdani42/nvim-web-devicons',
         config = [[require'cfg.lualine']],
-        after = 'tabline.nvim',
-      },
-      {
-        'kdheepak/tabline.nvim', -- tab line written in lua
-        requires = 'kyazdani42/nvim-web-devicons',
-        config = [[require'cfg.tabline']],
         event = 'BufWinEnter',
       },
+      { 'kdheepak/tabline.nvim', -- tab line written in lua
+        requires = 'kyazdani42/nvim-web-devicons',
+        config = [[require'cfg.tabline']],
+        after = 'lualine.nvim',
+        -- event = 'BufWinEnter',
+      },
       { 'nvim-lua/lsp-status.nvim', disable = true },
+      { 'tjdevries/express_line.nvim', disable = false },
+    }
+
+    use {
+      'b0o/incline.nvim',
+      config = function() require('incline').setup{} end,
+      event = 'BufWinEnter',
+      disable = true,
     }
 
     -- vista.vim: tagbar like plugin with added support for LSP symbols
@@ -308,30 +290,37 @@ return packer.startup({
     -- add some useful unicode commands
     use 'chrisbra/unicode.vim'
     -- adds strip whitespace command
-    use 'ntpeters/vim-better-whitespace'
     -- undotree: provide graphic representation of vim's undo tree
     use 'mbbill/undotree'
-    -- tpope keybinding plugins
-    -- use 'tpope/vim-unimpaired'
+
+    use {
+      'johnfrankmorgan/whitespace.nvim',
+      config = [[require'cfg.whitespace']],
+    }
 
     -- auto switch neovim directory to project root
-    use { 'notjedi/nvim-rooter.lua', config = [[require'cfg.rooter']] }
+    use {
+      'notjedi/nvim-rooter.lua',
+      config = [[require'cfg.rooter']]
+    }
 
     -- easy alignment commands and keymaps
-    use { 'junegunn/vim-easy-align', config = [[require'cfg.easy-align']], }
+    use {
+      'junegunn/vim-easy-align',
+      config = [[require'cfg.easy-align']],
+    }
 
     -- git plugins
+    use 'tpope/vim-fugitive'  -- git wrapper functions
+
     use {
-      { 'tpope/vim-fugitive' }, -- git wrapper functions
-      {
-        'lewis6991/gitsigns.nvim', -- display git diff signs in columns
+      { 'lewis6991/gitsigns.nvim', -- display git diff signs in columns
         tag = 'release',
         requires = 'kyazdani42/nvim-web-devicons',
         config = function() require('gitsigns').setup{} end,
         event = 'BufWinEnter',
       },
-      {
-        'pwntester/octo.nvim', -- github cli wrappers
+      { 'pwntester/octo.nvim', -- github cli wrappers
         requires = {
           'nvim-lua/plenary.nvim',
           'nvim-telescope/telescope.nvim',
@@ -342,9 +331,15 @@ return packer.startup({
       }
     }
 
+    use 'aymericbeaumet/vim-symlink'
     -- filetype plugins:
 
     -- use compiler plugins for linters?
+    -- for lua development
+    use 'folke/neodev.nvim'
+
+    -- Tabular Data
+    use 'chrisbra/csv.vim'
 
     -- C/C++
     use 'vim-scripts/cscope.vim'
@@ -354,35 +349,52 @@ return packer.startup({
     use 'mpickering/hlint-refactor-vim'
     use 'neovimhaskell/haskell-vim'
 
-    use { 'vmchale/pointfree', config = [[require'cfg.point-free']] }
+    use {
+      'vmchale/pointfree',
+      config = [[require'cfg.pointfree']]
+    }
 
     -- LaTex
-    use { 'lervag/vimtex', config = [[require'cfg.vimtex']] }
+    use {
+      'lervag/vimtex',
+      config = [[require'cfg.vimtex']]
+    }
 
-    -- gives commands to preview markdown in the browser
+    -- Markdown
     use {
       'iamcco/markdown-preview.nvim',
-      config = [[require'cfg.markdown-preview']],
+      config = [[require'cfg.md-preview']],
       run = function() vim.fn["mkdp#util#install"]() end,
-      ft = {'markdown', 'Rmd'},
+      ft = {'md', 'Rmd'},
     }
 
     use {
       'ellisonleao/glow.nvim',
       config = [[require'cfg.glow']],
-      ft = {'markdown', 'Rmd'},
+      ft = {'md', 'Rmd'},
     }
     -- follow markdown links with enter
-    use { 'jghauser/follow-md-links.nvim', ft = {'markdown', 'Rmd'} }
+    use {
+      'jghauser/follow-md-links.nvim',
+      ft = {'md', 'Rmd'}
+    }
 
-    -- Tabular Data
-    use { 'chrisbra/csv.vim', ft = {'csv', 'tsv'} }
-
-    -- aesthetic plugins
-    use { 'karb94/neoscroll.nvim', config = [[require'cfg.scroll']] }
-
-    use { 'xiyaowong/nvim-transparent', config = [[require'cfg.transparent']] }
-
+    -- animation / window based plugins
+    use {
+      { 'karb94/neoscroll.nvim',
+        config = [[require'cfg.scroll']]
+      },
+      { 'xiyaowong/nvim-transparent',
+        config = [[require'cfg.transparent']]
+      },
+      { 'anuvyklack/windows.nvim',
+        requires = {
+          'anuvyklack/middleclass',
+          'anuvyklack/animation.nvim',
+        },
+        config = [[require'cfg.windows']],
+      },
+    }
 
     -- colorscheme plugins
     use {
@@ -391,6 +403,7 @@ return packer.startup({
       'rafamadriz/neon',
       'projekt0n/github-nvim-theme',
       'kvrohit/substrata.nvim',
+      'folke/tokyonight.nvim',
     }
 
     -- syntax plugins
@@ -403,10 +416,10 @@ return packer.startup({
     }
 
     -- disabled plugins
-
     use {
-      'windwp/nvim-autopairs',
-      config = [[require'cfg.auto-pairs']],
+      'dhruvasagar/vim-prosession',
+      requires = 'tpope/vim-obsession',
+      config = [[require'cfg.prosession']],
       disable = true,
     }
 

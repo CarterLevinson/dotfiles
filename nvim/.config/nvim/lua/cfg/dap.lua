@@ -5,7 +5,6 @@ local get_executable_path = function()
 end
 -- DAP, like LSP consists of client(this plugin) and server processes
 
--- first configure the adapters
 
 -- C/C++
 dap.adapters.lldb = {
@@ -13,16 +12,53 @@ dap.adapters.lldb = {
   command = '/usr/bin/lldb-vscode',
   name = 'lldb',
   -- lldb-vscode by default doesn't inherit the environment variables from the
-    -- parent. If you want to inherit them, add the env property definition
-    -- below to your configurations entries.
-    --
-    -- env = function()
-    --   local variables = {}
-    --   for k,v in pairs(vim.fn.environ()) do
-    --     table.insert(variables, string.format"%s=%s",k, v))
-    --   end
-    --   return variables
-    -- end,
+  -- parent. If you want to inherit them, add the env property definition
+  -- below to your configurations entries.
+  -- env = function()
+  --   local variables = {}
+  --   for k,v in pairs(vim.fn.environ()) do
+  --     table.insert(variables, string.format"%s=%s",k, v)
+  --   end
+  --   return variables
+  -- end,
+}
+
+dap.configurations.cpp = {
+  name = 'Launch',
+  type = 'lldb',
+  request = 'launch',
+  program = get_executable_path,
+  cwd = '${worksapceFolder}',
+  stopOnEntry = false,
+  args = {},
+}
+
+dap.configurations.c = dap.configurations.cpp
+dap.configurations.rust = dap.configurations.cpp
+
+-- Haskell
+dap.adapters.haskell = {
+  type = 'executable';
+  command = 'haskell-debug-adapter';
+  args = {'--hackage-version=0.0.33.0'};
+}
+
+dap.configurations.haskell = {
+  {
+    type = 'haskell',
+    request = 'launch',
+    name = 'Debug',
+    workspace = '${workspaceFolder}',
+    startup = "${file}",
+    stopOnEntry = true,
+    logFile = vim.fn.stdpath('data') .. '/haskell-dap.log',
+    logLevel = 'WARNING',
+    ghciEnv = vim.empty_dict(),
+    ghciPrompt = "λ GHCi $> ",
+    -- Adjust the prompt to the prompt you see when you invoke the stack ghci command below
+    ghciInitialPrompt = "λ GHCi $> ",
+    ghciCmd= "stack ghci --test --no-load --no-build --main-is TARGET --ghci-options -fprint-evld-with-show",
+  },
 }
 
 -- wait on setting up python dap until we understand virtual envs better
@@ -32,31 +68,6 @@ dap.adapters.lldb = {
 --   command = 'path/to/virtualenvs/debugpy/bin/python';
 --   args = { '-m', 'debugpy.adapter' };
 -- }
-
--- Haskell
-dap.adapters.haskell = {
-  type = 'executable';
-  command = 'haskell-debug-adapter';
-  args = {'--hackage-version=0.0.33.0'};
-}
-
--- next, configure language/filetypes
-
--- C/C++
-dap.configurations.cpp = {
-  {
-    name = 'Launch',
-    type = 'lldb',
-    request = 'launch',
-    program = get_executable_path,
-    cwd = '${workspaceFolder}',
-    stopOnEntry = false,
-    args = {},
-  },
-}
-
-dap.configurations.c = dap.configurations.cpp
-
 
 -- python
 -- dap.configurations.python = {
@@ -85,22 +96,3 @@ dap.configurations.c = dap.configurations.cpp
 --   },
 -- }
 --
-
---- Haskell
-dap.configurations.haskell = {
-  {
-    type = 'haskell',
-    request = 'launch',
-    name = 'Debug',
-    workspace = '${workspaceFolder}',
-    startup = "${file}",
-    stopOnEntry = true,
-    logFile = vim.fn.stdpath('data') .. '/haskell-dap.log',
-    logLevel = 'WARNING',
-    ghciEnv = vim.empty_dict(),
-    ghciPrompt = "λ GHCi $> ",
-    -- Adjust the prompt to the prompt you see when you invoke the stack ghci command below
-    ghciInitialPrompt = "λ GHCi $> ",
-    ghciCmd= "stack ghci --test --no-load --no-build --main-is TARGET --ghci-options -fprint-evld-with-show",
-  },
-}

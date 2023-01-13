@@ -65,41 +65,37 @@ telescope.load_extension('fzf')
 
 -- telescope keymaps;
 
-
 -- \f: search through files
 vim.keymap.set('n', '<leader>f',   builtin.find_files)
+-- \ff: search through live rg
+vim.keymap.set('n', '<leader>ff',  builtin.live_grep)
+
 -- \fd: search through fd
 vim.keymap.set('n', '<leader>fd',  builtin.fd)
--- \ff: search through live g
-vim.keymap.set('n', '<leader>ff',  builtin.live_grep, opts)
-
--- vim internal pickers
-
 -- \fb: search through available buffers
 vim.keymap.set('n', '<leader>fb',  builtin.buffers)
+
+
 -- \fm: search through vim marks
 vim.keymap.set('n', '<leader>fm',  builtin.marks)
 -- \fr: search through vim registers
 vim.keymap.set('n', '<leader>fr',  builtin.registers)
+
 -- \fh: search through vim help tags
 vim.keymap.set('n', '<leader>fht', builtin.help_tags)
 -- \fmp: search through system man pages
 vim.keymap.set('n', '<leader>fmp', builtin.man_pages)
 
--- git pickers
-
 -- \fg: search through git files
 vim.keymap.set('n', '<leader>fg',  builtin.git_files)
--- \fbc:search through git branch commits
-vim.keymap.set('n', '<leader>fbc', builtin.git_bcommits)
--- \fgc: search through git commits
-vim.keymap.set('n', '<leader>fgc', builtin.git_commits)
 -- \fgb: search through git branches
 vim.keymap.set('n', '<leader>fgb', builtin.git_branches)
+-- \fgc: search through git commits
+vim.keymap.set('n', '<leader>fgc', builtin.git_commits)
+-- \fbc:search through git branch commits
+vim.keymap.set('n', '<leader>fbc', builtin.git_bcommits)
 -- \fgs: search through git stash files
 vim.keymap.set('n', '<leader>fgs', builtin.git_stash)
-
--- nvim builtin lsp pickers
 
 -- \fds: search through lsp document symbols
 vim.keymap.set('n', '<leader>fds',  builtin.lsp_document_symbols)

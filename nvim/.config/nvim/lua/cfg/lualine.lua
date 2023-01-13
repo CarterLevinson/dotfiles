@@ -9,30 +9,18 @@ local function diff_source()
   end
 end
 
-local function search_result()
-  if vim.v.hlsearch == 0 then
-    return ''
-  end
-  local last_search = vim.fn.getreg('/')
-  if not last_search or last_search == '' then
-    return ''
-  end
-  local searchcount = vim.fn.searchcount { maxcount = 9999 }
-  return last_search .. '(' .. searchcount.current ..
-    '/' .. searchcount.total .. ')'
-end
-
+local get_byte = [[%b 0x%B]]
 
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    -- theme = 'molokai',
-    theme = 'powerline_dark',
-    component_separators = { left = '', right = '' },
-    section_separators = { left = '', right = '' },
+    -- component_separators = { left = '', right = '' },
+    -- section_separators = { left = '', right = '' },
+    section_separators = '',
+    component_separators = '|',
     disabled_filetypes = {},
     always_divide_middle = true,
-    globalstatus = false,
+    globalstatus = true,
   },
   sections = {
     -- show only the first character of current vim mode
@@ -43,7 +31,8 @@ require('lualine').setup {
       { 'diagnostics', sources = { 'nvim_lsp', 'nvim_diagnostic', }, },
     },
     lualine_c = {'filename'},
-    lualine_x = { search_result, 'encoding', 'fileformat', 'filetype'},
+    lualine_x = {get_byte, 'encoding', 'fileformat', 'filetype'},
+
     lualine_y = {'progress', 'filesize'},
     lualine_z = {'location'}
   },
@@ -55,14 +44,7 @@ require('lualine').setup {
     lualine_y = {},
     lualine_z = {}
   },
-  tabline = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { require'tabline'.tabline_buffers },
-    lualine_x = { require'tabline'.tabline_tabs },
-    lualine_y = {},
-    lualine_z = {},
-  },
+  tabline = {},
   extensions = {
     'fugitive',
     'fzf',

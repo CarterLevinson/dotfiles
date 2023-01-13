@@ -1,1 +1,1 @@
-require('tabline').setup{enable = false}
+require('tabline').setup{}

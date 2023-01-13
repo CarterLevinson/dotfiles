@@ -1,7 +1,6 @@
 local cmp = require('cmp')
 local cmp_git = require('cmp_git')
 local cmp_dap = require('cmp_dap')
--- local cmp_dict = require('cmp_dictionary')
 local snippy = require('snippy')
 local snippy_mappings = require('snippy.mapping')
 local lspkind = require('lspkind')
@@ -105,7 +104,7 @@ cmp.setup{
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
-  -- add extra comparator for underscores
+  --add extra comparator for underscores
   sorting = {
     comparators = {
       cmp.config.compare.offset,
@@ -122,23 +121,23 @@ cmp.setup{
   formatting = {
     format = lspkind.cmp_format({
       mode = 'symbol',
-      -- menu = {
-      --   buffer = '[Buf]',
-      --   nvim_lsp = '[LSP]',
-      --   nvim_lsp_signature_help = '[LSP]',
-      --   nvim_lsp_document_symbol = '[LSP]',
-      --   treesitter = '[TS]',
-      --   snippy = '[Snip]',
-      --   latex_symbols = '[TeX]',
-      --   nvim_lua = '[API]',
-      --   doxygen = '[Doc]',
-      --   git = '[Git]',
-      --   path = '[Path]',
-      --   rg = '[Ripgrep]',
-      --   calc = '[Calc]',
-      --   dap = '[DAP]',
-      --   commandline = '[CMD]',
-      -- },
+      menu = {
+        buffer = '[Buf]',
+        nvim_lsp = '[LSP]',
+        nvim_lsp_signature_help = '[LSP]',
+        nvim_lsp_document_symbol = '[LSP]',
+        treesitter = '[TS]',
+        snippy = '[Snip]',
+        latex_symbols = '[TeX]',
+        nvim_lua = '[API]',
+        doxygen = '[Doc]',
+        git = '[Git]',
+        path = '[Path]',
+        rg = '[Ripgrep]',
+        calc = '[Calc]',
+        dap = '[DAP]',
+        commandline = '[CMD]',
+      },
       -- icon reference: https://www.nerdfonts.com/cheat-sheet
       symbol_map = {
         Text = " ",
@@ -170,29 +169,26 @@ cmp.setup{
     }),
   },
   sources = cmp.config.sources({
-    -- smart enough to only activate only lua files
-    { name = 'nvim_lua' },
-    { name = 'nvim_lsp_signature_help' },
-    { name = 'nvim_lsp' },
-    { name = 'snippy' },
-    { name = 'buffer' },
-    { name = 'rg',  max_item_count = 15 },
-    -- think about this guy
-    -- { name = 'treesitter' },
-    { name = 'calc' },
-    { name = 'lua-latex-symbols' },
-    { name = 'path', keyword_length = 2 },
+    { name = 'nvim_lua', priority = 1 },
+    { name = 'nvim_lsp_signature_help', priority = 2 },
+    { name = 'nvim_lsp', priority = 2 },
+    { name = 'snippy', priority = 2},
+    { name = 'calc', priority = 3 },
+    { name = 'lua_latex_symbols', priority = 3 },
+    { name = 'buffer', priority = 4},
+    { name = 'path',  priority = 4},
+    -- { name = 'rg',  max_item_count = 15 },
   })
 }
 
 -- treesitter experimentation
-cmp.setup.filetype({'query', 'tsplayground'}, {
-  sources = cmp.config.sources({
-    { name = 'treesitter' }
-  }, {
-    { name = 'buffer' }
-  })
-})
+-- cmp.setup.filetype({'query', 'tsplayground'}, {
+--   sources = cmp.config.sources({
+--     { name = 'treesitter' }
+--   }, {
+--     { name = 'buffer' }
+--   })
+-- })
 
 -- dadbod integration
 cmp.setup.filetype({'sql', 'mysql', 'plsql'}, {
@@ -207,9 +203,9 @@ cmp.setup.filetype({'sql', 'mysql', 'plsql'}, {
 cmp_git.setup{}
 cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources({
-    { name = 'git' },
-    { name = 'snippy' },
-    { name = 'buffer' }
+    { name = 'git', priority = 1 },
+    { name = 'snippy', priority = 2 },
+    { name = 'buffer', priority = 3 }
   })
 })
 
@@ -222,16 +218,18 @@ cmp.setup.filetype({'dap-repl', 'dapui-watches', 'dapui-hover'}, {
 
 cmp.setup.filetype('tex', {
   sources = cmp.config.sources({
-    { name = 'omni' },
-    { name = 'snippy' },
-    { name = 'buffer' },
+    { name = 'omni', priority = 1 },
+    { name = 'snippy', priority = 2 },
+    { name = 'buffer', priority = 3 },
   })
 })
 
 
 cmp.setup.filetype({'markdown', 'rmd'}, {
   sources = cmp.config.sources({
-    { name = 'snippy' },
+    { name = 'treesitter', priority = 1 },
+    { name = 'snippy', priority = 2 },
+    { name = 'lua-latex-symbols', priority = 2 },
     { name = 'buffer' },
   })
 })
