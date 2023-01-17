@@ -5,15 +5,7 @@ return {
   "mbbill/undotree",
   "aymericbeaumet/vim-symlink",
   "jghauser/mkdir.nvim",
-  "tpope/vim-fugitive",
-  {
-    "lewis6991/gitsigns.nvim",
-    version = "release",
-    config = function()
-      require("gitsigns").setup{}
-    end,
-    event = "BufWinEnter",
-  },
+
   {
     "ibhagwan/fzf-lua",
     dependencies = "kyazdani42/nvim-web-devicons",
@@ -45,25 +37,12 @@ return {
     event = "CmdlineEnter",
   },
   {
-    "miversen33/netman.nvim",
-    config = function()
-      require("netman")
-    end,
-    enabled = false,
-  },
-  {
     "radenling/vim-dispatch-neovim",
     dependencies = "tpope/vim-dispatch",
     config = function()
       vim.g.dispatch_no_maps = 1
     end,
     event = "CmdlineEnter",
-  },
-  {
-    "superevilmegaco/AutoRemoteSync.nvim",
-    config = function()
-      require("cfg.sync")
-    end,
   },
   {
     "notjedi/nvim-rooter.lua",
@@ -73,15 +52,18 @@ return {
       }
     end,
   },
+
   {
-    "dhruvasagar/vim-prosession",
-    dependencies = "tpope/vim-obession",
+    "miversen33/netman.nvim",
     config = function()
-      vim.g.prosession_default_session = 1
-      vim.g.prosession_per_branch = 0
-      vim.g.prosession_dir = vim.fn.stdpath("data") .. "/sessions"
-      vim.cmd[[let g:Prosession_ignore_expr = {-> !isdirectory('.git')}]]
+      require("netman")
     end,
     enabled = false,
+  },
+  {
+    "superevilmegaco/AutoRemoteSync.nvim",
+    config = function()
+      require("cfg.sync")
+    end,
   },
 }

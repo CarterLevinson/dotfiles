@@ -1,8 +1,16 @@
 local setlocal = vim.bo
-setlocal.cinoptions = 'L0'
+setlocal.cinoptions = vim.bo.cinoptions .. "L0"
+setlocal.formatprg = "clang-format"
 
 -- custom user commands based off toggle term functionality
-vim.cmd[[com! -nargs=1 Cppman
-\ :10TermEx direction=horizontal size=50 go_back=0 cmd='cppman <args>'<CR>
-]]
+vim.api.nvim_create_user_command(
+  "Cppman",
+  function(opts)
+    vim.cmd[[new]]
+    vim.cmd([[r ! cppman ]] .. opts.args)
+    vim.cmd[[Man!]]
+    vim.cmd[[1]]
+  end,
+  {nargs = 1}
+)
 

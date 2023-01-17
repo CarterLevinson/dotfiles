@@ -5,23 +5,20 @@ local lspconfig = require('lspconfig')
 local cmp = require('cmp_nvim_lsp')
 local map = require('utils.map')
 
---create nvim-cmp capabilities for lsp client
-local cap = cmp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
-
 -- disable diagnostic inline virtual text and sign column, keep underline
   -- use trouble as interface to diagnostics
 vim.diagnostic.config({virtual_text = false, signs = false})
 
+--create nvim-cmp capabilities for lsp client
+local cap = cmp.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 -- callback function on lsp buffer attatch
   -- define keymaps for LSP buffers
 local function callback(_, bufnr)
-  local opts = { noremap = true, silent = true, buffer = bufnr }
-
-  local function list_ws_folders()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end
-
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  local opts = {noremap = true, silent = true, buffer = bufnr}
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- \wl: list all folders in current workspace
+  -- nmap('<leader>wl', list_ws_folders, opts)
 
   -- gd: go to definition of sym under cursor
   nmap('gd', vim.lsp.buf.definition, opts)
@@ -40,21 +37,36 @@ local function callback(_, bufnr)
   -- \d: jump to the definition of the type for the symbol under cursor
   nmap('<leader>d', vim.lsp.buf.type_definition, opts)
   -- \rn: rename all buffer references to symbol under cursor
-  nmap('<leader>rn', vim.lsp.buf.rename, opts)
+  nmap("<leader>rn", ":IncRename ", opts)
+  -- nmap('<leader>rn', vim.lsp.buf.rename, opts)
+ 
   -- \ca: use floating menu to perform code action
   nmap('<leader>ca', ':CodeActionMenu<CR>', opts)
+  -- nmap('<leader>ca, vim.lsp.buf.code_action, opts)
 
-  -- \wl: list all folders in current workspace
-  nmap('<leader>wl', list_ws_folders, opts)
   -- \wa: add new folder to workspace
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
   -- \wr: remove a wolder from workspace
   nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
 
- -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format{async = true}
-  end, { desc = 'Format current buffer with LSP' })
+  -- Create a command `:Format` local to the LSP buffer
+  vim.api.nvim_buf_create_user_command(
+    bufnr,
+    'Format',
+    function(_)
+      vim.lsp.buf.format{async = true}
+    end,
+    { desc = 'Format current buffer with LSP' }
+  )
+
+  vim.api.nvim_buf_create_user_command(
+    bufnr,
+    'ListWS',
+    function(_)
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end,
+    { desc = 'Print all folders in LSP workspace' }
+  )
 end
 
 local conf = {

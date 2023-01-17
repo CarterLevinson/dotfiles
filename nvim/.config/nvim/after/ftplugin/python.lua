@@ -5,6 +5,12 @@ setlocal.softtabstop = 4
 setlocal.formatprg   = 'yapf'
 
 -- custom user commands based off toggle term functionality
-vim.cmd[[com! -nargs=1 Pyman
-\ :13TermEx direction=horizontal size=50 go_back=0 cmd='pydoc <args> | less'<CR>
-]]
+vim.api.nvim_create_user_command(
+  "Pydoc",
+  function(opts)
+    vim.cmd[[new]]
+    vim.cmd([[r ! pydoc ]] .. opts.args)
+    vim.cmd[[1]]
+  end,
+  {nargs = 1}
+)
