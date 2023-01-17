@@ -34,10 +34,10 @@ return {
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
-    ft = {"md", "Rmd"},
+    ft = {"markdown", "Rmd"},
   },
   {
     "jghauser/follow-md-links.nvim",
-    ft = {"md", "Rmd"},
+    ft = {"markdown", "Rmd"},
   }
 }
