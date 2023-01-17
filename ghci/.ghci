@@ -1,9 +1,5 @@
 :set prompt "λ GHCi --> "
 :set editor nvim
--- enable multiline input
--- :seti +m
--- display performance stats after each command
---:seti +s
 -- custom commands
-:def hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\""
-:def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
+:def Hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\""
+:def Doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
