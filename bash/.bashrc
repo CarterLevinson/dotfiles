@@ -212,7 +212,7 @@ fi
 
 if [[ ! "$SSH_AUTH_SOCK" ]]; then
   source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
-  ssh-add -q
+  ssh-add -q ~/.ssh/cslevo_github
 fi
 
 # ghcup-env setup

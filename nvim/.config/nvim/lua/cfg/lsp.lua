@@ -39,7 +39,7 @@ local function callback(_, bufnr)
   -- \rn: rename all buffer references to symbol under cursor
   nmap("<leader>rn", ":IncRename ", opts)
   -- nmap('<leader>rn', vim.lsp.buf.rename, opts)
- 
+
   -- \ca: use floating menu to perform code action
   nmap('<leader>ca', ':CodeActionMenu<CR>', opts)
   -- nmap('<leader>ca, vim.lsp.buf.code_action, opts)
@@ -130,26 +130,4 @@ haskell_tools.setup{
       handler = 'toggleterm'
     }
   },
-}
-
-lspconfig.sumneko_lua.setup{
-  on_attach = callback,
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT'
-      },
-      diagnostics = {
-        globals = {
-          'vim'
-        }
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true)
-      },
-    },
-    capabilities = cap,
-    telemetry = {enable = false},
-  },
-  single_file_support = true,
 }
