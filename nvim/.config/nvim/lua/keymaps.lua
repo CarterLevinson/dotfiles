@@ -1,63 +1,50 @@
-local opts = {silent = true}
+require("utils.map")
 -- set some basic normal mode keymaps, mostly using leader
-vim.keymap.set('n', '<space>',    ':nohlsearch<CR>', opts)
-vim.keymap.set('n', '<leader>b',  ':ls<CR>:b<space>', opts)
-vim.keymap.set('n', '<leader>bd', ':bd<CR>', opts)
-vim.keymap.set('n', '<leader>s', ':w<CR>', opts)
+nmap('<space>', ':nohlsearch<CR>')
+nmap('<leader>bd', ':ls<CR>:b<space>')
+nmap('<leader>s', ':w<CR>')
 
 -- pseudo auto close
-vim.keymap.set('i', '{<CR>', '{<CR>}<ESC>O', opts)
--- vim.keymap.set('i', '<C-a>', '<ESC>a', opts)
--- vim.keymap.set('i', [[']], [['<ESC>ylpi]], opts)
--- vim.keymap.set('i', [["]], [["<ESC>ylpi]], opts)
+imap('{<CR>', '{<CR>}<ESC>O')
+-- imap('<C-a>', '<ESC>a')
+-- imap([[']], [['<ESC>ylpi]])
+-- imap([["]], [["<ESC>ylpi]])
 
 -- follow :h Terminal and bring back the escape key
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', opts)
--- better movement bindings
-vim.keymap.set({'n', 't'}, '<C-h>', [[<CMD>wincmd h<CR>]], opts)
-vim.keymap.set({'n', 't'}, '<C-j>', [[<CMD>wincmd j<CR>]], opts)
-vim.keymap.set({'n', 't'}, '<C-k>', [[<CMD>wincmd k<CR>]], opts)
-vim.keymap.set({'n', 't'}, '<C-l>', [[<CMD>wincmd l<CR>]], opts)
+tmap('<ESC>', '<C-\\><C-n>')
 
--- insert blank lines, using '[' and ']' as leader
-vim.keymap.set('n', '[<space>', [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
-vim.keymap.set('n', ']<space>', [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
+-- better window movement bindings
+ntmap('<C-h>', '<CMD>wincmd h<CR>')
+ntmap('<C-j>', '<CMD>wincmd j<CR>')
+ntmap('<C-k>', '<CMD>wincmd k<CR>')
+ntmap('<C-l>', '<CMD>wincmd l<CR>')
+
+nmap('[b', '<CMD>bprev<CR>')
+nmap(']b', '<CMD>bnext<CR>')
+nmap('[B', '<CMD>bfirst<CR>')
+nmap(']B', '<CMD>blast<CR>')
+
+nmap('[l', '<CMD>lprev<CR>')
+nmap(']l', '<CMD>lnext<CR>')
+nmap('[L', '<CMD>lfirst<CR>')
+nmap(']L', '<CMD>llast<CR>')
+
+nmap('[q', '<CMD>cprev<CR>')
+nmap(']q', '<CMD>cnext<CR>')
+nmap('[Q', '<CMD>cfirst<CR>')
+nmap(']Q', '<CMD>clast<CR>')
+
+nmap('[t', '<CMD>tprev<CR>')
+nmap(']t', '<CMD>tnext<CR>')
+nmap('[T', '<CMD>tfirst<CR>')
+nmap(']T', '<CMD>tlast<CR>')
+
+--TODO: exchange lines with [e and ]e
 
 -- remove blank lines, using '[' and ']' as leader
-vim.keymap.set('n', '[d', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]], opts)
-vim.keymap.set('n', ']d', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]], opts)
+nmap('[d', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
+nmap(']d', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
 
-
-vim.keymap.set('n', '[B', '<CMD>bfirst<CR>', opts)
-vim.keymap.set('n', ']B', '<CMD>blast<CR>', opts)
-
-vim.keymap.set('n', '[L', '<CMD>lfirst<CR>', opts)
-vim.keymap.set('n', ']L', '<CMD>llast<CR>', opts)
-
-vim.keymap.set('n', '[Q', '<CMD>cfirst<CR>', opts)
-vim.keymap.set('n', ']Q', '<CMD>clast<CR>', opts)
-
-vim.keymap.set('n', '[T', '<CMD>tfirst<CR>', opts)
-vim.keymap.set('n', ']T', '<CMD>tlast<CR>', opts)
-
---TODO
--- exchange lines with [e and ]e
-
--- pass a count to an expression mapping
-local function add_count(cmd)
-  return "<CMD>echo " .. vim.v.count .. "<CMD>" .. cmd .. "<CR>"
-end
-
-opts = {silent = true, expr = true}
-
-vim.keymap.set('n', '[b', add_count('bprev'), opts)
-vim.keymap.set('n', ']b', add_count('bnext'), opts)
-
-vim.keymap.set('n', '[l', add_count('lprev'), opts)
-vim.keymap.set('n', ']l', add_count('lnext'), opts)
-
-vim.keymap.set('n', '[q', add_count('cprev'), opts)
-vim.keymap.set('n', ']q', add_count('cnext'), opts)
-
-vim.keymap.set('n', '[t', add_count('tprev'), opts)
-vim.keymap.set('n', ']t', add_count('tnext'), opts)
+-- insert blank lines, using '[' and ']' as leader
+nmap('[<space>', [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
+nmap(']<space>', [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])

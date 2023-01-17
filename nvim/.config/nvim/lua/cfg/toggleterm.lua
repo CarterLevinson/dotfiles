@@ -1,3 +1,4 @@
+require('utils.map')
 require('toggleterm').setup{
   -- direction = 'float',
   open_mapping = '<leader>t',
@@ -15,29 +16,9 @@ require('toggleterm').setup{
   },
 }
 
--- custom user commands based off toggle term functionality
-vim.cmd[[com! -nargs=1 Cppman
-\ :10TermEx direction=horizontal size=50 go_back=0 cmd='cppman <args>'<CR>
-]]
-
-vim.cmd[[com! -nargs=1 Hoogle
-\ :11TermEx direction=horizontal size=50 go_back=0 cmd='hoogle <args>'<CR>
-]]
-
-vim.cmd[[com! -nargs=? Hman
-\ :12TermEx direction=horizontal size=50 go_back=0 cmd='hdc <args>'<CR>
-]]
-
-vim.cmd[[com! -nargs=1 Pyman
-\ :13TermEx direction=horizontal size=50 go_back=0 cmd='pydoc <args> | less'<CR>
-]]
-
-vim.cmd[[com! -nargs=1 Glow
-\ :14TermEx direction=horizontal size=50 go_back=0 cmd='glow -p <args>'<CR>
-]]
-
-vim.keymap.set('n', '<leader>tt', '<CMD>ToggleTermSendCurrentLine<CR>')
-vim.keymap.set('n', '<leader>tv', '<CMD>ToggleTermSendVisualSelection<CR>')
-vim.keymap.set('n', '<leader>tV', '<CMD>ToggleTermSendVisualLines<CR>')
-vim.keymap.set('n', '<leader>ta', '<CMD>ToggleTermToggleAll<CR>')
-vim.keymap.set('t', '<leader>tc', '<CMD>close<CR>')
+-- keymaps
+nmap('<leader>tt', '<CMD>ToggleTermSendCurrentLine<CR>')
+nmap('<leader>tv', '<CMD>ToggleTermSendVisualSelection<CR>')
+nmap('<leader>tV', '<CMD>ToggleTermSendVisualLines<CR>')
+nmap('<leader>ta', '<CMD>ToggleTermToggleAll<CR>')
+tmap('<leader>tc', '<CMD>close<CR>')

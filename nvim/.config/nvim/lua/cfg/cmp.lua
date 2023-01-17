@@ -4,13 +4,13 @@ local cmp_dap = require('cmp_dap')
 local snippy = require('snippy')
 local snippy_mappings = require('snippy.mapping')
 local lspkind = require('lspkind')
+local map = require('utils.map')
 
--- snippy mappings
-vim.keymap.set('i', '<Tab>', snippy_mappings.expand_or_advance('<Tab>'))
-vim.keymap.set('s', '<Tab>', snippy_mappings.next('<Tab>'))
-vim.keymap.set({ 'i', 's' }, '<S-Tab>', snippy_mappings.previous('<S-Tab>'))
-vim.keymap.set('x', '<Tab>', snippy_mappings.cut_text, { remap = true })
-vim.keymap.set('n', 'g<Tab>', snippy_mappings.cut_text, { remap = true })
+imap('<Tab>', snippy_mappings.expand_or_advance('<Tab>'))
+smap('<Tab>', snippy_mappings.next('<Tab>'))
+ismap('S-<Tab>', snippy_mappings.previous('S-<Tab>'))
+xmap('<Tab>', snippy_mappings.cut_text, {remap = true})
+nmap('g<Tab>', snippy_mappings.cut_text, {remap = true})
 
 -- cmp mappings
 local function ctrln(fallback)
@@ -175,9 +175,10 @@ cmp.setup{
     { name = 'snippy', priority = 2},
     { name = 'calc', priority = 3 },
     { name = 'lua_latex_symbols', priority = 3 },
-    { name = 'buffer', priority = 4},
-    { name = 'path',  priority = 4},
-    -- { name = 'rg',  max_item_count = 15 },
+    -- { name = 'buffer', priority = 4},
+    { name = 'rg', priority = 4 },
+    -- { name = 'rg', priority = 4, max_item_count = 15 },
+    { name = 'path',  priority = 5},
   })
 }
 
@@ -221,16 +222,6 @@ cmp.setup.filetype('tex', {
     { name = 'omni', priority = 1 },
     { name = 'snippy', priority = 2 },
     { name = 'buffer', priority = 3 },
-  })
-})
-
-
-cmp.setup.filetype({'markdown', 'rmd'}, {
-  sources = cmp.config.sources({
-    { name = 'treesitter', priority = 1 },
-    { name = 'snippy', priority = 2 },
-    { name = 'lua-latex-symbols', priority = 2 },
-    { name = 'buffer' },
   })
 })
 

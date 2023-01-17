@@ -1,12 +1,4 @@
--- vim.g.better_whitespace_filetypes_blacklist = {
---   'diff',
---   'gitcommit',
---   'qf',
---   'help',
---   'markdown',
---   'fugitive',
---   'toggleterm',
--- }
+require('utils.map')
 require('whitespace-nvim').setup{
   ignored_filetypes = {
     'TelescopePrompt',
@@ -16,8 +8,7 @@ require('whitespace-nvim').setup{
     'help',
     'markdown',
     'fugitive',
-
+    'lspinfo',
   }
 }
-
-vim.keymap.set('n', '<leader>w', require('whitespace-nvim').trim)
+nmap('<leader>w', require('whitespace-nvim').trim)

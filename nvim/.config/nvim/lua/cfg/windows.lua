@@ -4,4 +4,14 @@ set.winwidth = 10
 set.winminwidth = 10
 set.equalalways = false
 
-require('windows').setup{}
+require('windows').setup{
+  autowidth = {
+  },
+  ignore = {
+    filetype = {
+      'vista',
+      'vista_kind',
+      'vista_markdown',
+    },
+  },
+}

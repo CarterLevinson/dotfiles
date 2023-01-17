@@ -32,11 +32,13 @@ set.wildmenu              = true
 set.cursorline            = true
 set.ruler                 = true
 set.number                = true
-set.relativenumber        = true
+-- set.relativenumber        = true
+
 set.laststatus            = 3
+set.showtabline           = 2
+
 set.lazyredraw            = true
 
-set.showtabline           = 2
 -- line breaks
 set.tw                    = 80
 set.linebreak             = true
@@ -55,7 +57,6 @@ set.softtabstop           = -1
 set.expandtab             = true
 set.autoindent            = true
 set.smartindent           = true
--- set.cindent               = true
 
 -- set custom listchars
 set.listchars             = {
@@ -74,6 +75,7 @@ vim.cmd [[set grepprg=rg\ --vimgrep\ --no-heading]]
 vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
 
 -- set default colorscheme
+-- vim.cmd[[colorscheme elflord]]
 vim.cmd [[colorscheme tokyonight-storm]]
 -- vim.cmd [[colorscheme monokai_soda]]
 -- vim.cmd[[colorscheme sonokai]]
