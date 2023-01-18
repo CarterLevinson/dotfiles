@@ -7,7 +7,7 @@ Config
   , position = TopW L 100
   , borderColor = "#F8F8F2"
   , iconRoot = "/home/carterlevo/.config/xmobar/xpm"
-  , font = "xft:Hack:weight=bold:pixelsize=14:antialias=true"
+  , font = "xft:Anonymous Pro:weight=bold:pixelsize=14:antialias=true"
   , additionalFonts =
       [ "xft:Material Icons:pixelsize=14:anitalias=true:hinting=true"
       , "xft:Symbols Nerd Font:pixelsize=14:anitalias=true:hinting=true"
@@ -19,16 +19,11 @@ Config
           "KMDW"
           [ "--template"
           , "<fn=2>\xFA92</fn> Chicago: <tempC>°C <fn=2>\xF2C7</fn>"
-          , "-L"
-          , "0"
-          , "-H"
-          , "25"
-          , "--low"
-          , "lightblue"
-          , "--normal"
-          , "#F8F8F2"
-          , "--high"
-          , "red"
+          , "-L", "0"
+          , "-H", "25"
+          , "--low", "lightblue"
+          , "--normal", "#F8F8F2"
+          , "--high" "red"
           ]
           36000
       , Run Date "<fn=2>\xF273</fn> %a %d-%m-%Y" "date" 10

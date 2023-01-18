@@ -6,7 +6,7 @@ Config
   , position = TopW L 100
   , borderColor = "#F8F8F2"
   , iconRoot = "/home/carterlevo/.config/xmobar/xpm/"
-  , font = "xft:Hack:weight=bold:pixelsize=14:antialias=true"
+  , font = "xft:Anonymous Pro:weight=bold:pixelsize=14:antialias=true"
   , additionalFonts =
       [ "xft:Material Icons:pixelsize=14:anitalias=true:hinting=true"
       , "xft:Symbols Nerd Font:pixelsize=14:anitalias=true:hinting=true"
@@ -15,60 +15,37 @@ Config
       [ Run XPropertyLog "_XMONAD_LOG_0"
       , Run
           Cpu
-          [ "-t"
-          , "CPU: <total>%"
-          , "-H"
-          , "75"
-          , "-L"
-          , "25"
-          , "-h"
-          , "red"
-          , "-l"
-          , "green"
-          , "-n"
-          , "white"
+          [ "-t", "CPU: <total>%"
+          , "-H", "75"
+          , "-L", "25"
+          , "-h", "red"
+          , "-l", "green"
+          , "-n", "white"
           ]
           10
       , Run
           CpuFreq
-          ["-t"
-          , "Freq: <avg>GHz"
-          , "-H"
-          , "4"
-          , "-L"
-          , "1"
-          , "-h"
-          , "red"
-          , "-l"
-          , "green"
-          , "-n"
-          , "white"
+          ["-t", "Freq: <avg>GHz"
+          , "-H", "4"
+          , "-L", "1"
+          , "-h", "red"
+          , "-l", "green"
+          , "-n", "white"
           ]
           50
       , Run
           MultiCoreTemp
-          [ "-t"
-          , "Temp: <avg>°C"
-          --, "Temp: <avgpc>%"
-          , "-L"
-          , "60"
-          , "-H"
-          , "80"
-          , "-l"
-          , "green"
-          , "-n"
-          , "white"
-          , "-h"
-          , "red"
+          [ "-t", "Temp: <avg>°C" --, "Temp: <avgpc>%"
+          , "-L", "60"
+          , "-H" , "80"
+          , "-l", "green"
+          , "-n", "white"
+          , "-h", "red"
           , "--"
-          , "--mintemp"
-          , "20"
-          , "--maxtemp"
-          , "100"
+          , "--mintemp", "20"
+          , "--maxtemp", "100"
           ]
           50
-      , Run Memory ["-t", "<fn=2>\xF233</fn> Mem: <used>M (<usedratio>%)"] 10
-      , Run Swap ["-t", "<fn=2>\xF9E1</fn> Swap: <usedratio>%"] 10
       , Run
           Network
           "wlp8s0" -- wifi
@@ -79,12 +56,15 @@ Config
           "enp0s31f6" -- ethernet
           ["-t", "<fn=2>\xF0AA</fn> <tx>KB/s <fn=2>\xF0AB</fn> <rx>KB/s"]
           20
+
+      , Run Memory ["-t", "<fn=2>\xF233</fn> Mem: <used>M (<usedratio>%)"] 10
+      , Run Swap ["-t", "<fn=2>\xF9E1</fn> Swap: <usedratio>%"] 10
       , Run Uptime ["-t", "Up: <days>d <hours>h"] 360
-      -- light blue hex code #8BE9FD
-      , Run Date "<fn=2>\xF273</fn> %a %d-%m-%Y" "date" 10
+      , Run Date "<fn=2>\xF273</fn> %a %m-%d-%Y" "date" 10
       , Run Date "<fc=#FFFFFF>%H:%M</fc>" "time" 10
 
       , Run DiskU [("/", "<fn=2>\xF0C7</fn> hdd <used> (<usedp>%) used")] [] 60
+
       , Run Com "uname" ["-r"] "kernel" 36000
       , Run Com "userhost" [] "host" 36000
 
