@@ -1,5 +1,4 @@
 return {
-  "folke/neodev.nvim",
   "chrisbra/csv.vim",
 
   "vim-scripts/cscope.vim",

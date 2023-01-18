@@ -1,4 +1,3 @@
-require('utils.map')
 require('whitespace-nvim').setup{
   ignored_filetypes = {
     'TelescopePrompt',
@@ -9,6 +8,7 @@ require('whitespace-nvim').setup{
     'markdown',
     'fugitive',
     'lspinfo',
+    'lazy',
   }
 }
 nmap('<leader>w', require('whitespace-nvim').trim)

@@ -1,4 +1,3 @@
-require('utils.map')
 require('toggleterm').setup{
   -- direction = 'float',
   open_mapping = '<leader>t',

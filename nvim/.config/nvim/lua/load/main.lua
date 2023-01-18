@@ -5,7 +5,14 @@ return {
   "mbbill/undotree",
   "aymericbeaumet/vim-symlink",
   "jghauser/mkdir.nvim",
-
+  "tpope/vim-fugitive",
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup{}
+    end,
+    event = "BufWinEnter",
+  },
   {
     "ibhagwan/fzf-lua",
     dependencies = "kyazdani42/nvim-web-devicons",
@@ -30,9 +37,7 @@ return {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
     config = function()
-      require("neogen").setup{
-        snippet_engine = "snippy"
-      }
+      require("neogen").setup{snippet_engine = "snippy"}
     end,
     event = "CmdlineEnter",
   },
@@ -47,9 +52,7 @@ return {
   {
     "notjedi/nvim-rooter.lua",
     config = function()
-      require("nvim-rooter").setup{
-        manual = false
-      }
+      require("nvim-rooter").setup{manual = false}
     end,
   },
 

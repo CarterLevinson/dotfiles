@@ -10,20 +10,20 @@ g.loaded_netrw            = 1
 g.loaded_netrwPlugin      = 1
 g.loaded_netrwSettings    = 1
 
-set.spelllang             = 'en_us'
+set.spelllang             = "en_us"
 set.wildignore            = {
-  '*.o',
-  '*.so',
-  '*.pyc',
-  '*.class',
-  '*.hi'
+  "*.o",
+  "*.so",
+  "*.pyc",
+  "*.class",
+  "*.hi"
 }
 
 set.confirm               = true
 set.vb                    = true
 
-set.browsedir             = 'buffer'
-set.diffopt               = 'vertical'
+set.browsedir             = "buffer"
+set.diffopt               = "vertical"
 
 -- display
 set.title                 = true
@@ -32,7 +32,6 @@ set.wildmenu              = true
 set.cursorline            = true
 set.ruler                 = true
 set.number                = true
--- set.relativenumber        = true
 
 set.laststatus            = 3
 set.showtabline           = 2
@@ -60,14 +59,14 @@ set.smartindent           = true
 
 -- set custom listchars
 set.listchars             = {
-   eol                    = '↲',
-   tab                    = '»·',
-   space                  = '␣',
-   trail                  = '·',
-   extends                = '☛',
-   precedes               = '☚',
-   conceal                = '┊',
-   nbsp                   = '☠',
+   eol                    = "↲",
+   tab                    = "»·",
+   space                  = "␣",
+   trail                  = "·",
+   extends                = "☛",
+   precedes               = "☚",
+   conceal                = "┊",
+   nbsp                   = "☠",
 }
 
 -- :grep to use ripgrep
@@ -81,7 +80,7 @@ vim.cmd [[colorscheme tokyonight-storm]]
 -- vim.cmd[[colorscheme sonokai]]
 
 -- treesitter fold settings ?
--- set.foldmethod = 'expr'
--- set.foldexpr = 'nvim_treesitter#foldexpr()'
+-- set.foldmethod = "expr"
+-- set.foldexpr = "nvim_treesitter#foldexpr()"
 -- start every file with folds open
 -- autocmd BufReadPost,FileReadPost * normal zR

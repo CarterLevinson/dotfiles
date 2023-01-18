@@ -1,12 +1,13 @@
-require('utils.map')
-
 -- vista settings
 
+
+vim.g.vista_sidebar_width = 30
+vim.g.sidebar_open_cmd = '30vsplit'
 vim.g.vista_icon_indent = { '╰─➤ ' , '├─➤ ' }
 vim.g.vista_sidebar_position = 'vertical topleft'
-vim.g.vista_update_on_text_changed = true
-vim.g.vista_close_on_jump = true
-vim.g.close_on_fzf_select = true
+vim.g.vista_update_on_text_changed = 1
+vim.g.vista_close_on_jump = 1
+vim.g.close_on_fzf_select = 1
 vim.g.vista_default_executive = 'ctags'
 vim.g.vista_ctags_cmd = {
   haskell  = 'hasktags -x -o - -c',

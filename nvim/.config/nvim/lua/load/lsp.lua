@@ -6,6 +6,7 @@ return {
       "hrsh7th/nvim-cmp",
       "p00f/clangd_extensions.nvim",
       "simrat39/rust-tools.nvim",
+      "folke/neodev.nvim",
       {
         "MrcJkb/haskell-tools.nvim",
         dependencies = {

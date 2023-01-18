@@ -1,4 +1,3 @@
-local map = require('utils.map')
 local fzf = require('fzf-lua')
 
 nmap("<leader>f", fzf.files)

@@ -1,4 +1,3 @@
-require("utils.map")
 -- set some basic normal mode keymaps, mostly using leader
 nmap('<space>', ':nohlsearch<CR>')
 nmap('<leader>bd', ':ls<CR>:b<space>')

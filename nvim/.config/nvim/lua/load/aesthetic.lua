@@ -27,6 +27,12 @@ return {
     enabled = false,
   },
   {
+    "eightpigs/win_resize.nvim",
+    config = function()
+      require("cfg.resize")
+    end
+  },
+  {
     "goolord/alpha-nvim",
     config = function()
       require("cfg.alpha")

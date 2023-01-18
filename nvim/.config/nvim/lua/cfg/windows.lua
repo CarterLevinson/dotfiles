@@ -6,12 +6,21 @@ set.equalalways = false
 
 require('windows').setup{
   autowidth = {
+    filetype={
+      vista = 1,
+      vista_kind = 1,
+      undotree = 1,
+    }
   },
   ignore = {
-    filetype = {
-      'vista',
-      'vista_kind',
-      'vista_markdown',
+    buftype = {
+      "quickfix",
+      "nofile",
     },
+    filetype = {
+      "vista",
+      "vista_kind",
+      "undotree",
+    }
   },
 }

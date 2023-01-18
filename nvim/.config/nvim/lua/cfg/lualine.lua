@@ -10,75 +10,75 @@ local function gitsigns_diff_source()
 end
 
 local fname = {
-  'filename',
+  "filename",
   file_status = true,
   newfile_status = true,
   symbols = {
-    modified = '[+]',
-    readonly = '[RO]',
-    newfile = '[New]',
-    unnamed = '[]',
-    --unnamed = '[Unnamed]',
+    modified = "[+]",
+    readonly = "[RO]",
+    newfile = "[New]",
+    unnamed = "[]",
+    --unnamed = "[Unnamed]",
   }
 }
 
 local fugitive_branch = {
-  'FugitiveHead',
-  icon = '',
+  "FugitiveHead",
+  icon = "",
 }
 
 local gitsigns_diff = {
-  'diff',
+  "diff",
   source = gitsigns_diff_source,
 }
 
 local diag = {
-  'diagnostics',
+  "diagnostics",
   sources = {
-    'nvim_lsp',
-    'nvim_diagnostic',
-    'nvim_workspace_diagnostic',
+    "nvim_lsp",
+    "nvim_diagnostic",
+    "nvim_workspace_diagnostic",
   },
 }
 
-local display_byte = [['0x%B']]
+local display_byte = [["0x%B"]]
 
-require('lualine').setup {
+require("lualine").setup {
   options = {
     icons_enabled = true,
     -- component_separators = { left = '', right = '' },
     -- section_separators = { left = '', right = '' },
-    section_separators = '',
-    component_separators = '|',
+    section_separators = "",
+    component_separators = "|",
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = true,
   },
   sections = {
     -- show only the first character of current vim mode
-    lualine_a = {'mode'},
+    lualine_a = {"mode"},
     lualine_b = { fugitive_branch, gitsigns_diff, diag },
     lualine_c = { fname },
 
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_x = {"encoding", "fileformat", "filetype"},
 
-   lualine_y = {'progress', 'filesize', display_byte},
-    lualine_z = {'location'}
+   lualine_y = {"progress", "filesize", display_byte},
+    lualine_z = {"location"}
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
+    lualine_c = {"filename"},
+    lualine_x = {"location"},
     lualine_y = {},
     lualine_z = {}
   },
   tabline = {},
   extensions = {
-    'fugitive',
-    'man',
-    'nvim-dap-ui',
-    'quickfix',
-    -- 'fzf',
+    "fugitive",
+    "man",
+    "nvim-dap-ui",
+    "quickfix",
+    -- "fzf",
   },
 }
