@@ -5,11 +5,11 @@ local snippy = require("snippy")
 local snippy_mappings = require("snippy.mapping")
 local lspkind = require("lspkind")
 
-imap("<Tab>", snippy_mappings.expand_or_advance("<Tab>"))
-smap("<Tab>", snippy_mappings.next("<Tab>"))
-ismap("S-<Tab>", snippy_mappings.previous("S-<Tab>"))
-xmap("<Tab>", snippy_mappings.cut_text, {remap = true})
-nmap("g<Tab>", snippy_mappings.cut_text, {remap = true})
+Imap("<Tab>", snippy_mappings.expand_or_advance("<Tab>"))
+Smap("<Tab>", snippy_mappings.next("<Tab>"))
+ISmap("S-<Tab>", snippy_mappings.previous("S-<Tab>"))
+Xmap("<Tab>", snippy_mappings.cut_text, {remap = true})
+Nmap("g<Tab>", snippy_mappings.cut_text, {remap = true})
 
 -- cmp mappings
 local function ctrln(fallback)
@@ -109,6 +109,7 @@ cmp.setup{
       cmp.config.compare.offset,
       cmp.config.compare.exact,
       cmp.config.compare.score,
+      require("clangd_extensions.cmp_scores"),
       require("cmp-under-comparator").under,
       cmp.config.compare.kind,
       cmp.config.compare.sort_text,

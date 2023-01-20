@@ -1,22 +1,19 @@
 return {
   {
-    "karb94/neoscroll.nvim",
-    config = function()
-      require("neoscroll").setup{
-        easing_function = "sine"
-      }
-    end,
+    "folke/tokyonight.nvim", -- color schemes
+    "tanvirtin/monokai.nvim",
+    "sainnhe/sonokai",
+    "projekt0n/github-nvim-theme",
   },
   {
-    "xiyaowong/nvim-transparent",
+    "goolord/alpha-nvim", -- dashboard
     config = function()
-      require("transparent").setup{
-        enable = true
-      }
+      require("cfg.alpha")
     end,
+    enabled = false,
   },
   {
-    "anuvyklack/windows.nvim",
+    "anuvyklack/windows.nvim", -- window plugins
     dependencies = {
       "anuvyklack/middleclass",
       "anuvyklack/animation.nvim",
@@ -27,16 +24,15 @@ return {
     enabled = false,
   },
   {
-    "eightpigs/win_resize.nvim",
+    "karb94/neoscroll.nvim",
     config = function()
-      require("cfg.resize")
-    end
+      require("neoscroll").setup { easing_function = "sine" }
+    end,
   },
   {
-    "goolord/alpha-nvim",
+    "xiyaowong/nvim-transparent",
     config = function()
-      require("cfg.alpha")
+      require("transparent").setup { enable = true }
     end,
-    enabled = false,
-  }
+  },
 }

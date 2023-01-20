@@ -8,8 +8,6 @@ return {
   {
     "rcarriga/nvim-dap-ui",
     dependencies = "nvim-dap",
-    config = function()
-      require("dapui").setup{}
-    end,
+    config = true
   }
 }

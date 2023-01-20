@@ -1,7 +1,7 @@
 return {
   "chrisbra/csv.vim",
 
-  "vim-scripts/cscope.vim",
+  -- "vim-scripts/cscope.vim",
   "vim-scripts/cpp_cppcheck.vim",
   "vim-scripts/a.vim",
 
@@ -14,14 +14,7 @@ return {
   "kmonad/kmonad-vim",
   "jbmorgado/vim-pine-script",
 
-  {
-    "lervag/vimtex",
-    config = function()
-      vim.g.vimtex_inded_enabled = 1
-      vim.g.vimtex_complete_closed_braces = 1
-      vim.g.vimtex_view_method = os.getenv("READER")
-    end,
-  },
+  "jghauser/follow-md-links.nvim",
   {
     "iamcco/markdown-preview.nvim",
     config = function()
@@ -33,10 +26,13 @@ return {
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
-    ft = {"markdown", "Rmd"},
   },
   {
-    "jghauser/follow-md-links.nvim",
-    ft = {"markdown", "Rmd"},
-  }
+    "lervag/vimtex",
+    config = function()
+      vim.g.vimtex_inded_enabled = 1
+      vim.g.vimtex_complete_closed_braces = 1
+      vim.g.vimtex_view_method = os.getenv("READER")
+    end,
+  },
 }

@@ -1,8 +1,5 @@
 -- vista settings
 
-
-vim.g.vista_sidebar_width = 30
-vim.g.sidebar_open_cmd = '30vsplit'
 vim.g.vista_icon_indent = { '╰─➤ ' , '├─➤ ' }
 vim.g.vista_sidebar_position = 'vertical topleft'
 vim.g.vista_update_on_text_changed = 1
@@ -30,18 +27,18 @@ vim.g.vista_executive_for = {
 }
 
 -- \v: toggle vista window
-nmap('<leader>v',  ':Vista<CR>')
+Nmap('<leader>v',  Cmd "Vista")
 --\vt: toggle a vista window
-nmap('<leader>vt', ':Vista!!<CR>')
+Nmap('<leader>vt', Cmd "Vista!!")
 -- \vv: focus open vista window
-nmap('<leader>vv', ':Vista focus<CR>')
+Nmap('<leader>vv', Cmd "Vista focus")
 -- \vs: jump to tag nearest cursor, only works with ctags
-nmap('<leader>vs', ':Vista show<CR>')
+Nmap('<leader>vs', Cmd "Vista show")
 -- \vc: open vista with ctags symbols
-nmap('<leader>vc', ':Vista ctags<CR>')
+Nmap('<leader>vc', Cmd "Vista ctags")
 -- \vl: open vista with lsp symbols
-nmap('<leader>vs', ':Vista nvim_lsp<CR>')
+Nmap('<leader>vs', Cmd "Vista nvim_lsp")
 -- \vf: search tags recursively (may be slow on large projects)
-nmap('<leader>vf', ':Vista finder<CR>')
+Nmap('<leader>vf', Cmd "Vista finder")
 -- \vc: close open vista window
-nmap('<leader>vc', ':Vista!<CR>')
+Nmap('<leader>vc', Cmd "Vista!")

@@ -1,4 +1,3 @@
-require("utils.map")
 return {
   {
     "neovim/nvim-lspconfig",
@@ -6,42 +5,23 @@ return {
       "hrsh7th/nvim-cmp",
       "p00f/clangd_extensions.nvim",
       "simrat39/rust-tools.nvim",
+      "MrcJkb/haskell-tools.nvim",
       "folke/neodev.nvim",
-      {
-        "MrcJkb/haskell-tools.nvim",
-        dependencies = {
-          "akinsho/toggleterm.nvim",
-          "nvim-lua/plenary.nvim",
-        },
-      },
+      "rmagatti/goto-preview",
+      "nvim-lua/plenary.nvim",
     },
     config = function()
       require("cfg.lsp")
     end,
   },
+  { "j-hui/fidget.nvim", config = true },
+  { "smjonas/inc-rename.nvim", config = true },
+  { "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" },
   {
     "kosayoda/nvim-lightbulb",
     dependencies = "antoinemadec/FixCursorHold.nvim",
     config = function()
-      require('nvim-lightbulb').setup{
-        autocmd = {enabled = true}
-      }
-    end
-  },
-  {
-    "weilbith/nvim-code-action-menu",
-    cmd = "CodeActionMenu"
-  },
-  {
-    "smjonas/inc-rename.nvim",
-    config = function()
-      require("inc_rename").setup{}
-    end,
-  },
-  {
-    "rmagatti/goto-preview",
-    config = function()
-      require("goto-preview").setup{}
+      require("nvim-lightbulb").setup { autocmd = { enabled = true } }
     end
   },
   {

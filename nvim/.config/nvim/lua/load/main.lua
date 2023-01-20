@@ -1,29 +1,9 @@
-require("utils.map")
 return {
-  "tpope/vim-eunuch",
-  "chrisbra/unicode.vim",
-  "mbbill/undotree",
-  "aymericbeaumet/vim-symlink",
-  "jghauser/mkdir.nvim",
-  "tpope/vim-fugitive",
-  {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require("gitsigns").setup{}
-    end,
-    event = "BufWinEnter",
-  },
   {
     "ibhagwan/fzf-lua",
     dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
       require("cfg.fzf")
-    end,
-  },
-  {
-    "liuchengxu/vista.vim",
-    config = function()
-      require("cfg.vista")
     end,
   },
   {
@@ -34,18 +14,24 @@ return {
     version = "v2.*",
   },
   {
-    "danymat/neogen",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    config = function()
-      require("neogen").setup{snippet_engine = "snippy"}
-    end,
-    event = "CmdlineEnter",
-  },
-  {
     "radenling/vim-dispatch-neovim",
     dependencies = "tpope/vim-dispatch",
     config = function()
       vim.g.dispatch_no_maps = 1
+    end,
+    event = "CmdlineEnter",
+  },
+  {
+    "liuchengxu/vista.vim",
+    config = function()
+      require("cfg.vista")
+    end,
+  },
+  {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("neogen").setup{snippet_engine = "snippy"}
     end,
     event = "CmdlineEnter",
   },
@@ -55,18 +41,24 @@ return {
       require("nvim-rooter").setup{manual = false}
     end,
   },
-
+  {
+    "superevilmegaco/AutoRemoteSync.nvim",
+    config = function()
+      require("cfg.sync")
+    end,
+  },
+  {
+    "tpope/vim-eunuch",
+    "chrisbra/unicode.vim",
+    "mbbill/undotree",
+    "aymericbeaumet/vim-symlink",
+    "jghauser/mkdir.nvim",
+  },
   {
     "miversen33/netman.nvim",
     config = function()
       require("netman")
     end,
     enabled = false,
-  },
-  {
-    "superevilmegaco/AutoRemoteSync.nvim",
-    config = function()
-      require("cfg.sync")
-    end,
   },
 }

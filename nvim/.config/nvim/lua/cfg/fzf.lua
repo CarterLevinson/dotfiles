@@ -1,17 +1,19 @@
 local fzf = require('fzf-lua')
 
-nmap("<leader>f", fzf.files)
-nmap("<leader>ff", fzf.live_grep)
-nmap("<leader>fb", fzf.buffers)
-nmap("<leader>fg", fzf.git_files)
-nmap("<leader>fm", fzf.marks)
--- nmap("<leader>fR", fzf.registers)
+fzf.setup { winopts = { preview = { default = 'bat' } } }
 
-nmap("<leader>fd", fzf.lsp_definitions)
-nmap("<leader>fD", fzf.lsp_declarations)
-nmap("<leader>fr", fzf.lsp_references)
-nmap("<leader>fs", fzf.lsp_document_symbols)
-nmap("<leader>fS", fzf.lsp_workspace_symbols)
-nmap("<leader>fi", fzf.lsp_implementations)
+Nmap("<leader>f", fzf.files)
+Nmap("<leader>ff", fzf.live_grep)
+Nmap("<leader>fb", fzf.buffers)
+Nmap("<leader>fg", fzf.git_files)
+Nmap("<leader>fm", fzf.marks)
+-- Nmap("<leader>fR", fzf.registers)
 
-imap("<C-s>", fzf.grep_cword)
+Nmap("<leader>fd", fzf.lsp_definitions)
+Nmap("<leader>fD", fzf.lsp_declarations)
+Nmap("<leader>fr", fzf.lsp_references)
+Nmap("<leader>fs", fzf.lsp_document_symbols)
+Nmap("<leader>fS", fzf.lsp_workspace_symbols)
+Nmap("<leader>fi", fzf.lsp_implementations)
+
+Imap("<C-s>", fzf.grep_cword)

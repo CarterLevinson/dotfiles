@@ -11,4 +11,4 @@ require('whitespace-nvim').setup{
     'lazy',
   }
 }
-nmap('<leader>w', require('whitespace-nvim').trim)
+Nmap('<leader>w', require('whitespace-nvim').trim)

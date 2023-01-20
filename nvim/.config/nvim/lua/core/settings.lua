@@ -75,8 +75,8 @@ vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
 
 -- set default colorscheme
 -- vim.cmd[[colorscheme elflord]]
-vim.cmd [[colorscheme tokyonight-storm]]
--- vim.cmd [[colorscheme monokai_soda]]
+-- vim.cmd [[colorscheme tokyonight-storm]]
+vim.cmd [[colorscheme monokai_soda]]
 -- vim.cmd[[colorscheme sonokai]]
 
 -- treesitter fold settings ?

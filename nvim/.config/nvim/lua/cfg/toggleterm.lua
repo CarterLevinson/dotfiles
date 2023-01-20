@@ -1,6 +1,6 @@
-require('toggleterm').setup{
-  -- direction = 'float',
-  open_mapping = '<leader>t',
+require("toggleterm").setup{
+  -- direction = "float",
+  open_mapping = "<leader>t",
 
   insert_mapping = true,
   terminal_mapping = true,
@@ -11,13 +11,13 @@ require('toggleterm').setup{
 
   shade_terminals = true,
   float_opts = {
-    border = 'curved',
+    border = "curved",
   },
 }
 
--- keymaps
-nmap('<leader>tt', '<CMD>ToggleTermSendCurrentLine<CR>')
-nmap('<leader>tv', '<CMD>ToggleTermSendVisualSelection<CR>')
-nmap('<leader>tV', '<CMD>ToggleTermSendVisualLines<CR>')
-nmap('<leader>ta', '<CMD>ToggleTermToggleAll<CR>')
-tmap('<leader>tc', '<CMD>close<CR>')
+--/keymaps
+Nmap("<leader>tt", Cmd "ToggleTermSendCurrentLine")
+Nmap("<leader>tv", Cmd "ToggleTermSendVisualSelection")
+Nmap("<leader>tV", Cmd "ToggleTermSendVisualLines")
+Nmap("<leader>ta", Cmd "ToggleTermToggleAll")
+Tmap("<leader>tc", Cmd "close")
