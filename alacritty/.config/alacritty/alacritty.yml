@@ -1,32 +1,112 @@
 font:
-
+  size: 14
   normal:
     family: Source Code Pro
     #family: Anonymous Pro
-    #family: Hack
+    # family: Hack
     style:  Regular
 
   bold:
     family: Source Code Pro
     #family: Anonymous Pro
-    #family: Hack
+    # family: Hack
     style:  Bold
 
   italic:
     family: Source Code Pro
     #family: Anonymous Pro
-    #family: Hack
+    # family: Hack
     style:  Italic
 
   bold_italic:
     family: Source Code Pro
     #family: Anonymous Pro
-    #family: Hack
+    # family: Hack
     style:  Bold Italic
 
+# Vi Mode
+#
+# The vi mode allows moving around Alacritty's viewport and scrollback using the
+# keyboard. It also serves as a jump-off point for other features like search and
+# opening URLs with the keyboard. By default you can launch it using Ctrl Shift
+# Space.
+#
+# Motion
+#
+# The cursor motions are setup by default to mimic vi, however they are fully
+# configurable. If you don't like vi's bindings, take a look at the configuration
+# file to change the various movements.
+#
+# Selection
+#
+# One useful feature of vi mode is the ability to make selections and copy text
+# to the clipboard. By default you can start a selection using v and copy it
+# using y. All selection modes that are available with the mouse can be accessed
+# from vi mode, including the semantic (Alt v), line (Shift v) and block selection
+# (Ctrl v). You can also toggle between them while the selection is still active.
+#
+# Search
+#
+# Search allows you to find anything in Alacritty's scrollback buffer. You can
+# search forward using Ctrl Shift f and backward using Ctrl Shift b.
+#
+# Vi Search
+#
+# In vi mode the search is bound to / for forward and ? for backward search. This
+# allows you to move around quickly and help with selecting content. The
+# SearchStart and SearchEnd keybinding actions can be bound if you're looking for
+# a way to jump to the start or the end of a match.
+#
+# Normal Search
+#
+# During normal search you don't have the opportunity to move around freely, but
+# you can still jump between matches using Enter and Shift Enter. After leaving
+# search with Escape your active match stays selected, allowing you to easily
+# copy it.
 
-  size:     14
+key_bindings:
+  # spawn a new instance of Alacritty in the current working directory
+  # by pressing Ctrl+Shift+Enter:
+  - { key: Return,    mods: Control|Shift, action: SpawnNewInstance }
+  - { key: Q,         mods: Control|Shift, action: Quit }
+  # scroll buffer manipulation
+  - { key: PageUp,    mods: Control|Shift, action: ScrollPageUp   }
+  - { key: PageDown,  mods: Control|Shift, action: ScrollPageDown }
+  - { key: Home,      mods: Control|Shift, action: ScrollToTop    }
+  - { key: End,       mods: Control|Shift, action: ScrollToBottom }
+  - { key: Up,        mods: Control|Shift, action: ScrollLineUp }
+  - { key: Down,      mods: Control|Shift, action: ScrollLineDown }
+
 
 window:
+  opacity:  0.85
 
-  opacity:  0.75
+
+# Colors (Blood Moon)
+colors:
+  # Default colors
+  primary:
+    background: '#10100E'
+    foreground: '#C6C6C4'
+
+  # Normal colors
+  normal:
+    black:   '#10100E'
+    red:     '#C40233'
+    green:   '#009F6B'
+    yellow:  '#FFD700'
+    blue:    '#0087BD'
+    magenta: '#9A4EAE'
+    cyan:    '#20B2AA'
+    white:   '#C6C6C4'
+
+  # Bright colors
+  bright:
+    black:   '#696969'
+    red:     '#FF2400'
+    green:   '#03C03C'
+    yellow:  '#FDFF00'
+    blue:    '#007FFF'
+    magenta: '#FF1493'
+    cyan:    '#00CCCC'
+    white:   '#FFFAFA'
