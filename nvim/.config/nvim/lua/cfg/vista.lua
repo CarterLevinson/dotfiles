@@ -1,17 +1,18 @@
--- vista settings
+local g = vim.g
 
-vim.g.vista_icon_indent = { '╰─➤ ' , '├─➤ ' }
-vim.g.vista_sidebar_position = 'vertical topleft'
-vim.g.vista_update_on_text_changed = 1
-vim.g.vista_close_on_jump = 1
-vim.g.close_on_fzf_select = 1
-vim.g.vista_default_executive = 'ctags'
-vim.g.vista_ctags_cmd = {
+-- vista settings
+g.vista_icon_indent = { '╰─➤ ' , '├─➤ ' }
+g.vista_sidebar_position = 'vertical topleft'
+g.vista_update_on_text_changed = 1
+g.vista_close_on_jump = 1
+g.close_on_fzf_select = 1
+g.vista_default_executive = 'ctags'
+g.vista_ctags_cmd = {
   haskell  = 'hasktags -x -o - -c',
   lhaskell = 'hasktags -x -c - -c',
 }
 
-vim.g.vista_executive_for = {
+g.vista_executive_for = {
   awk = 'nvim_lsp',
   bash = 'nvim_lsp',
   c = 'nvim_lsp',
@@ -21,24 +22,28 @@ vim.g.vista_executive_for = {
   python = 'nvim_lsp',
   r = 'nvim_lsp',
   html = 'nvim_lsp',
+  haskell = 'ctags',
+  lhaskell = 'ctags',
   json = 'nvim_lsp',
   css = 'nvim_lsp',
   tex = 'nvim_lsp',
 }
 
+-- keymaps
+
 -- \v: toggle vista window
-Nmap('<leader>v',  Cmd "Vista")
+nmap('<leader>v',  cmd "Vista")
 --\vt: toggle a vista window
-Nmap('<leader>vt', Cmd "Vista!!")
+nmap('<leader>vt', cmd "Vista!!")
 -- \vv: focus open vista window
-Nmap('<leader>vv', Cmd "Vista focus")
+nmap('<leader>vv', cmd "Vista focus")
 -- \vs: jump to tag nearest cursor, only works with ctags
-Nmap('<leader>vs', Cmd "Vista show")
+nmap('<leader>vs', cmd "Vista show")
 -- \vc: open vista with ctags symbols
-Nmap('<leader>vc', Cmd "Vista ctags")
+nmap('<leader>vc', cmd "Vista ctags")
 -- \vl: open vista with lsp symbols
-Nmap('<leader>vs', Cmd "Vista nvim_lsp")
+nmap('<leader>vs', cmd "Vista nvim_lsp")
 -- \vf: search tags recursively (may be slow on large projects)
-Nmap('<leader>vf', Cmd "Vista finder")
+nmap('<leader>vf', cmd "Vista finder")
 -- \vc: close open vista window
-Nmap('<leader>vc', Cmd "Vista!")
+nmap('<leader>vc', cmd "Vista!")

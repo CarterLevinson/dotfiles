@@ -18,7 +18,6 @@ local fname = {
     readonly = "[RO]",
     newfile = "[New]",
     unnamed = "[]",
-    --unnamed = "[Unnamed]",
   }
 }
 
@@ -77,6 +76,6 @@ require("lualine").setup {
     "man",
     "nvim-dap-ui",
     "quickfix",
-    -- "fzf",
+    "fzf",
   },
 }

@@ -54,6 +54,7 @@ set.tabstop               = 2
 set.shiftwidth            = 2
 set.softtabstop           = -1
 set.expandtab             = true
+
 set.autoindent            = true
 set.smartindent           = true
 
@@ -74,10 +75,8 @@ vim.cmd [[set grepprg=rg\ --vimgrep\ --no-heading]]
 vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
 
 -- set default colorscheme
--- vim.cmd[[colorscheme elflord]]
--- vim.cmd [[colorscheme tokyonight-storm]]
-vim.cmd [[colorscheme monokai_soda]]
--- vim.cmd[[colorscheme sonokai]]
+-- vim.cmd [[colorscheme molokai]]
+vim.cmd [[colorscheme github_dark]]
 
 -- treesitter fold settings ?
 -- set.foldmethod = "expr"

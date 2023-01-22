@@ -1,6 +1,10 @@
-require('whitespace-nvim').setup{
+local whitespace = require("whitespace-nvim")
+whitespace.setup{
   ignored_filetypes = {
     'TelescopePrompt',
+    'fzf',
+    'FzfLua',
+    'FZF',
     'Trouble',
     'toggleterm',
     'diff',
@@ -11,4 +15,5 @@ require('whitespace-nvim').setup{
     'lazy',
   }
 }
-Nmap('<leader>w', require('whitespace-nvim').trim)
+
+nmap('<leader>ws', whitespace.trim)

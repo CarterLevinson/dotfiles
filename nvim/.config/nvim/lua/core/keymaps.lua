@@ -1,51 +1,48 @@
 -- set some basic normal mode keymaps, mostly using leader
-Nmap("<space>", ":nohlsearch<CR>")
-Nmap("<leader>b", ":ls<CR>:b<space>")
-Nmap("<leader>s", ":w<CR>")
-
+nmap("<leader>w", cmd "write")
+nmap("<space>",   cmd "nohlsearch")
+-- fast buffer switch
+nmap("<leader>b", ":ls<CR>:b<space>")
 -- pseudo auto close
-Imap("{<CR>", "{<CR>}<ESC>O")
--- imap('<C-a>', '<ESC>a')
--- imap([[']], [['<ESC>ylpi]])
--- imap([["]], [["<ESC>ylpi]])
+imap("{<CR>", "{<CR>}<ESC>O")
 
 -- follow :h Terminal and bring back the escape key
-Tmap("<ESC>", "<C-\\><C-n>")
+tmap("<ESC>", "<C-\\><C-n>")
 
 -- better window movement bindings
-NTmap("<C-h>", "<CMD>wincmd h<CR>")
-NTmap("<C-j>", "<CMD>wincmd j<CR>")
-NTmap("<C-k>", "<CMD>wincmd k<CR>")
-NTmap("<C-l>", "<CMD>wincmd l<CR>")
+ntmap("<C-h>", cmd "wincmd h")
+ntmap("<C-j>", cmd "wincmd j")
+ntmap("<C-k>", cmd "wincmd k")
+ntmap("<C-l>", cmd "wincmd l")
 
-Nmap("[b", "<CMD>bprev<CR>")
-Nmap("]b", "<CMD>bnext<CR>")
-Nmap("[B", "<CMD>bfirst<CR>")
-Nmap("]B", "<CMD>blast<CR>")
+nmap("[b", cmd "bprev")
+nmap("]b", cmd "bnext")
+nmap("[B", cmd "bfirst")
+nmap("]B", cmd "blast")
 
-Nmap("[l", "<CMD>lprev<CR>")
-Nmap("]l", "<CMD>lnext<CR>")
-Nmap("[L", "<CMD>lfirst<CR>")
-Nmap("]L", "<CMD>llast<CR>")
+nmap("[l", cmd "lprev")
+nmap("]l", cmd "lnext")
+nmap("[L", cmd "lfirst")
+nmap("]L", cmd "llast")
 
-Nmap("[q", "<CMD>cprev<CR>")
-Nmap("]q", "<CMD>cnext<CR>")
-Nmap("[Q", "<CMD>cfirst<CR>")
-Nmap("]Q", "<CMD>clast<CR>")
+nmap("[q", cmd "cprev")
+nmap("]q", cmd "cnext")
+nmap("[Q", cmd "cfirst")
+nmap("]Q", cmd "clast")
 
-Nmap("[t", "<CMD>tprev<CR>")
-Nmap("]t", "<CMD>tnext<CR>")
-Nmap("[T", "<CMD>tfirst<CR>")
-Nmap("]T", "<CMD>tlast<CR>")
+nmap("[t", cmd "tprev")
+nmap("]t", cmd "tnext")
+nmap("[T", cmd "tfirst")
+nmap("]T", cmd "tlast")
 
-Nmap("[d", vim.diagnostic.goto_prev)
-Nmap("]d", vim.diagnostic.goto_next)
+nmap("[d", vim.diagnostic.goto_prev)
+nmap("]d", vim.diagnostic.goto_next)
+-- remove blank lines, using "[' and ']' as leader
+-- nmap('[d', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
+-- nmap(']d', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
+
 --TODO: exchange lines with [e and ]e
 
--- remove blank lines, using "[' and ']' as leader
--- Nmap('[d', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
--- Nmap(']d', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
-
 -- insert blank lines, using '[' and ']' as leader
-Nmap("[<space>", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
-Nmap("]<space>", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
+nmap("[<space>", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
+nmap("]<space>", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])

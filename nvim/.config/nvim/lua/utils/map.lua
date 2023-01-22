@@ -1,4 +1,4 @@
-function Nmap(lhs, rhs, opts)
+function _G.nmap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -6,7 +6,7 @@ function Nmap(lhs, rhs, opts)
   vim.keymap.set('n', lhs, rhs, options)
 end
 
-function NTmap(lhs, rhs, opts)
+function _G.ntmap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -14,7 +14,7 @@ function NTmap(lhs, rhs, opts)
   vim.keymap.set({'n', 't'}, lhs, rhs, options)
 end
 
-function NXmap(lhs, rhs, opts)
+function _G.nxmap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -22,7 +22,7 @@ function NXmap(lhs, rhs, opts)
   vim.keymap.set({'n', 'x'}, lhs, rhs, options)
 end
 
-function Imap(lhs, rhs, opts)
+function _G.imap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -30,7 +30,7 @@ function Imap(lhs, rhs, opts)
   vim.keymap.set('i', lhs, rhs, options)
 end
 
-function ISmap(lhs, rhs, opts)
+function _G.ismap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -38,7 +38,7 @@ function ISmap(lhs, rhs, opts)
   vim.keymap.set({'i', 's'}, lhs, rhs, options)
 end
 
-function Tmap(lhs, rhs, opts)
+function _G.tmap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -46,7 +46,7 @@ function Tmap(lhs, rhs, opts)
   vim.keymap.set('t', lhs, rhs, options)
 end
 
-function Vmap(lhs, rhs, opts)
+function _G.vmap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -54,7 +54,7 @@ function Vmap(lhs, rhs, opts)
   vim.keymap.set('v', lhs, rhs, options)
 end
 
-function Xmap(lhs, rhs, opts)
+function _G.xmap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -62,7 +62,7 @@ function Xmap(lhs, rhs, opts)
   vim.keymap.set('x', lhs, rhs, options)
 end
 
-function Smap(lhs, rhs, opts)
+function _G.smap(lhs, rhs, opts)
   local options = {silent = true}
   if opts then
     options = vim.tbl_extend('force', options, opts)
@@ -70,6 +70,6 @@ function Smap(lhs, rhs, opts)
   vim.keymap.set('s', lhs, rhs, options)
 end
 
-function Cmd(s)
+function _G.cmd(s)
   return "<CMD>" .. s .. "<CR>"
 end

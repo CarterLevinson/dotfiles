@@ -1,5 +1,5 @@
 require("toggleterm").setup{
-  -- direction = "float",
+  direction = "float",
   open_mapping = "<leader>t",
 
   insert_mapping = true,
@@ -10,14 +10,15 @@ require("toggleterm").setup{
 
 
   shade_terminals = true,
+
   float_opts = {
     border = "curved",
   },
 }
 
 --/keymaps
-Nmap("<leader>tt", Cmd "ToggleTermSendCurrentLine")
-Nmap("<leader>tv", Cmd "ToggleTermSendVisualSelection")
-Nmap("<leader>tV", Cmd "ToggleTermSendVisualLines")
-Nmap("<leader>ta", Cmd "ToggleTermToggleAll")
-Tmap("<leader>tc", Cmd "close")
+nmap("<leader>tt", cmd "ToggleTermSendCurrentLine")
+nmap("<leader>tv", cmd "ToggleTermSendVisualSelection")
+nmap("<leader>tV", cmd "ToggleTermSendVisualLines")
+nmap("<leader>ta", cmd "ToggleTermToggleAll")
+tmap("<leader>tc", cmd "close")

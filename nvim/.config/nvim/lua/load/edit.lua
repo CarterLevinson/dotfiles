@@ -7,13 +7,13 @@ return {
   {
     "johnfrankmorgan/whitespace.nvim",
     config = function()
-      require("cfg.whitespace")
+      require("cfg.ws")
     end,
   },
   {
     "junegunn/vim-easy-align",
     config = function()
-      NXmap('ga', '<Plug>(EasyAlign)')
+      nxmap('ga', '<Plug>(EasyAlign)')
     end,
   },
   {

@@ -1,2 +1,2 @@
-local setwin = vim.wo
-setwin.spell = true
+local setlocal = vim.opt_local
+setlocal.spell = true

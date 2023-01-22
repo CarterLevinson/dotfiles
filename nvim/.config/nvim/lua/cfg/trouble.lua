@@ -2,13 +2,13 @@ require("trouble").setup{}
 --set up trouble keybindings
 
 -- normal mode
-Nmap("<leader>x",  Cmd "TroubleToggle")
-Nmap("<leader>xw", Cmd "Trouble workspace_diagnostics")
-Nmap("<leader>xl", Cmd "Trouble loclist")
-Nmap("<leader>xq", Cmd "Trouble quickfix")
-Nmap("<leader>xr", Cmd "Trouble lsp_references")
-Nmap("<leader>xc", Cmd "TroubleClose")
-Nmap("<leader>xt", Cmd "TroubleToggle")
+nmap("<leader>x",  cmd "TroubleToggle")
+nmap("<leader>xw", cmd "Trouble workspace_diagnostics")
+nmap("<leader>xl", cmd "Trouble loclist")
+nmap("<leader>xq", cmd "Trouble quickfix")
+nmap("<leader>xr", cmd "Trouble lsp_references")
+nmap("<leader>xc", cmd "TroubleClose")
+nmap("<leader>xt", cmd "TroubleToggle")
 -- vim.keymap.set("n", "gR",         "<CMD>Trouble lsp_references<CR>", opts)
 
 -- command aliases

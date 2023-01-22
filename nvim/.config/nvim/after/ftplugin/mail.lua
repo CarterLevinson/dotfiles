@@ -1,2 +1,2 @@
-local setlocal = vim.bo
+local setlocal = vim.opt_local
 setlocal.tw    = 72
