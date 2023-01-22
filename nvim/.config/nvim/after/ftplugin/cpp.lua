@@ -9,5 +9,5 @@ vim.api.nvim_buf_create_user_command(0, "Cppman",
     vim.cmd [[Man!]]
     vim.cmd [[1]]
   end,
-  { nargs = 1 }
+  { nargs = 1, desc = "Browse cppreference using cppman" }
 )

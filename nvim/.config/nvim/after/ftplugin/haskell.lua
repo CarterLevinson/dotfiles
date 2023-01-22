@@ -13,8 +13,9 @@ nxmap("<leader>pf", "<Plug>Pointfree", { buffer = 0 })
 -- `to` apply one hint at cursor pos
 -- `ta` apply all suggestions in the file
 
-vim.api.nvim_buf_create_user_command(0, "HDC",
+vim.api.nvim_buf_create_user_command(0, "Hdoc",
   function(_)
     vim.cmd [[TermEx direction=horizontal go_back = 0, cmd = 'hdc']]
-  end
+  end,
+  { desc = "Browse Haskell docs using hdc and toggleterm" }
 )
