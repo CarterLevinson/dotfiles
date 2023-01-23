@@ -1,9 +1,7 @@
 return {
   {
-    "folke/tokyonight.nvim", -- color schemes
-    -- "tanvirtin/monokai.nvim",
-    -- "sainnhe/sonokai",
     "projekt0n/github-nvim-theme",
+    "ofirgall/ofirkai.nvim",
   },
   {
     "goolord/alpha-nvim", -- dashboard
@@ -32,7 +30,7 @@ return {
   {
     "xiyaowong/nvim-transparent",
     config = function()
-      require("transparent").setup { enable = true, }
+      require("transparent").setup { enable = true, exclude = { "NormalFloat" } }
     end,
   },
 }

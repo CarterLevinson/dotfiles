@@ -112,7 +112,6 @@ local servers = {
   jsonls = {},
   pyright = {},
   r_language_server = {},
-  texlab = {},
   sumneko_lua = sumneko,
 }
 

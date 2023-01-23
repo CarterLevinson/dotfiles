@@ -75,8 +75,7 @@ vim.cmd [[set grepprg=rg\ --vimgrep\ --no-heading]]
 vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
 
 -- set default colorscheme
--- vim.cmd [[colorscheme molokai]]
-vim.cmd [[colorscheme github_dark]]
+vim.cmd [[colorscheme ofirkai]]
 
 -- treesitter fold settings ?
 -- set.foldmethod = "expr"

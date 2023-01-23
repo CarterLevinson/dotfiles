@@ -17,7 +17,7 @@ local fname = {
     modified = "[+]",
     readonly = "[RO]",
     newfile = "[New]",
-    unnamed = "[]",
+    -- unnamed = "Buffer",
   }
 }
 
@@ -50,23 +50,24 @@ require("lualine").setup {
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = true,
+    theme = "molokai",
   },
   sections = {
     -- show only the first character of current vim mode
-    lualine_a = {"mode"},
+    lualine_a = { "mode" },
     lualine_b = { fugitive_branch, gitsigns_diff, diag },
     lualine_c = { fname },
 
-    lualine_x = {"encoding", "fileformat", "filetype"},
+    lualine_x = { "encoding", "fileformat", "filetype" },
 
-   lualine_y = {"progress", "filesize", display_byte},
-    lualine_z = {"location"}
+    lualine_y = { "progress", "filesize", display_byte },
+    lualine_z = { "location" }
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {"filename"},
-    lualine_x = {"location"},
+    lualine_c = { "filename" },
+    lualine_x = { "location" },
     lualine_y = {},
     lualine_z = {}
   },
