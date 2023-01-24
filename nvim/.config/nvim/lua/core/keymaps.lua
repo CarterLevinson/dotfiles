@@ -20,6 +20,11 @@ nmap("]b", cmd "bnext")
 nmap("[B", cmd "bfirst")
 nmap("]B", cmd "blast")
 
+nmap("[t", cmd "tprev")
+nmap("]t", cmd "tnext")
+nmap("[T", cmd "tfirst")
+nmap("]T", cmd "tlast")
+
 nmap("[l", cmd "lprev")
 nmap("]l", cmd "lnext")
 nmap("[L", cmd "lfirst")
@@ -30,19 +35,16 @@ nmap("]q", cmd "cnext")
 nmap("[Q", cmd "cfirst")
 nmap("]Q", cmd "clast")
 
-nmap("[t", cmd "tprev")
-nmap("]t", cmd "tnext")
-nmap("[T", cmd "tfirst")
-nmap("]T", cmd "tlast")
 
 nmap("[d", vim.diagnostic.goto_prev)
 nmap("]d", vim.diagnostic.goto_next)
+
+-- insert blank lines, using '[' and ']' as leader
+nmap("[<space>", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
+nmap("]<space>", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
+
 -- remove blank lines, using "[' and ']' as leader
 -- nmap('[d', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
 -- nmap(']d', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
 
 --TODO: exchange lines with [e and ]e
-
--- insert blank lines, using '[' and ']' as leader
-nmap("[<space>", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
-nmap("]<space>", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])

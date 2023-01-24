@@ -1,6 +1,6 @@
 local fzf = require("fzf-lua")
 
-fzf.setup{}
+fzf.setup { winopts = { split = "belowright new" } }
 
 nmap("<leader>f", fzf.files)
 nmap("<leader>ff", fzf.live_grep)
@@ -15,5 +15,3 @@ nmap("<leader>fr", fzf.lsp_references)
 nmap("<leader>fs", fzf.lsp_document_symbols)
 nmap("<leader>fS", fzf.lsp_workspace_symbols)
 nmap("<leader>fi", fzf.lsp_implementations)
-
-imap("<C-s>", fzf.grep_cword)

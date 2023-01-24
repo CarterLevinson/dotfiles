@@ -5,6 +5,7 @@ return {
     config = function()
       require("cfg.fzf")
     end,
+    enabled = false,
   },
   {
     "akinsho/toggleterm.nvim",
@@ -26,6 +27,7 @@ return {
     config = function()
       require("cfg.vista")
     end,
+    enabled = false,
   },
   {
     "danymat/neogen",

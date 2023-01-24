@@ -29,15 +29,13 @@ set.diffopt               = "vertical"
 set.title                 = true
 set.showcmd               = true
 set.wildmenu              = true
-set.cursorline            = true
 set.ruler                 = true
-set.number                = true
+set.relativenumber        = true
 
 set.laststatus            = 3
 set.showtabline           = 2
 
 set.lazyredraw            = true
-
 -- line breaks
 set.tw                    = 80
 set.linebreak             = true
@@ -75,7 +73,7 @@ vim.cmd [[set grepprg=rg\ --vimgrep\ --no-heading]]
 vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
 
 -- set default colorscheme
-vim.cmd [[colorscheme ofirkai]]
+vim.cmd [[colorscheme aurora]]
 
 -- treesitter fold settings ?
 -- set.foldmethod = "expr"

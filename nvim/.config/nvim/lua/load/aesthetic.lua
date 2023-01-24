@@ -1,7 +1,9 @@
 return {
   {
-    "projekt0n/github-nvim-theme",
     "ofirgall/ofirkai.nvim",
+    "nxvu699134/vn-night.nvim",
+    "lourenci/github-colors",
+    "ray-x/aurora",
   },
   {
     "goolord/alpha-nvim", -- dashboard
@@ -19,7 +21,7 @@ return {
     config = function()
       require("cfg.windows")
     end,
-    enabled = false,
+    -- enabled = false,
   },
   {
     "karb94/neoscroll.nvim",

@@ -1,5 +1,5 @@
 require("toggleterm").setup{
-  direction = "float",
+  direction = "horizontal",
   open_mapping = "<leader>t",
 
   insert_mapping = true,

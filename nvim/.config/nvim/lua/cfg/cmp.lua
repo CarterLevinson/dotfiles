@@ -11,7 +11,7 @@ xmap("<Tab>", snippy.cut_text, { remap = true })
 nmap("g<Tab>", snippy.cut_text, { remap = true })
 
 -- cmp mappings
-local function ctrln(fallback)
+local function select_next(fallback)
   if cmp.visible() then
     cmp.select_next_item()
   else
@@ -19,7 +19,7 @@ local function ctrln(fallback)
   end
 end
 
-local function ctrlp(fallback)
+local function select_prev(fallback)
   if cmp.visible() then
     cmp.select_prev_item()
   else
@@ -27,23 +27,7 @@ local function ctrlp(fallback)
   end
 end
 
-local function ctrlj(fallback)
-  if cmp.visible() then
-    cmp.select_next_item()
-  else
-    fallback()
-  end
-end
-
-local function ctrlk(fallback)
-  if cmp.visible() then
-    cmp.select_prev_item()
-  else
-    fallback()
-  end
-end
-
-local function ctrld(fallback)
+local function close_window(fallback)
   if cmp.visible() then
     cmp.close()
   else
@@ -51,7 +35,7 @@ local function ctrld(fallback)
   end
 end
 
-local function ctrla(fallback)
+local function abort_completion(fallback)
   if cmp.visible() then
     cmp.abort()
   else
@@ -59,7 +43,7 @@ local function ctrla(fallback)
   end
 end
 
-local function cr(fallback)
+local function select_entry(fallback)
   if cmp.visible() then
     cmp.confirm({ select = true })
   else
@@ -68,20 +52,19 @@ local function cr(fallback)
 end
 
 local cmp_mappings = {
-  ["<C-n>"] = cmp.mapping(ctrln),
-  ["<C-p>"] = cmp.mapping(ctrlp),
+  ["<C-n>"] = cmp.mapping(select_next),
+  ["<C-p>"] = cmp.mapping(select_prev),
 
-  ["<C-k>"] = cmp.mapping(ctrlk),
-  ["<C-j>"] = cmp.mapping(ctrlj),
+  ["<C-j>"] = cmp.mapping(select_next),
+  ["<C-k>"] = cmp.mapping(select_prev),
 
-  ["<C-a>"] = cmp.mapping(ctrla),
-  ["<C-d>"] = cmp.mapping(ctrld),
+  ["<C-a>"] = cmp.mapping(abort_completion),
+  ["<C-c>"] = cmp.mapping(close_window),
 
   ["<C-b>"] = cmp.mapping.scroll_docs(-4),
   ["<C-f>"] = cmp.mapping.scroll_docs(4),
 
-  ["<CR>"]      = cmp.mapping(cr),
-  ["<C-space>"] = cmp.mapping.complete,
+  ["<C-space>"] = cmp.mapping(select_entry)
 }
 
 -- setup cmp
@@ -93,20 +76,20 @@ cmp.setup {
   end,
   -- nvim snippy
   snippet = {
-    expand = function(args) require"snippy".expand_snippet(args.body) end,
+    expand = function(args) require "snippy".expand_snippet(args.body) end,
   },
   window = {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
-  --add extra comparator for underscores
+  -- comparators
   sorting = {
     comparators = {
       cmp.config.compare.offset,
       cmp.config.compare.exact,
       cmp.config.compare.score,
-      require"clangd_extensions.cmp_scores",
-      require"cmp-under-comparator".under,
+      require "clangd_extensions.cmp_scores",
+      require "cmp-under-comparator".under,
       cmp.config.compare.kind,
       cmp.config.compare.sort_text,
       cmp.config.compare.length,
@@ -164,14 +147,13 @@ cmp.setup {
     }),
   },
   sources = cmp.config.sources({
-    -- { name = "nvim_lua", priority = 1 },
-    { name = "nvim_lsp_signature_help", priority = 1 },
-    { name = "nvim_lsp", priority = 2 },
-    { name = "snippy", priority = 2 },
-    { name = "rg", priority = 4 },
-    { name = "path", priority = 5 },
-    { name = "lua_latex_symbols", priority = 5 },
-    { name = "calc", priority = 5 },
+    { name = "nvim_lsp_signature_help" },
+    { name = "nvim_lsp" },
+    { name = "snippy" },
+    { name = "rg" },
+    { name = "path" },
+    { name = "lua_latex_symbols" },
+    { name = "calc" },
   })
 }
 
@@ -188,9 +170,9 @@ cmp.setup.filetype({ "sql", "mysql", "plsql" }, {
 cmp_git.setup {}
 cmp.setup.filetype("gitcommit", {
   sources = cmp.config.sources({
-    { name = "git", priority = 1 },
-    { name = "snippy", priority = 2 },
-    { name = "buffer", priority = 2 }
+    { name = "git" },
+    { name = "snippy" },
+    { name = "buffer" },
   })
 })
 
@@ -203,18 +185,18 @@ cmp.setup.filetype({ "dap-repl", "dapui-watches", "dapui-hover" }, {
 
 cmp.setup.filetype("tex", {
   sources = cmp.config.sources({
-    { name = "omni", priority = 1 },
-    { name = "snippy", priority = 2 },
-    { name = "buffer", priority = 2 },
+    { name = "omni" },
+    { name = "snippy" },
+    { name = "buffer" },
   })
 })
 
 -- use buffer and lsp document symbol source for `/`
 cmp.setup.cmdline("/", {
   mapping = cmp.mapping.preset.cmdline(cmp_mappings),
-  view = {
-    entries = { name = "wildmenu", separator = "|" }
-  },
+  -- view = {
+  --   entries = { name = "wildmenu", separator = "|" }
+  -- },
   sources = cmp.config.sources({
     { name = "nvim_lsp_document_symbol" }
   }, {

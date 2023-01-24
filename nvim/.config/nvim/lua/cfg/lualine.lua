@@ -1,13 +1,21 @@
-local function gitsigns_diff_source()
-  local gitsigns = vim.b.gitsigns_status_dict
-  if gitsigns then
-    return {
-      added = gitsigns.added,
-      modified = gitsigns.changed,
-      removed = gitsigns.removed
-    }
+local fugitive_branch = {
+  "FugitiveHead",
+  icon = "",
+}
+
+local gitsigns_diff = {
+  "diff",
+  source = function()
+    local gitsigns = vim.b.gitsigns_status_dict
+    if gitsigns then
+      return {
+        added = gitsigns.added,
+        modified = gitsigns.changed,
+        removed = gitsigns.removed
+      }
+    end
   end
-end
+}
 
 local fname = {
   "filename",
@@ -17,18 +25,7 @@ local fname = {
     modified = "[+]",
     readonly = "[RO]",
     newfile = "[New]",
-    -- unnamed = "Buffer",
   }
-}
-
-local fugitive_branch = {
-  "FugitiveHead",
-  icon = "",
-}
-
-local gitsigns_diff = {
-  "diff",
-  source = gitsigns_diff_source,
 }
 
 local diag = {
@@ -50,10 +47,8 @@ require("lualine").setup {
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = true,
-    theme = "molokai",
   },
   sections = {
-    -- show only the first character of current vim mode
     lualine_a = { "mode" },
     lualine_b = { fugitive_branch, gitsigns_diff, diag },
     lualine_c = { fname },

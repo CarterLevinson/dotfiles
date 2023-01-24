@@ -46,7 +46,10 @@ local function create_commands(bufnr)
   )
 end
 
-local function create_keymaps(opts)
+-- callback function on lsp buffer attatch
+-- define keymaps for LSP buffers
+local function callback(_, bufnr)
+  local opts = { noremap = true, silent = true, buffer = bufnr }
   nmap("gd", vim.lsp.buf.definition, opts) -- go to definition
   nmap("gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
@@ -71,15 +74,8 @@ local function create_keymaps(opts)
 
   nmap("<leader>hh", haskell_tools.hoogle.hoogle_signature, opts)
 
-  -- nmap("<leader>wls", cmd "ListWS", opts)
+  -- nmap("<leader>ws", cmd "ListWS", opts)
   -- nmap("<leader>fo", cmd "Format", opts)
-end
-
--- callback function on lsp buffer attatch
--- define keymaps for LSP buffers
-local function callback(_, bufnr)
-  local opts = { noremap = true, silent = true, buffer = bufnr }
-  create_keymaps(opts)
   create_commands(bufnr)
 end
 

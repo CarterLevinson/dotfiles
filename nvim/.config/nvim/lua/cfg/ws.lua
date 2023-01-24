@@ -16,4 +16,9 @@ whitespace.setup{
   }
 }
 
-nmap('<leader>ws', whitespace.trim)
+-- nmap('<leader>s', whitespace.trim)
+
+vim.api.nvim_create_user_command("Trim",
+  whitespace.trim,
+  { desc = "Strip all whitespace in buffer" }
+)
