@@ -15,6 +15,7 @@ return {
   },
   { "j-hui/fidget.nvim", config = true },
   { "smjonas/inc-rename.nvim", config = true },
+  { "weilbith/nvim-code-action-menu", cmd = 'CodeActionMenu' },
   {
     "kosayoda/nvim-lightbulb",
     dependencies = "antoinemadec/FixCursorHold.nvim",

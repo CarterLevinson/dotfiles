@@ -44,7 +44,7 @@ nmap("[<space>", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
 nmap("]<space>", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
 
 -- remove blank lines, using "[' and ']' as leader
--- nmap('[d', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
--- nmap(']d', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
+nmap('[s', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
+nmap(']s', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
 
---TODO: exchange lines with [e and ]e
+--TODO: keymaps to exchange lines with [e and ]e

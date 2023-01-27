@@ -1,21 +1,22 @@
 return {
-  "chrisbra/csv.vim",
+  "chrisbra/csv.vim", -- tabular data
 
-  "vim-scripts/cscope.vim",
+  "vim-scripts/cscope.vim", -- C/C++
   "vim-scripts/cpp_cppcheck.vim",
   "vim-scripts/a.vim",
 
-  "mpickering/hlint-refactor-vim",
+  "mpickering/hlint-refactor-vim", -- Haskell
   "neovimhaskell/haskell-vim",
   "vmchale/pointfree",
+  "Twinside/vim-hoogle",
 
-  "mboughaba/i3config.vim",
+  "mboughaba/i3config.vim", -- syntax files
   "Fymyte/mbsync.vim",
   "kmonad/kmonad-vim",
   "jbmorgado/vim-pine-script",
   "fladson/vim-kitty",
 
-  "jghauser/follow-md-links.nvim",
+  "jghauser/follow-md-links.nvim", -- markdown
 
   {
     "iamcco/markdown-preview.nvim",
@@ -30,7 +31,7 @@ return {
     end,
   },
   {
-    "lervag/vimtex",
+    "lervag/vimtex", -- LaTex
     config = function()
       vim.g.vimtex_inded_enabled = 1
       vim.g.vimtex_complete_closed_braces = 1

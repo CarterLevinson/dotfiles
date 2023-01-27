@@ -62,7 +62,7 @@ local function callback(_, bufnr)
   nmap("K", vim.lsp.buf.hover, opts)
   nmap("<leader>h", vim.lsp.buf.signature_help, opts)
   nmap("<leader>d", vim.lsp.buf.type_definition, opts)
-  nmap("<leader>ca", vim.lsp.buf.code_action, opts)
+  nmap("<leader>ca", cmd "CodeActionMenu", opts)
   nmap("<leader>rn", ":IncRename ", opts)
   -- nmap("<leader>rn", vim.lsp.buf.rename, opts)
 

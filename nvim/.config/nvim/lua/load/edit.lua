@@ -1,9 +1,9 @@
 return {
   { "elihunter173/dirbuf.nvim", config = true },
-  { "numToStr/Comment.nvim", config = true },
-  { "kylechui/nvim-surround", config = true },
-  { "chentoast/marks.nvim", config = true },
+  { "numToStr/Comment.nvim",    config = true },
+  { "chentoast/marks.nvim",     config = true },
   { "tversteeg/registers.nvim", config = true },
+  { "kylechui/nvim-surround",   config = true },
   {
     "johnfrankmorgan/whitespace.nvim",
     config = function()

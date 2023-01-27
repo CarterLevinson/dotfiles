@@ -35,13 +35,13 @@ return {
     event = "CmdlineEnter",
   },
   {
-    "notjedi/nvim-rooter.lua", -- auto cd to root directory
+    "notjedi/nvim-rooter.lua", -- auto cd to projec root directory
     config = function()
       require("nvim-rooter").setup { manual = false }
     end,
   },
   {
-    "tpope/vim-eunuch",
+    "tpope/vim-eunuch", -- misc but useful
     "chrisbra/unicode.vim",
     "mbbill/undotree",
     "aymericbeaumet/vim-symlink",
