@@ -40,7 +40,6 @@ export READER=/usr/bin/zathura
 export OPENER=/usr/bin/rifle
 export VIEWER=/usr/local/bin/nsxiv
 export TERMINAL=/usr/bin/kitty
-# export TERMINAL=/usr/local/bin/st
 export PAGER='/usr/bin/less'
 
 # export LESS='--RAW-CONTROL-CHARS'
