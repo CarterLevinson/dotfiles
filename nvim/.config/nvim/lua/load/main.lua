@@ -1,11 +1,9 @@
 return {
   {
     "ibhagwan/fzf-lua",
-    dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
       require("cfg.fzf")
-    end,
-    enabled = false,
+    end
   },
   {
     "akinsho/toggleterm.nvim",
@@ -27,20 +25,19 @@ return {
     config = function()
       require("cfg.vista")
     end,
-    enabled = false,
   },
   {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
     config = function()
-      require("neogen").setup{snippet_engine = "snippy"}
+      require("neogen").setup { snippet_engine = "snippy" }
     end,
     event = "CmdlineEnter",
   },
   {
     "notjedi/nvim-rooter.lua",
     config = function()
-      require("nvim-rooter").setup{manual = false}
+      require("nvim-rooter").setup { manual = false }
     end,
   },
   {

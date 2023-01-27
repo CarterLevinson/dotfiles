@@ -1,8 +1,8 @@
 local snippy = require("snippy.mapping")
-local lspkind = require("lspkind")
 local cmp_git = require("cmp_git")
-local cmp_dap = require("cmp_dap")
+-- local cmp_dap = require("cmp_dap")
 local cmp = require("cmp")
+
 
 imap("<Tab>", snippy.expand_or_advance("<Tab>"))
 smap("<Tab>", snippy.next("<Tab>"))
@@ -67,13 +67,41 @@ local cmp_mappings = {
   ["<C-space>"] = cmp.mapping(select_entry)
 }
 
+-- icon reference: https://www.nerdfonts.com/cheat-sheet
+local icons = {
+  Text = " ",
+  Method = " ",
+  Function = " ",
+  Constructor = " ",
+  Field = "ﰠ",
+  Variable = "",
+  Class = " ",
+  Interface = "ﳤ",
+  Module = " ",
+  Property = "襁",
+  Unit = "塞",
+  Value = " ",
+  Keyword = " ",
+  Snippet = " ",
+  Color = " ",
+  Enum = "練",
+  File = " ",
+  Reference = " ",
+  Folder = " ",
+  EnumMember = "ﴯ",
+  Constant = " ",
+  Struct = "פּ ",
+  Event = "",
+  Operator = "",
+  TypeParameter = " ",
+}
 -- setup cmp
 cmp.setup {
   -- for dap/dapui
-  enabled = function()
-    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-        or cmp_dap.is_dap_buffer()
-  end,
+  -- enabled = function()
+  --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+  --       or cmp_dap.is_dap_buffer()
+  -- end,
   -- nvim snippy
   snippet = {
     expand = function(args) require "snippy".expand_snippet(args.body) end,
@@ -98,9 +126,9 @@ cmp.setup {
   },
   mapping = cmp.mapping.preset.insert(cmp_mappings),
   formatting = {
-    format = lspkind.cmp_format({
-      mode = "symbol",
-      menu = {
+    format = function(entry, item)
+      item.kind = string.format('%s %s', icons[item.kind], item.kind)
+      item.menu = ({
         buffer = "[Buf]",
         nvim_lsp = "[LSP]",
         nvim_lsp_signature_help = "[LSP]",
@@ -108,48 +136,21 @@ cmp.setup {
         treesitter = "[TS]",
         snippy = "[Snip]",
         lua_latex_symbols = "[TeX]",
-        nvim_lua = "[API]",
         git = "[Git]",
         path = "[Path]",
         rg = "[RG]",
         calc = "[Expr]",
         dap = "[DAP]",
         commandline = "[CMD]",
-      },
-      -- icon reference: https://www.nerdfonts.com/cheat-sheet
-      symbol_map = {
-        Text = " ",
-        Method = " ",
-        Function = " ",
-        Constructor = " ",
-        Field = "ﰠ",
-        Variable = "",
-        Class = " ",
-        Interface = "ﳤ",
-        Module = " ",
-        Property = "襁",
-        Unit = "塞",
-        Value = " ",
-        Keyword = " ",
-        Snippet = " ",
-        Color = " ",
-        Enum = "練",
-        File = " ",
-        Reference = " ",
-        Folder = " ",
-        EnumMember = "ﴯ",
-        Constant = " ",
-        Struct = "פּ ",
-        Event = "",
-        Operator = "",
-        TypeParameter = " ",
-      },
-    }),
+      })[entry.source.name]
+      return item
+    end
   },
   sources = cmp.config.sources({
     { name = "nvim_lsp_signature_help" },
     { name = "nvim_lsp" },
     { name = "snippy" },
+    { name = "treesitter" },
     { name = "rg" },
     { name = "path" },
     { name = "lua_latex_symbols" },
@@ -177,11 +178,11 @@ cmp.setup.filetype("gitcommit", {
 })
 
 -- set up DAP filetype completion
-cmp.setup.filetype({ "dap-repl", "dapui-watches", "dapui-hover" }, {
-  sources = cmp.config.sources({
-    { name = "dap" },
-  })
-})
+-- cmp.setup.filetype({ "dap-repl", "dapui-watches", "dapui-hover" }, {
+--   sources = cmp.config.sources({
+--     { name = "dap" },
+--   })
+-- })
 
 cmp.setup.filetype("tex", {
   sources = cmp.config.sources({

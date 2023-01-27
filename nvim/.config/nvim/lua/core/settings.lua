@@ -30,12 +30,17 @@ set.title                 = true
 set.showcmd               = true
 set.wildmenu              = true
 set.ruler                 = true
+set.number                = true
 set.relativenumber        = true
+set.cursorline            = true
+set.lazyredraw            = true
+set.termguicolors         = true
 
+-- status
 set.laststatus            = 3
 set.showtabline           = 2
 
-set.lazyredraw            = true
+
 -- line breaks
 set.tw                    = 80
 set.linebreak             = true
@@ -51,6 +56,7 @@ set.smartcase             = true
 set.tabstop               = 2
 set.shiftwidth            = 2
 set.softtabstop           = -1
+
 set.expandtab             = true
 
 set.autoindent            = true
@@ -73,7 +79,7 @@ vim.cmd [[set grepprg=rg\ --vimgrep\ --no-heading]]
 vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
 
 -- set default colorscheme
-vim.cmd [[colorscheme aurora]]
+vim.cmd [[colorscheme vn-night]]
 
 -- treesitter fold settings ?
 -- set.foldmethod = "expr"

@@ -1,6 +1,5 @@
 local clangd_tools = require("clangd_extensions")
 local haskell_tools = require("haskell-tools")
-local rust_tools = require("rust-tools")
 local neodev = require("neodev")
 neodev.setup {}
 
@@ -44,6 +43,9 @@ local function create_commands(bufnr)
     end,
     { desc = "Close GHCi repl window" }
   )
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    callback = function() vim.lsp.buf.format { async = true } end
+  })
 end
 
 -- callback function on lsp buffer attatch
@@ -52,20 +54,20 @@ local function callback(_, bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
   nmap("gd", vim.lsp.buf.definition, opts) -- go to definition
   nmap("gD", vim.lsp.buf.declaration, opts) -- go to declaration
-
-  nmap("gi", vim.lsp.buf.implementation, opts) -- list imps in qf
   nmap("gr", vim.lsp.buf.references, opts) -- list all refs in qf
-  nmap("K", vim.lsp.buf.hover, opts)
-  nmap("<leader>h", vim.lsp.buf.signature_help, opts)
-  nmap("<leader>d", vim.lsp.buf.type_definition, opts)
-  nmap("<leader>rn", ":IncRename ", opts)
-  -- nmap("<leader>rn", vim.lsp.buf.rename, opts)
-  nmap("<leader>ca", vim.lsp.buf.code_action, opts)
+  nmap("gi", vim.lsp.buf.implementation, opts) -- list imps in qf
 
   nmap("gpd", goto_preview.goto_preview_definition, opts)
   nmap("gpt", goto_preview.goto_preview_type_definition, opts)
   nmap("gpr", goto_preview.goto_preview_references, opts)
   nmap("gpc", goto_preview.close_all_win, opts)
+
+  nmap("K", vim.lsp.buf.hover, opts)
+  nmap("<leader>h", vim.lsp.buf.signature_help, opts)
+  nmap("<leader>d", vim.lsp.buf.type_definition, opts)
+  nmap("<leader>ca", vim.lsp.buf.code_action, opts)
+  nmap("<leader>rn", ":IncRename ", opts)
+  -- nmap("<leader>rn", vim.lsp.buf.rename, opts)
 
   nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
   nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
@@ -75,7 +77,6 @@ local function callback(_, bufnr)
   nmap("<leader>hh", haskell_tools.hoogle.hoogle_signature, opts)
 
   -- nmap("<leader>ws", cmd "ListWS", opts)
-  -- nmap("<leader>fo", cmd "Format", opts)
   create_commands(bufnr)
 end
 
@@ -122,9 +123,6 @@ end
 
 -- set up clangd lsp extensions
 clangd_tools.setup { server = conf }
-
---setup rust analyzer
-rust_tools.setup { server = conf }
 
 -- setup haskell tools
 haskell_tools.setup {

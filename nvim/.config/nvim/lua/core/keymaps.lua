@@ -1,5 +1,6 @@
 -- set some basic normal mode keymaps, mostly using leader
 nmap("<leader>w", cmd "write")
+nmap("<leader>c", cmd "close")
 nmap("<space>",   cmd "nohlsearch")
 -- fast buffer switch
 nmap("<leader>b", ":ls<CR>:b<space>")

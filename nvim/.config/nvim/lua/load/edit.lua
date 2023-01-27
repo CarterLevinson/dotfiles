@@ -7,7 +7,7 @@ return {
   {
     "johnfrankmorgan/whitespace.nvim",
     config = function()
-      require("cfg.ws")
+      require("cfg.whitespace")
     end,
   },
   {
@@ -15,15 +15,5 @@ return {
     config = function()
       nxmap('ga', '<Plug>(EasyAlign)')
     end,
-  },
-  {
-    "alpertuna/vim-header",
-    config = function()
-      vim.g.header_field_author        = "Carter S. Levinson"
-      vim.g.header_field_author_email  = "cslevo@posteo.net"
-      vim.g.header_field_filename_path = 1
-      vim.g.header_field_modified_by   = 0
-      vim.g.header_auto_update_header  = 1
-    end
   },
 }

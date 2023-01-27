@@ -5,6 +5,7 @@ return {
     "lourenci/github-colors",
     "ray-x/aurora",
   },
+  { "uga-rosa/ccc.nvim", config = true },
   {
     "goolord/alpha-nvim", -- dashboard
     config = function()
@@ -21,7 +22,7 @@ return {
     config = function()
       require("cfg.windows")
     end,
-    -- enabled = false,
+    enabled = false,
   },
   {
     "karb94/neoscroll.nvim",
@@ -32,7 +33,7 @@ return {
   {
     "xiyaowong/nvim-transparent",
     config = function()
-      require("transparent").setup { enable = true, exclude = { "NormalFloat" } }
+      require("transparent").setup{ enable = true }
     end,
   },
 }

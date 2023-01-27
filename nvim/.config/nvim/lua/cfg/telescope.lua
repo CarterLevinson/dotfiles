@@ -1,59 +1,26 @@
 local telescope = require('telescope')
 local builtin = require('telescope.builtin')
--- local trouble = require('trouble.providers.telescope')
--- local previewers = require('telescope.previewers')
-
 
 -- telescope setup function
 telescope.setup{
-  defaults = {
-    -- initial_mode = 'normal',
-    theme = 'dropdown',
-    -- file_previewer = previewers.bat.new,
-    -- mappings = {
-    --   i = { ['<C-t>'] = trouble.open_with_trouble },
-    --   n = { ['<C-t>'] = trouble.open_with_trouble },
-    -- },
-    pickers = {
-      lsp_references = {
-        theme = 'get_cursor',
-      },
-      lsp_definitions = {
-        theme = 'get_cursor',
-      },
-      lsp_type_definitions = {
-        theme = 'get_cursor',
-      },
-      lsp_implementations = {
-        theme = 'get_cursor',
-      },
-      lsp_document_symbols = {
-        theme = 'get_cursor',
-      },
-      lsp_workspace_symbols = {
-        theme = 'get_cursor',
-      },
-      lsp_dynamic_workspace_symbols = {
-        theme = 'get_cursor',
-      },
-      live_grep = {
-        theme = 'ivy',
-      },
-      grep_string = {
-        theme = 'ivy',
-      },
-      buffers = {
-        theme = 'ivy',
-      },
+  pickers = {
+    find_files = {
+      theme = "ivy"
     },
-  },
-  extensions = {
-    hoogle = {
-      theme = 'ivy',
+    live_grep = {
+      theme = "ivy"
     },
-  },
+    buffers = {
+      theme = "ivy"
+    },
+    lsp_document_symbols = {
+      theme = "ivy"
+    },
+    lsp_workspace_symbols = {
+      theme = "ivy"
+    }
+  }
 }
-
 
 -- set wrap line mode for telescope preview
 vim.api.nvim_create_autocmd('User', {
@@ -64,40 +31,39 @@ vim.api.nvim_create_autocmd('User', {
 -- telescope keymaps;
 
 -- \f: search through files
-vim.keymap.set('n', '<leader>f', builtin.find_files)
+nmap('<leader>f', builtin.find_files)
 -- \ff: search through live rg
-vim.keymap.set('n', '<leader>ff', builtin.live_grep)
+nmap('<leader>ff', builtin.live_grep)
 
 -- \fd: search through fd
-vim.keymap.set('n', '<leader>fd', builtin.fd)
+nmap('<leader>fd', builtin.fd)
 -- \fb: search through available buffers
-vim.keymap.set('n', '<leader>fb', builtin.buffers)
-
+nmap('<leader>fb', builtin.buffers)
 
 -- \fm: search through vim marks
-vim.keymap.set('n', '<leader>fm', builtin.marks)
+nmap('<leader>fm', builtin.marks)
 -- \fr: search through vim registers
-vim.keymap.set('n', '<leader>fr', builtin.registers)
+nmap('<leader>fr', builtin.registers)
 
 -- \fh: search through vim help tags
-vim.keymap.set('n', '<leader>fht', builtin.help_tags)
+nmap('<leader>fht', builtin.help_tags)
 -- \fmp: search through system man pages
-vim.keymap.set('n', '<leader>fmp', builtin.man_pages)
+nmap('<leader>fmp', builtin.man_pages)
 
 -- \fg: search through git files
-vim.keymap.set('n', '<leader>fg', builtin.git_files)
+nmap('<leader>fg', builtin.git_files)
 -- \fgb: search through git branches
-vim.keymap.set('n', '<leader>fgb', builtin.git_branches)
+nmap('<leader>fgb', builtin.git_branches)
 -- \fgc: search through git commits
-vim.keymap.set('n', '<leader>fgc', builtin.git_commits)
+nmap('<leader>fgc', builtin.git_commits)
 -- \fbc:search through git branch commits
-vim.keymap.set('n', '<leader>fbc', builtin.git_bcommits)
+nmap('<leader>fbc', builtin.git_bcommits)
 -- \fgs: search through git stash files
-vim.keymap.set('n', '<leader>fgs', builtin.git_stash)
+nmap('<leader>fgs', builtin.git_stash)
 
 -- \fds: search through lsp document symbols
-vim.keymap.set('n', '<leader>fds', builtin.lsp_document_symbols)
+nmap('<leader>fds', builtin.lsp_document_symbols)
 -- \fws: search through lsp worksapces symbols
-vim.keymap.set('n', '<leader>fws', builtin.lsp_workspace_symbols)
+nmap('<leader>fws', builtin.lsp_workspace_symbols)
 -- \flr: search through lsp references
-vim.keymap.set('n', '<leader>flr', builtin.lsp_references)
+nmap('<leader>flr', builtin.lsp_references)
