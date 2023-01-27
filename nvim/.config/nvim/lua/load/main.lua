@@ -13,18 +13,18 @@ return {
     version = "v2.*",
   },
   {
+    "liuchengxu/vista.vim",
+    config = function()
+      require("cfg.vista")
+    end,
+  },
+  {
     "radenling/vim-dispatch-neovim",
     dependencies = "tpope/vim-dispatch",
     config = function()
       vim.g.dispatch_no_maps = 1
     end,
     event = "CmdlineEnter",
-  },
-  {
-    "liuchengxu/vista.vim",
-    config = function()
-      require("cfg.vista")
-    end,
   },
   {
     "danymat/neogen",
@@ -41,23 +41,10 @@ return {
     end,
   },
   {
-    "superevilmegaco/AutoRemoteSync.nvim",
-    config = function()
-      require("cfg.sync")
-    end,
-  },
-  {
     "tpope/vim-eunuch",
     "chrisbra/unicode.vim",
     "mbbill/undotree",
     "aymericbeaumet/vim-symlink",
     "jghauser/mkdir.nvim",
-  },
-  {
-    "miversen33/netman.nvim",
-    config = function()
-      require("netman")
-    end,
-    enabled = false,
   },
 }

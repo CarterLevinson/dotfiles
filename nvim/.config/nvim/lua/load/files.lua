@@ -23,7 +23,7 @@ return {
       vim.g.mkdp_auto_start = 1
       vim.g.mkdp_auto_close = 1
       vim.g.mkdp_theme = "dark"
-      vim.g.mkdp_browser = os.getenv("BROWSER")
+      vim.g.mkdp_browser = get_filename(os.getenv("BROWSER"))
     end,
     build = function()
       vim.fn["mkdp#util#install"]()
@@ -34,7 +34,7 @@ return {
     config = function()
       vim.g.vimtex_inded_enabled = 1
       vim.g.vimtex_complete_closed_braces = 1
-      vim.g.vimtex_view_method = os.getenv("READER")
+      vim.g.vimtex_view_method = get_filename(os.getenv("READER"))
     end,
   },
 }

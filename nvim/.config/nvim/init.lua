@@ -1,5 +1,2 @@
-require("utils.bootstrap")
-require("utils.map")
-require("core.plugins")
-require("core.settings")
-require("core.keymaps")
+require("utils")
+require("core")

@@ -1,17 +1,21 @@
 return {
   {
-    "ofirgall/ofirkai.nvim",
     "nxvu699134/vn-night.nvim",
+    "ofirgall/ofirkai.nvim",
     "lourenci/github-colors",
-    "ray-x/aurora",
   },
   { "uga-rosa/ccc.nvim", config = true },
   {
-    "goolord/alpha-nvim", -- dashboard
+    "karb94/neoscroll.nvim",
     config = function()
-      require("cfg.alpha")
+      require("neoscroll").setup { easing_function = "sine" }
     end,
-    enabled = false,
+  },
+  {
+    "xiyaowong/nvim-transparent",
+    config = function()
+      require("transparent").setup { enable = true }
+    end,
   },
   {
     "anuvyklack/windows.nvim", -- window plugins
@@ -23,17 +27,5 @@ return {
       require("cfg.windows")
     end,
     enabled = false,
-  },
-  {
-    "karb94/neoscroll.nvim",
-    config = function()
-      require("neoscroll").setup { easing_function = "sine" }
-    end,
-  },
-  {
-    "xiyaowong/nvim-transparent",
-    config = function()
-      require("transparent").setup{ enable = true }
-    end,
   },
 }
