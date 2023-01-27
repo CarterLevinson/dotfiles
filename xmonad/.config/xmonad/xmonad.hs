@@ -1,75 +1,78 @@
-import           XMonad
+{-# LANGUAGE NoMonomorphismRestriction #-}
 
-import           Control.Monad
+import XMonad
 
-import           Data.Maybe
-import           Data.Monoid
+import Control.Monad
 
-import qualified Data.Map                           as M
+import Data.Monoid
 
-import           System.Exit (exitSuccess)
--- import Graphics.X11
+import Data.Map qualified as M
 
-import qualified XMonad.StackSet                    as W
+import System.Exit (exitSuccess)
 
-import           XMonad.Actions.CopyWindow          (copy)
-import           XMonad.Actions.CycleSelectedLayouts
-import           XMonad.Actions.CycleWS
-import           XMonad.Actions.GridSelect
-import           XMonad.Actions.Minimize
-import           XMonad.Actions.MouseResize
--- import           XMonad.Actions.OnScreen
-import           XMonad.Actions.Sift
-import           XMonad.Actions.WindowMenu
-import           XMonad.Actions.WindowBringer
+import XMonad.StackSet qualified as W
 
-import qualified XMonad.Actions.Search              as S
-import qualified XMonad.Actions.Submap              as SM
+import XMonad.Actions.Commands
+import XMonad.Actions.CopyWindow (copy)
+import XMonad.Actions.CycleSelectedLayouts
+import XMonad.Actions.CycleWS
+import XMonad.Actions.GridSelect
+import XMonad.Actions.Minimize
+import XMonad.Actions.MouseResize (mouseResize)
+import XMonad.Actions.TreeSelect qualified as TS
 
-import           XMonad.Hooks.EwmhDesktops
-import           XMonad.Hooks.ManageDocks
-import           XMonad.Hooks.ManageHelpers
-import           XMonad.Hooks.RefocusLast           (isFloat, shiftRLWhen)
-import           XMonad.Hooks.StatusBar
-import           XMonad.Hooks.StatusBar.PP
-import           XMonad.Hooks.WorkspaceHistory
-import           XMonad.Hooks.WindowSwallowing
-import           XMonad.Hooks.DynamicIcons
-import           XMonad.Hooks.Modal
+import XMonad.Actions.Sift
+import XMonad.Actions.WindowBringer
+import XMonad.Actions.WindowMenu (windowMenu)
 
--- todo
-import           XMonad.Layout.IndependentScreens
-import           XMonad.Layout.Magnifier
-import           XMonad.Layout.Maximize
-import           XMonad.Layout.Minimize
-import           XMonad.Layout.NoBorders
-import           XMonad.Layout.WindowArranger
-import           XMonad.Layout.WindowNavigation
+import XMonad.Actions.Search qualified as S
+import XMonad.Actions.Submap qualified as SM
 
-import           XMonad.Layout.Mosaic
-import           XMonad.Layout.Spiral
-import qualified XMonad.Layout.BinarySpacePartition as BSP
+import XMonad.Hooks.DynamicIcons
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.Modal
+import XMonad.Hooks.RefocusLast
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
+import XMonad.Hooks.WindowSwallowing
+import XMonad.Hooks.WorkspaceHistory
 
-import qualified XMonad.Layout.MultiToggle          as MT
-import qualified XMonad.Layout.ToggleLayouts        as T
+import XMonad.Layout.IndependentScreens
+import XMonad.Layout.LayoutCombinators (JumpToLayout (..))
+import XMonad.Layout.Magnifier
+import XMonad.Layout.Maximize
+import XMonad.Layout.Minimize
+import XMonad.Layout.NoBorders
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.WindowArranger
+import XMonad.Layout.WindowNavigation
+
+import XMonad.Layout.BinarySpacePartition qualified as BSP
+import XMonad.Layout.Mosaic
+import XMonad.Layout.Spiral
+
+import XMonad.Layout.MultiToggle qualified as MT
+import XMonad.Layout.ToggleLayouts qualified as T
 
 -- import           XMonad.Util.ClickableWorkspaces
--- import           XMonad.Util.Dmenu
 -- import           XMonad.Util.Loggers
--- import           XMonad.Util.Scratchpad
 -- import           XMonad.Util.WorkspaceCompare
-import           XMonad.Util.Dzen                   as D
-import           XMonad.Util.EZConfig (additionalKeys, removeKeys)
-import           XMonad.Util.Paste
-import           XMonad.Util.Run
-import           XMonad.Util.SpawnOnce
-import           XMonad.Util.Ungrab
 
+import XMonad.Util.Dmenu
+import XMonad.Util.Dzen as DZ
+import XMonad.Util.EZConfig
+import XMonad.Util.Paste (pasteSelection)
+import XMonad.Util.Run (runInTerm)
+import XMonad.Util.Scratchpad
+import XMonad.Util.SpawnOnce (spawnOnce)
+import XMonad.Util.Ungrab (unGrab)
 
---TODO: dmenu
---TODO: Advanced layuouts config
---TODO: XMonad.contrib modal
---TODO: more workspace and monitor control
+-- TODO: dmenu
+-- TODO: Advanced layuouts config
+-- TODO: XMonad.contrib modal
+-- TODO: more workspace and monitor control
 
 -- workspaces
 -------------------------------------------------------------------------------
@@ -88,7 +91,34 @@ spacesOnCurrentScreen = WSIs (isOnScreen <$> currentScreen)
 
 -------------------------------------------------------------------------------
 
+generateCmdFromStr :: String -> String
+generateCmdFromStr str = term ++ " -e " ++ str
+
 -- define grid selects
+
+cliShellGrid :: [(String, String)]
+cliShellGrid =
+    [ ("Ipython", "ipython")
+    , ("GHCi", "ghci")
+    , ("Radian", "radian")
+    , ("GiNsh", "ginsh")
+    , ("Basic Calculator", "bc -q")
+    , ("Maxima", "maxima")
+    , ("FriCAS", "fricas")
+    , ("Gap", "gap")
+    , ("Gnuplot", "gnuplot")
+    ] -- sqlite, psql, pgcli
+
+guiShellGrid :: [(String, String)]
+guiShellGrid =
+    [ ("wxMaxima", "wxmaxima")
+    , ("Xasy", "xasy")
+    ]
+
+shellSpawnGrid :: [(String, String)]
+shellSpawnGrid = zip names (map generateCmdFromStr cmds) ++ guiShellGrid
+  where
+    (names, cmds) = unzip cliShellGrid
 
 guiGrid :: [(String, String)]
 guiGrid =
@@ -110,6 +140,11 @@ tuiGrid =
     , ("WeeChat", "weechat")
     ]
 
+appSpawnGrid :: [(String, String)]
+appSpawnGrid = zip names (map generateCmdFromStr cmds) ++ guiGrid
+  where
+    (names, cmds) = unzip tuiGrid
+
 utilGrid :: [(String, String)]
 utilGrid =
     [ ("Htop", "htop")
@@ -122,6 +157,32 @@ utilGrid =
     , ("Ranger", "ranger")
     ]
 
+utilSpawnGrid :: [(String, String)]
+utilSpawnGrid = zip names (map generateCmdFromStr cmds)
+  where
+    (names, cmds) = unzip utilGrid
+
+fullSpawnGrid :: [(String, String)]
+fullSpawnGrid = appSpawnGrid ++ shellSpawnGrid ++ utilSpawnGrid
+
+-- replace with treeselect
+dfGrid :: [(String, String)]
+dfGrid =
+    [ ("Neovim", "~/.config/nvim")
+    , ("XMonad", "~/.config/xmonad")
+    , ("XMobar", "~/.config/xmobar")
+    , ("KMonad", "~/.config/kmonad")
+    , ("Kitty", "~/.config/kitty")
+    , ("Papis", "~/.config/papis")
+    , ("Ranger", "~/.config/ranger")
+    , ("i3", "~/.config/i3/config")
+    , ("py3status", "~/.config/py3status/config")
+    , ("Zathura", "~/.config/zathura/zathurarc")
+    , ("Aerc", "~/.config/aerc")
+    , ("qutebrowser", "~/.config/qutebrowser")
+    ]
+
+-- replace with treeselect or dmenu
 bookmarksGrid :: [(String, String)]
 bookmarksGrid =
     [ ("Gmail", "mail.google.com")
@@ -153,63 +214,6 @@ bookmarksGrid =
     , ("Wolfram MathWorld", "mathworld.wolfram.com")
     ]
 
-cliShellGrid :: [(String, String)]
-cliShellGrid =
-    [ ("Ipython", "ipython")
-    , ("GHCi", "ghci")
-    , ("Radian", "radian")
-    , ("GiNsh", "ginsh")
-    , ("Basic Calculator", "bc -q")
-    , ("Maxima", "maxima")
-    , ("FriCAS", "fricas")
-    , ("Gap", "gap")
-    , ("Gnuplot", "gnuplot")
-    ] -- sqlite, psql, pgcli
-
-guiShellGrid :: [(String, String)]
-guiShellGrid =
-    [ ("wxMaxima", "wxmaxima")
-    , ("Xasy", "xasy")
-    ]
-
-dfGrid :: [(String, String)]
-dfGrid =
-    [ ("Neovim", "~/.config/nvim")
-    , ("XMonad", "~/.config/xmonad")
-    , ("XMobar", "~/.config/xmobar")
-    , ("KMonad", "~/.config/kmonad")
-    , ("Kitty", "~/.config/kitty")
-    , ("Papis", "~/.config/papis")
-    , ("Ranger", "~/.config/ranger")
-    , ("i3", "~/.config/i3/config")
-    , ("py3status", "~/.config/py3status/config")
-    , ("Zathura", "~/.config/zathura/zathurarc")
-    , ("Aerc", "~/.config/aerc")
-    , ("qutebrowser", "~/.config/qutebrowser")
-    ]
-
--- does this need to be debugged?
-generateCmdFromStr :: String -> String
-generateCmdFromStr str = term ++ " -e " ++ str
-
-appSpawnGrid :: [(String, String)]
-appSpawnGrid = zip names (map generateCmdFromStr cmds) ++ guiGrid
-  where
-    (names, cmds) = unzip tuiGrid
-
-shellSpawnGrid :: [(String, String)]
-shellSpawnGrid = zip names (map generateCmdFromStr cmds) ++ guiShellGrid
-  where
-    (names, cmds) = unzip cliShellGrid
-
-utilSpawnGrid :: [(String, String)]
-utilSpawnGrid = zip names (map generateCmdFromStr cmds)
-  where
-    (names, cmds) = unzip utilGrid
-
-fullSpawnGrid :: [(String, String)]
-fullSpawnGrid = appSpawnGrid ++ shellSpawnGrid ++ utilSpawnGrid
-
 dfSpawnGrid :: [(String, String)]
 dfSpawnGrid = zip names (map (\p -> term ++ " -e " ++ nvim ++ " " ++ p) paths)
   where
@@ -220,15 +224,29 @@ bmSpawnGrid = zip names (map (\url -> browser ++ " " ++ url) urls)
   where
     (names, urls) = unzip bookmarksGrid
 
+gridSelect = spawnSelected' fullSpawnGrid
+  where
+    spawnSelected' l = gridselect gsconf l >>= flip whenJust spawn
+    gsconf =
+        def
+            { gs_cellheight = 40
+            , gs_cellwidth = 200
+            , gs_cellpadding = 6
+            , gs_originFractX = 0.5
+            , gs_originFractY = 0.5
+            , gs_font = xmFont
+            }
+
 -------------------------------------------------------------------------------
 
--- look into XMonad-Contrib Modal
+-- look into XMonad-Contrib hooks Modal
 
+-- app launcher submap
 dz :: String -> X ()
-dz = D.dzenConfig (timeout 15 >=> onCurr xScreen)
+dz = DZ.dzenConfig (timeout 15 >=> onCurr xScreen)
 
 exitStr :: String
-exitStr = "(l)ock screen; (p)oweroff; (s)uspend; (h)ibernate; (e)xit;"
+exitStr = "(l)ock; (p)oweroff; (r)eboot; (s)uspend; (h)ibernate; (e)xit;"
 
 exitMap :: M.Map KeyPair (X ())
 exitMap =
@@ -243,31 +261,6 @@ exitMap =
 
 exit :: X ()
 exit = dz exitStr >> SM.submap exitMap
-
-unicodeDataPath :: String
-unicodeDataPath = home ++ "/.local/share/xmonad/ucd.all.flat.xml"
-
-gridSelectStr :: String
-gridSelectStr = "(a)pps; (b)ookmakrks; (d)otfiles; (f)ull; (s)hell; (u)tils;"
-
--- is there a way to replace or supplement this submapping with
--- another  grid menu ?
-gridSelectMap =
-    M.fromList
-        -- add more grids as we grow comfortable with grid select?
-        [ ((0, xK_a), spawnSelected' appSpawnGrid)
-        , ((0, xK_b), spawnSelected' bmSpawnGrid)
-        , ((0, xK_d), spawnSelected' dfSpawnGrid)
-        , ((0, xK_f), spawnSelected' fullSpawnGrid)
-        , ((0, xK_s), spawnSelected' shellSpawnGrid)
-        , ((0, xK_u), spawnSelected' utilSpawnGrid)
-        -- TODO: figure out colorizers and grid select themes
-        ] -- To whoever came up with this: it's really clever!
-  where
-    spawnSelected' l = gridselect def l >>= flip whenJust spawn
-
-gridSelect :: X ()
-gridSelect = dz gridSelectStr >> SM.submap gridSelectMap
 
 -- look into to use of dzen to display the submappings on screen
 searchStr :: String
@@ -296,8 +289,8 @@ searchMap method =
         , ((0, xK_w), method S.wikipedia)
         , ((0, xK_y), method S.youtube)
         -- , ((xmMod, xK_s),      method S.stackage)
-          -- , ((0, xK_d),          method S.duckduckgo)
-          -- , ((0, xK_g),          method S.google)
+        -- , ((0, xK_d),          method S.duckduckgo)
+        -- , ((0, xK_g),          method S.google)
         ]
 
 makeSearch :: S.Name -> String -> S.SearchEngine
@@ -352,9 +345,9 @@ rmKeyPairs =
 
       (xmMod, xK_slash)
     , (xmModShift, xK_slash)
-    , (xmMod, xK_space)
-    , (xmModShift, xK_space)
-    , (xmMod, xK_1)
+    , -- , (xmMod, xK_space)
+      -- , (xmModShift, xK_space)
+      (xmMod, xK_1)
     , (xmMod, xK_2)
     , (xmMod, xK_3)
     , (xmMod, xK_4)
@@ -378,69 +371,50 @@ rmKeyPairs =
 xmKeyMaps :: [KeyMap]
 xmKeyMaps =
     [ ((xmMod, xK_h), sendMessage $ Go L) -- window commands
-    , ((xmMod, xK_j), sendMessage $ Go D)
+    , ((xmMod, xK_j), sendMessage $ Go D) -- vi-style move focus
     , ((xmMod, xK_k), sendMessage $ Go U)
     , ((xmMod, xK_l), sendMessage $ Go R)
-    , ((xmModShift, xK_h), sendMessage $ Swap L)
+    , ((xmModShift, xK_h), sendMessage $ Swap L) -- vi-style swap windows
     , ((xmModShift, xK_j), sendMessage $ Swap D)
     , ((xmModShift, xK_k), sendMessage $ Swap U)
     , ((xmModShift, xK_l), sendMessage $ Swap R)
-
-    , ((xmMod, xK_t), withFocused $ windows . W.sink)
-    , ((xmModShift, xK_t), sendMessage ToggleStruts)
-    , -- Rotate through the available layout algorithms
-      ((xmMod, xK_space), sendMessage NextLayout)
-    , -- <M-S-p> & <M-S-n> "bubblesort" windows down/up the stack
-      ((xmModShift, xK_p), windows siftDown)
-    , ((xmModShift, xK_n), windows siftUp)
-    , -- <M-n> & <M-p> cycle focus up / down window stack
-      ((xmMod, xK_p), windows W.focusUp)
-    , ((xmMod, xK_n), windows W.focusDown)
-    , -- alt tab cycle focus up / down window stack
-      ((alt, xK_Tab), windows W.focusUp)
+    , ((xmMod, xK_t), sendMessage ToggleStruts) -- toggle struts
+    , ((xmModShift, xK_t), withFocused $ windows . W.sink) -- sink from floating
+    , ((alt, xK_Tab), windows W.focusUp) -- cycle window focus
     , ((altShift, xK_Tab), windows W.focusDown)
-    , -- <M-w> launch grid select window menu
-      ((xmMod, xK_w), windowMenu)
-    , -- <M-'<'> is shrink
-      ((xmModShift, xK_comma), sendMessage Shrink)
-    , -- <M-'>' is grow
-      ((xmModShift, xK_period), sendMessage Expand)
+    , ((xmModShift, xK_w), windowMenu)
+    , ((xmModShift, xK_comma), sendMessage Shrink) -- "<" == shrink
+    , ((xmModShift, xK_period), sendMessage Expand) -- ">" == grow
     , -- magnify
-      ((xmModCtrl, xK_plus), sendMessage MagnifyMore)
-    , ((xmModCtrl, xK_minus), sendMessage MagnifyLess)
-    , ((xmModCtrl, xK_m), sendMessage Toggle)
-    , -- minimize
-      ((xmMod, xK_m), withFocused minimizeWindow)
-    , ((xmModShift, xK_m), withLastMinimized maximizeWindowAndFocus)
-     -- ((xmModAlt, xK_m), withFocused (sendMessage . maximizeRestore))
-    -- maximize
+      --   ((xmModCtrl, xK_plus), sendMessage MagnifyMore)
+      -- , ((xmModCtrl, xK_minus), sendMessage MagnifyLess)
+      -- , ((xmModCtrl, xK_m), sendMessage Toggle)
+      -- minimize
+      -- ((xmMod, xK_m), withFocused minimizeWindow)
+      -- maximize
+      -- ((xmModAlt, xK_m), withFocused (sendMessage . maximizeRestore))
+      -- ((xmModShift, xK_m), withLastMinimized maximizeWindowAndFocus)
 
-      -- , ((xmMod, xK_b), bringMenu)
+      ((xmModShift, xK_b), bringMenuArgs dmenu_args)
     , ((xmMod, xK_b), bringSelected def)
-      -- , ((xmMod, xK_g), gotoMenu)
+    , ((xmModShift, xK_g), gotoMenuArgs dmenu_args)
     , ((xmMod, xK_g), goToSelected def)
-
-    -- spawn apps
-    , ((xmMod, xK_Return), spawn term)
-     -- <M-S-Return> launch terminal running cf from $HOME
-      -- ((xmModShift, xK_Return), run "bash -is eval 'cf ~'")
-    -- , -- <M-A-Return> launch terminal running rangercd
-      -- ((xmModAlt, xK_Return), run "bash -is eval 'rcd'")
-     -- <A-S-Return> launch terminnal running cf from root
-      -- ((altShift, xK_Return), run "bash -is eval 'cf /'")
-    ,-- <M-e> launch editor with nice menu
-     ((xmMod, xK_e), run nvim)
+    , -- spawn apps
+      ((xmMod, xK_Return), spawn term) -- like a terminal
+    , ((xmModShift, xK_Return), runInTerm "" "bash -is eval 'cf ~'")
+    , ((xmModAlt, xK_Return), runInTerm "" "bash -is eval 'rcd'")
+    , ((altShift, xK_Return), runInTerm "" "bash -is eval 'cf /'")
+    , ((xmMod, xK_e), runInTerm "" nvim)
     , ((xmMod, xK_d), spawn dmenu_run)
-    , ((xmModShift, xK_b), spawn browser)
-    , -- <M-f> launch ranger
-      ((xmMod, xK_f), run ranger)
-
-    -- workspace commands
-    , -- <M-z> toggleWS?
+    , ((xmMod, xK_w), spawn browser)
+    , ((xmMod, xK_o), defaultCommands >>= runCommand)
+    , -- , ((xmModShift, xK_b), spawn browser)
+      ((xmMod, xK_f), runInTerm "" ranger)
+    , -- workspace commands
+      -- <M-z> toggleWS?
       ((xmMod, xK_z), toggleWS)
     , ((xmMod, xK_Tab), moveTo Next spacesOnCurrentScreen)
     , ((xmModShift, xK_Tab), moveTo Prev spacesOnCurrentScreen)
-
     , ((xmModShift, xK_x), exit)
     , -- <M-q> kill focused window
       ((xmMod, xK_q), kill)
@@ -458,7 +432,7 @@ xmKeyMaps =
       ((0, xK_Insert), pasteSelection)
     , -- TODO Debug these
       ((0, xK_Print), unGrab *> spawn scrot)
-    ]       -- workspace manipluations
+    ]
         ++ [ ((m .|. xmMod, k), windows $ onCurrentScreen f i)
            | (i, k) <- zip (workspaces' xmConf) [xK_1 .. xK_9]
            , (f, m) <- [(W.view, 0), (W.shift, shift)]
@@ -468,22 +442,19 @@ xmKeyMaps =
            , (f, m) <- [(W.view, 0), (W.shift, shift)]
            ] -- switch ws between screens
   where
-    dmenu_run = "dmenu_run" ++ " " ++ dmenu_opts ++ dmenu_colors
-    dmenu_opts = "-b -h 20 -fn 'Hack:12' "
-    dmenu_colors = "-nb '#000000' -nf '#646464' -sb '#A865C9' -sf '#FFFFFF' "
+    dmenu_args = ["-b", "-h", "20"]
+    dmenu_run = "dmenu_run " ++ unlines dmenu_args ++ " -p 'Yes, Master?'"
+
+    editConfig = runInTerm "" (nvim ++ " " ++ configFile)
+    reloadConfig = spawn "xmonad --recompile; xmonad --restart"
 
     search = SM.submap $ searchMap $ S.promptSearch def
     searchSelect = SM.submap $ searchMap S.selectSearch
 
-    run = runInTerm ""
-
-    editConfig = run $ nvim ++ " " ++ configFile
-    reloadConfig = spawn "xmonad --recompile; xmonad --restart"
-
-    scrot = "sleep 0.2; scrot -sf -q 100 -t 25 " ++ scrotFile
-
     configFile = "~/.config/xmonad/xmonad.hs"
     scrotFile = "~/pictures/screnshots/%Y-%m-%d-%T-screenshot.png"
+
+    scrot = "sleep 0.2; scrot -sf -q 100 -t 25 " ++ scrotFile
 
 ------------------------------------------------------------------------------
 
@@ -504,8 +475,8 @@ xmStartupHook = do
     -- start some nice programs
     spawnOnce "~/.fehbg"
     spawnOnce "picom"
-    spawnOnce "xscreensaver -no-splash"
     spawnOnce "xrandr --output DP1 --primary --output HDMI1 --left-of DP1"
+    spawnOnce "xscreensaver -no-splash"
     -- Focus the second screen.
     screenWorkspace 1 >>= flip whenJust (windows . W.view)
     -- Force the second screen to "1_1", e.g. if the first screen already has
@@ -525,18 +496,15 @@ xmLayoutHook =
         . avoidStruts
         $ noBorders Full -- The available layouts start here
             ||| BSP.emptyBSP
-
--- \||| mosaic 9 [7,5]
--- \||| mosaic 2 [3,2]
--- \||| spiral (7/9)
--- \||| spiral (6/7)
--- \||| spiral (16/9)
+            ||| spiral (6 / 7)
 
 xmIcons :: Query [String]
-xmIcons = composeAll
-            [ className =? "Firefox" --> appIcon "\xE745"
-            , className =? "Spotify" --> appIcon "\xF1BC"
-            ]
+xmIcons =
+    composeAll
+        [ className =? "Firefox" --> appIcon "\xE745"
+        , className =? "Spotify" --> appIcon "\xF1BC"
+        ]
+
 -- not quite done tweaking layout list yet, also renaming layouts?
 
 -- create some X window rules:
@@ -559,7 +527,9 @@ xmManageHook =
         ]
 
 xmEventHook :: Event -> X All
-xmEventHook = swallowEventHook(className =? term) (return True)
+xmEventHook = swallowEventHook query (return True)
+  where
+    query = className =? "kitty" <||> className =? "alacritty"
 
 -- logging
 -- Perform an arbitrary action on each internal state change or X event.Bring
@@ -595,7 +565,7 @@ home = "/home/carterlevo"
 xmNBC, xmFBC, xmFont :: String
 xmNBC = "#DDDDDD"
 xmFBC = "#A865C9"
-xmFont = "xft:Hack Nerd Font Mono:weight=bold:pixelsize=14:antialias=true"
+xmFont = "xft:Anonymous Pro Mono:weight=bold:pixelsize=14:antialias=true"
 
 xmBW :: Dimension
 xmBW = 2
@@ -635,5 +605,3 @@ main =
         $ xmConf
             `removeKeys` rmKeyPairs
             `additionalKeys` xmKeyMaps
-
--------------------------------------------------------------------------------
