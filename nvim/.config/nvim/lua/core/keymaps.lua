@@ -1,7 +1,7 @@
 -- set some basic normal mode keymaps, mostly using leader
 nmap("<leader>w", cmd "write")
 nmap("<leader>c", cmd "close")
-nmap("<space>",   cmd "nohlsearch")
+nmap("<space>", cmd "nohlsearch")
 -- fast buffer switch
 nmap("<leader>b", ":ls<CR>:b<space>")
 -- pseudo auto close
@@ -35,7 +35,6 @@ nmap("[q", cmd "cprev")
 nmap("]q", cmd "cnext")
 nmap("[Q", cmd "cfirst")
 nmap("]Q", cmd "clast")
-
 
 nmap("[d", vim.diagnostic.goto_prev)
 nmap("]d", vim.diagnostic.goto_next)

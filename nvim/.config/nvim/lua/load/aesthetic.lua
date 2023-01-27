@@ -12,6 +12,14 @@ return {
     end,
   },
   {
+    "gen740/SmoothCursor.nvim",
+    config = function()
+      require("smoothcursor").setup {
+        fancy = { enable = true }
+      }
+    end,
+  },
+  {
     "xiyaowong/nvim-transparent",
     config = function()
       require("transparent").setup { enable = true }

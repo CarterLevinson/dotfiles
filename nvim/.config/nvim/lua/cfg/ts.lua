@@ -71,7 +71,7 @@ require('nvim-treesitter.configs').setup {
     select = {
       enable = true,
       keymaps = {
-       -- 'f' for function
+        -- 'f' for function
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
         -- 'F' for function call
@@ -80,7 +80,6 @@ require('nvim-treesitter.configs').setup {
         -- 'c' for class
         ["ac"] = "@class.outer",
         ["ic"] = "@class.inner",
-
         -- 'C' for  conditional or control
         ['aC'] = '@conditional.outer',
         ['iC'] = '@conditional.inner',
@@ -104,7 +103,7 @@ require('nvim-treesitter.configs').setup {
     },
     move = {
       enable = true,
-      set_jumps = true,    -- whether to set jumps in the jumplist
+      set_jumps = true, -- whether to set jumps in the jumplist
       goto_next_start = {
         [']m'] = '@function.outer',
         [']]'] = '@class.outer',
@@ -145,8 +144,8 @@ require('nvim-treesitter.configs').setup {
           list_definition_toc = 'g0',
           goto_next_usage = '<a-]>',
           goto_previous_usage = '<a-[>',
-       },
-     },
+        },
+      },
     },
   },
   playground = {
@@ -155,6 +154,6 @@ require('nvim-treesitter.configs').setup {
   query_linter = {
     enable = true,
     use_virtual_text = true,
-    line_events = {'BufWrite', 'CurshorHold'},
+    line_events = { 'BufWrite', 'CurshorHold' },
   },
 }

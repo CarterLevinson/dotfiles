@@ -95,17 +95,14 @@ local icons = {
   Operator = "",
   TypeParameter = " ",
 }
+
 -- setup cmp
 cmp.setup {
-  -- for dap/dapui
-  -- enabled = function()
-  --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-  --       or cmp_dap.is_dap_buffer()
-  -- end,
   -- nvim snippy
   snippet = {
     expand = function(args) require "snippy".expand_snippet(args.body) end,
   },
+  -- borders
   window = {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
@@ -124,6 +121,7 @@ cmp.setup {
       cmp.config.compare.order,
     },
   },
+  -- keymaps
   mapping = cmp.mapping.preset.insert(cmp_mappings),
   formatting = {
     format = function(entry, item)
@@ -146,6 +144,7 @@ cmp.setup {
       return item
     end
   },
+  -- set up sources
   sources = cmp.config.sources({
     { name = "nvim_lsp_signature_help" },
     { name = "nvim_lsp" },
@@ -176,13 +175,6 @@ cmp.setup.filetype("gitcommit", {
     { name = "buffer" },
   })
 })
-
--- set up DAP filetype completion
--- cmp.setup.filetype({ "dap-repl", "dapui-watches", "dapui-hover" }, {
---   sources = cmp.config.sources({
---     { name = "dap" },
---   })
--- })
 
 cmp.setup.filetype("tex", {
   sources = cmp.config.sources({

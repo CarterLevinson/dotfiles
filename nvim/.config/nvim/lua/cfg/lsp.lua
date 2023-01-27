@@ -43,9 +43,6 @@ local function create_commands(bufnr)
     end,
     { desc = "Close GHCi repl window" }
   )
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    callback = function() vim.lsp.buf.format { async = true } end
-  })
 end
 
 -- callback function on lsp buffer attatch
@@ -76,7 +73,6 @@ local function callback(_, bufnr)
 
   nmap("<leader>hh", haskell_tools.hoogle.hoogle_signature, opts)
 
-  -- nmap("<leader>ws", cmd "ListWS", opts)
   create_commands(bufnr)
 end
 

@@ -62,16 +62,21 @@ set.expandtab             = true
 set.autoindent            = true
 set.smartindent           = true
 
+-- treesitter folds
+set.foldmethod            = "expr"
+set.foldexpr              = "nvim_treesitter#foldexpr()"
+set.foldenable            = false
+
 -- set custom listchars
 set.listchars             = {
-   eol                    = "↲",
-   tab                    = "»·",
-   space                  = "␣",
-   trail                  = "·",
-   extends                = "☛",
-   precedes               = "☚",
-   conceal                = "┊",
-   nbsp                   = "☠",
+  eol                     = "↲",
+  tab                     = "»·",
+  space                   = "␣",
+  trail                   = "·",
+  extends                 = "☛",
+  precedes                = "☚",
+  conceal                 = "┊",
+  nbsp                    = "☠",
 }
 
 -- :grep to use ripgrep
@@ -80,9 +85,3 @@ vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
 
 -- set default colorscheme
 vim.cmd [[colorscheme vn-night]]
-
--- treesitter fold settings ?
--- set.foldmethod = "expr"
--- set.foldexpr = "nvim_treesitter#foldexpr()"
--- start every file with folds open
--- autocmd BufReadPost,FileReadPost * normal zR

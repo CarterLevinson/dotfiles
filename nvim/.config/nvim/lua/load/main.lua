@@ -1,25 +1,25 @@
 return {
   {
-    "ibhagwan/fzf-lua",
+    "ibhagwan/fzf-lua", -- fuzzy finder
     config = function()
       require("cfg.fzf")
     end
   },
   {
-    "akinsho/toggleterm.nvim",
+    "akinsho/toggleterm.nvim", -- better terminal integration
     config = function()
       require("cfg.toggleterm")
     end,
     version = "v2.*",
   },
   {
-    "liuchengxu/vista.vim",
+    "liuchengxu/vista.vim", -- lsp symbol browser
     config = function()
       require("cfg.vista")
     end,
   },
   {
-    "radenling/vim-dispatch-neovim",
+    "radenling/vim-dispatch-neovim", -- async :make
     dependencies = "tpope/vim-dispatch",
     config = function()
       vim.g.dispatch_no_maps = 1
@@ -27,7 +27,7 @@ return {
     event = "CmdlineEnter",
   },
   {
-    "danymat/neogen",
+    "danymat/neogen", -- create doc strings
     dependencies = "nvim-treesitter/nvim-treesitter",
     config = function()
       require("neogen").setup { snippet_engine = "snippy" }
@@ -35,7 +35,7 @@ return {
     event = "CmdlineEnter",
   },
   {
-    "notjedi/nvim-rooter.lua",
+    "notjedi/nvim-rooter.lua", -- auto cd to root directory
     config = function()
       require("nvim-rooter").setup { manual = false }
     end,

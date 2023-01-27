@@ -10,7 +10,6 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-nvim-lsp-signature-help",
     "hrsh7th/cmp-nvim-lsp-document-symbol",
-    -- "rcarriga/cmp-dap",
     "petertriho/cmp-git", -- extra cmp src plugins
     "ray-x/cmp-treesitter",
     "kristijanhusak/vim-dadbod-completion",
