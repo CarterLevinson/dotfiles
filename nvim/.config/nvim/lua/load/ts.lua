@@ -18,7 +18,7 @@ return {
   {
     "nvim-treesitter/playground",
     dependencies = "nvim-treesitter",
-    cmd = "TSPlagroundToggle",
+    event = "CmdlineEnter",
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -26,5 +26,12 @@ return {
     config = function()
       require("treesitter-context").setup {}
     end,
-  }
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    dependencies = "nvim-treesitter",
+    config = function()
+      require("nvim-ts-autotag").setup {}
+    end,
+  },
 }

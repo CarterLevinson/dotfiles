@@ -42,7 +42,7 @@ return {
   },
   {
     "tpope/vim-eunuch", -- misc but useful
-    "chrisbra/unicode.vim",
+    "vim-scripts/unicode.vim",
     "mbbill/undotree",
     "aymericbeaumet/vim-symlink",
     "jghauser/mkdir.nvim",

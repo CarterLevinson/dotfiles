@@ -1,3 +1,4 @@
+local haskell_tools = require("haskell-tools")
 local setlocal = vim.opt_local
 
 setlocal.tabstop     = 4
@@ -18,4 +19,25 @@ vim.api.nvim_buf_create_user_command(0, "Hdoc",
     vim.cmd [[TermEx direction=horizontal go_back = 0, cmd = 'hdc']]
   end,
   { desc = "Browse Haskell docs using hdc and toggleterm" }
+)
+
+vim.api.nvim_buf_create_user_command(0, "GHCiToggle",
+  function(_)
+    haskell_tools.repl.toggle()
+  end,
+  { desc = "Toggle GHCi repl for current package" }
+)
+
+vim.api.nvim_buf_create_user_command(0, "GHCiToggleBuffer",
+  function(_)
+    haskell_tools.repl.toggle(vim.fn.expand("%"))
+  end,
+  { desc = "Toggle GHCi repl for current buffer" }
+)
+
+vim.api.nvim_buf_create_user_command(0, "GHCiClose",
+  function(_)
+    haskell_tools.repl.quit()
+  end,
+  { desc = "Close GHCi repl window" }
 )

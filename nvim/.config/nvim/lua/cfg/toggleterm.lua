@@ -7,15 +7,12 @@ require("toggleterm").setup {
   persist_mode = true,
   close_on_exit = true,
 
-
   shade_terminals = true,
 
-  float_opts = {
-    border = "curved",
-  },
+  float_opts = { border = "curved" },
 }
 
---/keymaps
+-- toggle term keymaps
 nmap("<leader>tt", cmd "ToggleTermSendCurrentLine")
 nmap("<leader>tv", cmd "ToggleTermSendVisualSelection")
 nmap("<leader>tV", cmd "ToggleTermSendVisualLines")

@@ -4,17 +4,25 @@ local g = vim.g
 g.vista_icon_indent = { '╰─➤ ', '├─➤ ' }
 g.vista_sidebar_position = 'vertical topleft'
 g.vista_update_on_text_changed = 1
-g.vista_close_on_jump = 1
-g.close_on_fzf_select = 1
-g.vista_default_executive = 'nvim_lsp'
+-- g.vista_close_on_jump = 1
+-- g.close_on_fzf_select = 1
+g.vista_default_executive = 'ctags'
 g.vista_ctags_cmd = {
   haskell  = 'hasktags -x -o - -c',
   lhaskell = 'hasktags -x -o - -c',
 }
 
 g.vista_executive_for = {
-  haskell = 'ctags',
-  lhaskell = 'ctags',
+  awk = "nvim_lsp",
+  bash = "nvim_lsp",
+  c = "nvim_lsp",
+  cpp = "nvim_lsp",
+  cmake = "nvim_lsp",
+  css = "nvim_lsp",
+  html = "nvim_lsp",
+  json = "nvim_lsp",
+  lua = "nvim_lsp",
+  python = "nvim_lsp",
 }
 
 -- vista keymap

@@ -1,16 +1,18 @@
 return {
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = "kyazdani42/nvim-web-devicons",
+    dependencies = {
+      "kyazdani42/nvim-web-devicons",
+      "kdheepak/tabline.nvim",
+    },
     config = function()
-      require("cfg.lualine")
+      require("cfg.lines")
     end,
     event = "BufWinEnter",
   },
   {
     "kdheepak/tabline.nvim",
     dependencies = "kyazdani42/nvim-web-devicons",
-    config = true,
     event = "BufWinEnter",
   },
 }

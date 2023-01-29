@@ -1,14 +1,6 @@
 local snippy = require("snippy.mapping")
 local cmp_git = require("cmp_git")
--- local cmp_dap = require("cmp_dap")
 local cmp = require("cmp")
-
-
-imap("<Tab>", snippy.expand_or_advance("<Tab>"))
-smap("<Tab>", snippy.next("<Tab>"))
-ismap("S-<Tab>", snippy.previous("S-<Tab>"))
-xmap("<Tab>", snippy.cut_text, { remap = true })
-nmap("g<Tab>", snippy.cut_text, { remap = true })
 
 -- cmp mappings
 local function select_next(fallback)
@@ -68,7 +60,7 @@ local cmp_mappings = {
 }
 
 -- icon reference: https://www.nerdfonts.com/cheat-sheet
-local icons = {
+local lsp_icons = {
   Text = " ",
   Method = " ",
   Function = " ",
@@ -95,6 +87,13 @@ local icons = {
   Operator = "",
   TypeParameter = " ",
 }
+
+-- snippy mappings
+imap("<Tab>", snippy.expand_or_advance("<Tab>"))
+smap("<Tab>", snippy.next("<Tab>"))
+ismap("S-<Tab>", snippy.previous("S-<Tab>"))
+xmap("<Tab>", snippy.cut_text, { remap = true })
+nmap("g<Tab>", snippy.cut_text, { remap = true })
 
 -- setup cmp
 cmp.setup {
@@ -125,7 +124,7 @@ cmp.setup {
   mapping = cmp.mapping.preset.insert(cmp_mappings),
   formatting = {
     format = function(entry, item)
-      item.kind = string.format('%s %s', icons[item.kind], item.kind)
+      item.kind = string.format('%s %s', lsp_icons[item.kind], item.kind)
       item.menu = ({
         buffer = "[Buf]",
         nvim_lsp = "[LSP]",

@@ -12,39 +12,6 @@ local cmp = require("cmp_nvim_lsp")
 --create nvim-cmp capabilities for lsp client
 local cap = cmp.default_capabilities()
 
-local function create_commands(bufnr)
-  vim.api.nvim_buf_create_user_command(bufnr, "ListWS",
-    function(_)
-      vim.pretty_print(vim.lsp.buf.list_workspace_folders())
-    end,
-    { desc = "Print all folders in LSP workspace" }
-  )
-  vim.api.nvim_buf_create_user_command(bufnr, "Format",
-    function(_)
-      vim.lsp.buf.format { async = true }
-    end,
-    { desc = "Format current buffer with LSP" }
-  )
-  vim.api.nvim_buf_create_user_command(bufnr, "GHCiToggle",
-    function(_)
-      haskell_tools.repl.toggle()
-    end,
-    { desc = "Toggle GHCi repl for current package" }
-  )
-  vim.api.nvim_buf_create_user_command(bufnr, "GHCiToggleBuffer",
-    function(_)
-      haskell_tools.repl.toggle(vim.fn.expand("%"))
-    end,
-    { desc = "Toggle GHCi repl for current buffer" }
-  )
-  vim.api.nvim_buf_create_user_command(bufnr, "GHCiClose",
-    function(_)
-      haskell_tools.repl.quit()
-    end,
-    { desc = "Close GHCi repl window" }
-  )
-end
-
 -- callback function on lsp buffer attatch
 -- define keymaps for LSP buffers
 local function callback(_, bufnr)
@@ -73,7 +40,16 @@ local function callback(_, bufnr)
 
   nmap("<leader>hh", haskell_tools.hoogle.hoogle_signature, opts)
 
-  create_commands(bufnr)
+  vim.api.nvim_buf_create_user_command(bufnr, "ListWS",
+    function(_) vim.pretty_print(vim.lsp.buf.list_workspace_folders()) end,
+    { desc = "Print all folders in LSP workspace" }
+  )
+
+  vim.api.nvim_buf_create_user_command(bufnr, "Format",
+    function(_) vim.lsp.buf.format { async = true } end,
+    { desc = "Format current buffer with LSP" }
+  )
+
 end
 
 -- disable diagnostic inline virtual text and sign column, keep underline

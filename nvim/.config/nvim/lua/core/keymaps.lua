@@ -11,20 +11,20 @@ imap("{<CR>", "{<CR>}<ESC>O")
 tmap("<ESC>", "<C-\\><C-n>")
 
 -- better window movement bindings
-ntmap("<C-h>", cmd "wincmd h")
-ntmap("<C-j>", cmd "wincmd j")
-ntmap("<C-k>", cmd "wincmd k")
-ntmap("<C-l>", cmd "wincmd l")
+-- ntmap("<C-h>", cmd "wincmd h")
+-- ntmap("<C-j>", cmd "wincmd j")
+-- ntmap("<C-k>", cmd "wincmd k")
+-- ntmap("<C-l>", cmd "wincmd l")
 
 nmap("[b", cmd "bprev")
 nmap("]b", cmd "bnext")
 nmap("[B", cmd "bfirst")
 nmap("]B", cmd "blast")
 
-nmap("[t", cmd "tprev")
-nmap("]t", cmd "tnext")
-nmap("[T", cmd "tfirst")
-nmap("]T", cmd "tlast")
+nmap("[t", cmd "tabprev")
+nmap("]t", cmd "tabnext")
+nmap("[T", cmd "tabfirst")
+nmap("]T", cmd "tablast")
 
 nmap("[l", cmd "lprev")
 nmap("]l", cmd "lnext")

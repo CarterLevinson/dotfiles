@@ -37,7 +37,7 @@ set.lazyredraw            = true
 set.termguicolors         = true
 
 -- status
-set.laststatus            = 3
+set.laststatus            = 2
 set.showtabline           = 2
 
 
