@@ -40,7 +40,7 @@ export READER=/usr/bin/zathura
 export OPENER=/usr/bin/rifle
 export VIEWER=/usr/local/bin/nsxiv
 export TERMINAL=/usr/bin/kitty
-export PAGER='/usr/bin/less'
+export PAGER=/usr/bin/less
 
 # export LESS='--RAW-CONTROL-CHARS'
 # for colored man pages
@@ -79,7 +79,7 @@ alias vbm='VBoxManage'
 alias md='mdless'
 alias mutt='neomutt'
 alias pm='pacman'
-alias pac'='pacman
+alias pac='pacman'
 
 alias g='git'
 
