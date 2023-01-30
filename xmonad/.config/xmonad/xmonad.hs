@@ -556,7 +556,7 @@ altShift = alt .|. shift
 ctrlAlt = alt .|. ctrl
 
 term, browser, ranger, nvim, home :: String
-term = "alacritty"
+term = "kitty"
 browser = "qutebrowser"
 nvim = "nvim"
 ranger = "ranger"
