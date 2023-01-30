@@ -2,7 +2,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     config = function()
-      require("cfg.ts")
+      require("cfg.treesitter")
     end,
     build = ":TSUpdate",
     event = "BufWinEnter",
@@ -33,5 +33,13 @@ return {
     config = function()
       require("nvim-ts-autotag").setup {}
     end,
+  },
+  {
+    "danymat/neogen", -- create doc strings
+    dependencies = "nvim-treesitter",
+    config = function()
+      require("neogen").setup { snippet_engine = "snippy" }
+    end,
+    event = "CmdlineEnter",
   },
 }

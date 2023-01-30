@@ -10,7 +10,7 @@ imap("{<CR>", "{<CR>}<ESC>O")
 -- follow :h Terminal and bring back the escape key
 tmap("<ESC>", "<C-\\><C-n>")
 
--- better window movement bindings
+-- only uncomment these if not using vim-kitty-navigator
 -- ntmap("<C-h>", cmd "wincmd h")
 -- ntmap("<C-j>", cmd "wincmd j")
 -- ntmap("<C-k>", cmd "wincmd k")
@@ -48,3 +48,5 @@ nmap('[s', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
 nmap(']s', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
 
 --TODO: keymaps to exchange lines with [e and ]e
+nmap('[e', [[:m .+1<CR>==]])
+nmap(']e', [[:m .-2<CR>==]])

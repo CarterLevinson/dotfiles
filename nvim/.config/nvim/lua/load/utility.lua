@@ -1,22 +1,10 @@
 return {
   {
-    "ibhagwan/fzf-lua", -- fuzzy finder
-    config = function()
-      require("cfg.fzf")
-    end
-  },
-  {
     "akinsho/toggleterm.nvim", -- better terminal integration
     config = function()
       require("cfg.toggleterm")
     end,
     version = "v2.*",
-  },
-  {
-    "liuchengxu/vista.vim", -- lsp symbol browser
-    config = function()
-      require("cfg.vista")
-    end,
   },
   {
     "radenling/vim-dispatch-neovim", -- async :make
@@ -27,12 +15,16 @@ return {
     event = "CmdlineEnter",
   },
   {
-    "danymat/neogen", -- create doc strings
-    dependencies = "nvim-treesitter/nvim-treesitter",
+    "kristijanhusak/vim-dadbod-ui",
+    dependencies = "tpope/vim-dadbod",
+    cmd = { "DB", "DBUI" },
+  },
+  {
+    "ibhagwan/fzf-lua", -- fuzzy finder
+    dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
-      require("neogen").setup { snippet_engine = "snippy" }
-    end,
-    event = "CmdlineEnter",
+      require("cfg.fzf")
+    end
   },
   {
     "notjedi/nvim-rooter.lua", -- auto cd to projec root directory

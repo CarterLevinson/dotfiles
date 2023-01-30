@@ -30,4 +30,10 @@ return {
       require("cfg.trouble")
     end,
   },
+  {
+    "liuchengxu/vista.vim", -- lsp symbol browser
+    config = function()
+      require("cfg.vista")
+    end,
+  },
 }

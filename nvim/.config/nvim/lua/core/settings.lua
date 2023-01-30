@@ -37,9 +37,8 @@ set.lazyredraw            = true
 set.termguicolors         = true
 
 -- status
-set.laststatus            = 2
+set.laststatus            = 3
 set.showtabline           = 2
-
 
 -- line breaks
 set.tw                    = 80
@@ -82,6 +81,3 @@ set.listchars             = {
 -- :grep to use ripgrep
 vim.cmd [[set grepprg=rg\ --vimgrep\ --no-heading]]
 vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
-
--- set default colorscheme
-vim.cmd [[colorscheme vn-night]]

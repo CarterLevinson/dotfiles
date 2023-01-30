@@ -8,8 +8,7 @@ nmap("<leader>xl", cmd "Trouble loclist")
 nmap("<leader>xq", cmd "Trouble quickfix")
 nmap("<leader>xr", cmd "Trouble lsp_references")
 nmap("<leader>xc", cmd "TroubleClose")
-nmap("<leader>xt", cmd "TroubleToggle")
--- vim.keymap.set("n", "gR",         "<CMD>Trouble lsp_references<CR>", opts)
+-- nmap("<leader>xt", cmd "TroubleToggle")
 
 -- command aliases
 vim.cmd[[cnoreabbrev copen Trouble quickfix]]

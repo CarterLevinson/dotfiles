@@ -56,6 +56,7 @@ require("lualine").setup {
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = true,
+    theme = "vn-night",
   },
   sections = {
     lualine_a = { "mode" },
@@ -84,7 +85,6 @@ require("lualine").setup {
   extensions = {
     "fugitive",
     "man",
-    "nvim-dap-ui",
     "quickfix",
     "fzf",
   },

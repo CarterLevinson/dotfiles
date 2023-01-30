@@ -23,6 +23,7 @@ g.vista_executive_for = {
   json = "nvim_lsp",
   lua = "nvim_lsp",
   python = "nvim_lsp",
+  r = "nvim_lsp",
 }
 
 -- vista keymap
@@ -33,3 +34,7 @@ nmap('<leader>s', cmd "Vista!!")
 nmap('<leader>sc', cmd "Vista!")
 -- \sf: search tags recursively (may be slow on large projects)
 nmap('<leader>sf', cmd "Vista finder")
+-- \sl open vista using nvim lsp
+nmap('<leader>sl', cmd 'Vista nvim_lsp')
+-- \st open vista using ctags
+nmap('<leader>st', cmd 'Vista ctags')

@@ -1,11 +1,11 @@
 local whitespace = require("whitespace-nvim")
 
-whitespace.setup{
+whitespace.setup {
   ignored_filetypes = {
     'TelescopePrompt',
     'fzf',
-    'FzfLua',
-    'FZF',
+    -- 'FzfLua',
+    -- 'FZF',
     'Trouble',
     'toggleterm',
     'diff',
@@ -14,6 +14,7 @@ whitespace.setup{
     'fugitive',
     'lspinfo',
     'lazy',
+    'quickfix',
   }
 }
 

@@ -36,9 +36,7 @@ local function callback(_, bufnr)
   nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
   nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
 
-  nmap("<space>cl", vim.lsp.codelens.run, opts)
-
-  nmap("<leader>hh", haskell_tools.hoogle.hoogle_signature, opts)
+  nmap("<leader>cl", vim.lsp.codelens.run, opts)
 
   vim.api.nvim_buf_create_user_command(bufnr, "ListWS",
     function(_) vim.pretty_print(vim.lsp.buf.list_workspace_folders()) end,
@@ -49,7 +47,6 @@ local function callback(_, bufnr)
     function(_) vim.lsp.buf.format { async = true } end,
     { desc = "Format current buffer with LSP" }
   )
-
 end
 
 -- disable diagnostic inline virtual text and sign column, keep underline
@@ -65,7 +62,7 @@ local conf = {
   single_file_support = true,
 }
 
-local sumneko = {
+local sumneko_conf = {
   Lua = {
     completion = { callSnippet = "Replace" },
     diagnostics = { globals = { "vim" } },
@@ -81,7 +78,7 @@ local servers = {
   jsonls = {},
   pyright = {},
   r_language_server = {},
-  sumneko_lua = sumneko,
+  sumneko_lua = sumneko_conf,
 }
 
 -- setup lsp servers
@@ -99,7 +96,5 @@ clangd_tools.setup { server = conf }
 -- setup haskell tools
 haskell_tools.setup {
   hls = conf,
-  tools = {
-    repl = { handler = "toggleterm" }
-  },
+  tools = { repl = { handler = "toggleterm" } },
 }

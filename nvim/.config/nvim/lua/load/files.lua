@@ -2,7 +2,6 @@ return {
   "chrisbra/csv.vim", -- tabular data
 
   "vim-scripts/cscope.vim", -- C/C++
-  "vim-scripts/cpp_cppcheck.vim",
   "vim-scripts/a.vim",
 
   "mpickering/hlint-refactor-vim", -- Haskell
