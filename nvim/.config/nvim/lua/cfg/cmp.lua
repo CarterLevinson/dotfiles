@@ -138,7 +138,7 @@ cmp.setup {
         rg = "[RG]",
         calc = "[Expr]",
         dap = "[DAP]",
-        commandline = "[CMD]",
+        cmdline = "[CMD]",
       })[entry.source.name]
       return item
     end
