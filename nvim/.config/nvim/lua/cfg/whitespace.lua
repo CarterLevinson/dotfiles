@@ -4,8 +4,6 @@ whitespace.setup {
   ignored_filetypes = {
     'TelescopePrompt',
     'fzf',
-    -- 'FzfLua',
-    -- 'FZF',
     'Trouble',
     'toggleterm',
     'diff',

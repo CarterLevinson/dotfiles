@@ -65,10 +65,10 @@ local lsp_icons = {
   Method = " ",
   Function = " ",
   Constructor = " ",
-  Field = "ﰠ",
-  Variable = "",
+  Field = "ﰠ ",
+  Variable = " ",
   Class = " ",
-  Interface = "ﳤ",
+  Interface = "ﳤ ",
   Module = " ",
   Property = "襁",
   Unit = "塞",
@@ -80,12 +80,40 @@ local lsp_icons = {
   File = " ",
   Reference = " ",
   Folder = " ",
-  EnumMember = "ﴯ",
+  EnumMember = "ﴯ ",
   Constant = " ",
   Struct = "פּ ",
-  Event = "",
-  Operator = "",
+  Event = " ",
+  Operator = " ",
   TypeParameter = " ",
+}
+
+local cmp_kinds = {
+  Text = '  ',
+  Method = '  ',
+  Function = '  ',
+  Constructor = '  ',
+  Field = '  ',
+  Variable = '  ',
+  Class = '  ',
+  Interface = '  ',
+  Module = '  ',
+  Property = '  ',
+  Unit = '  ',
+  Value = '  ',
+  Enum = '  ',
+  Keyword = '  ',
+  Snippet = '  ',
+  Color = '  ',
+  File = '  ',
+  Reference = '  ',
+  Folder = '  ',
+  EnumMember = '  ',
+  Constant = '  ',
+  Struct = '  ',
+  Event = '  ',
+  Operator = '  ',
+  TypeParameter = '  ',
 }
 
 -- snippy mappings
@@ -99,7 +127,9 @@ nmap("g<Tab>", snippy.cut_text, { remap = true })
 cmp.setup {
   -- nvim snippy
   snippet = {
-    expand = function(args) require "snippy".expand_snippet(args.body) end,
+    expand = function(args)
+      require "snippy".expand_snippet(args.body)
+    end,
   },
   -- borders
   window = {
@@ -123,8 +153,9 @@ cmp.setup {
   -- keymaps
   mapping = cmp.mapping.preset.insert(cmp_mappings),
   formatting = {
+    fields = { "kind", "abbr", "menu" },
     format = function(entry, item)
-      item.kind = string.format('%s %s', lsp_icons[item.kind], item.kind)
+      item.kind = lsp_icons[item.kind]
       item.menu = ({
         buffer = "[Buf]",
         nvim_lsp = "[LSP]",
@@ -141,7 +172,27 @@ cmp.setup {
         cmdline = "[CMD]",
       })[entry.source.name]
       return item
-    end
+    end,
+    -- format = function(entry, item)
+      -- item.kind = string.format('%s %s', lsp_icons[item.kind], item.kind)
+      -- item.kind = lsp_icons[item.kind]
+      -- item.menu = ({
+      --   buffer = "[Buf]",
+      --   nvim_lsp = "[LSP]",
+      --   nvim_lsp_signature_help = "[LSP]",
+      --   nvim_lsp_document_symbol = "[LSP]",
+      --   treesitter = "[TS]",
+      --   snippy = "[Snip]",
+      --   lua_latex_symbols = "[TeX]",
+      --   git = "[Git]",
+      --   path = "[Path]",
+      --   rg = "[RG]",
+      --   calc = "[Expr]",
+      --   dap = "[DAP]",
+      --   cmdline = "[CMD]",
+      -- })[entry.source.name]
+      -- return item
+    -- end
   },
   -- set up sources
   sources = cmp.config.sources({

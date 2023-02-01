@@ -10,9 +10,4 @@ return {
     end,
     event = "BufWinEnter",
   },
-  -- {
-  --   "kdheepak/tabline.nvim",
-  --   dependencies = "kyazdani42/nvim-web-devicons",
-  --   event = "BufWinEnter",
-  -- },
 }

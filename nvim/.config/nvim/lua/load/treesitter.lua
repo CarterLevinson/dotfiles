@@ -18,28 +18,22 @@ return {
   {
     "nvim-treesitter/playground",
     dependencies = "nvim-treesitter",
-    event = "CmdlineEnter",
+    cmd = "TSPlaygroundToggle",
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
     dependencies = "nvim-treesitter",
-    config = function()
-      require("treesitter-context").setup {}
-    end,
+    config = true,
   },
   {
     "windwp/nvim-ts-autotag",
     dependencies = "nvim-treesitter",
-    config = function()
-      require("nvim-ts-autotag").setup {}
-    end,
+    config = true,
   },
   {
     "danymat/neogen", -- create doc strings
     dependencies = "nvim-treesitter",
-    config = function()
-      require("neogen").setup { snippet_engine = "snippy" }
-    end,
-    event = "CmdlineEnter",
+    opts = { snippet_engine = "snippy" },
+    cmd = "Neogen",
   },
 }

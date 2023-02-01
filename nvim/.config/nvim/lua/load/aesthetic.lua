@@ -4,7 +4,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd[[colorscheme vn-night]]
+      vim.cmd [[colorscheme vn-night]]
     end
   },
   {
@@ -13,21 +13,18 @@ return {
   },
   {
     "uga-rosa/ccc.nvim", -- colorizer and color picker
-    config = function()
-      require("ccc").setup { highlighter = { auto_enable = true } }
-    end,
+    opts = { highlighter = { auto_enable = true } },
+    event = "BufWinEnter",
   },
   {
     "karb94/neoscroll.nvim", -- window scrolling animations
-    config = function()
-      require("neoscroll").setup { easing_function = "sine" }
-    end,
+    opts = { easing_function = "sine" },
+    event = "BufWinEnter",
   },
   {
     "xiyaowong/nvim-transparent", -- transparent background
-    config = function()
-      require("transparent").setup { enable = true }
-    end,
+    opts = { enable = true },
+    event = "BufWinEnter",
   },
   {
     "anuvyklack/windows.nvim", -- window plugins
@@ -39,5 +36,6 @@ return {
       require("cfg.windows")
     end,
     enabled = false,
+    event = "BufWinEnter",
   },
 }

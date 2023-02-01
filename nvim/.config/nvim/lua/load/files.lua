@@ -1,26 +1,49 @@
 return {
-  "chrisbra/csv.vim", -- tabular data
-
-  "vim-scripts/cscope.vim", -- C/C++
-  "vim-scripts/a.vim",
-
-  "mpickering/hlint-refactor-vim", -- Haskell
-  "neovimhaskell/haskell-vim",
-  "vmchale/pointfree",
-  "Twinside/vim-hoogle",
-
-  "mboughaba/i3config.vim", -- syntax files
+  "mboughaba/i3config.vim", -- syntax highlighting
   "Fymyte/mbsync.vim",
   "kmonad/kmonad-vim",
   "jbmorgado/vim-pine-script",
   "fladson/vim-kitty",
 
   {
-    "knubie/vim-kitty-navigator",
-    build = "cp ./*.py ~/.config/kitty/",
+    "chrisbra/csv.vim", -- tabular data
+    ft = { "csv", "tsv" }
   },
 
-  "jghauser/follow-md-links.nvim", -- markdown
+  {
+    "vim-scripts/cscope.vim", -- C/C++
+    ft = { "c", "cpp" }
+  },
+
+  {
+    "vim-scripts/a.vim",
+    ft = { "c", "cpp" }
+  },
+
+  {
+    "mpickering/hlint-refactor-vim", -- Haskell
+    ft = { "haskell", "lhaskell" }
+  },
+
+  {
+    "neovimhaskell/haskell-vim",
+    ft = { "haskell", "lhaskell" }
+  },
+
+  {
+    "vmchale/pointfree",
+    ft = { "haskell", "lhaskell" }
+  },
+
+  {
+    "Twinside/vim-hoogle",
+    ft = { "haskell", "lhaskell" }
+  },
+
+  {
+    "jghauser/follow-md-links.nvim", -- Markdown
+    ft = { "markdown", "rmd" }
+  },
 
   {
     "iamcco/markdown-preview.nvim",
@@ -33,13 +56,16 @@ return {
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
+    ft = { "markdown", "rmd" },
   },
+
   {
-    "lervag/vimtex", -- LaTex
+    "lervag/vimtex", -- LaTeX
     config = function()
       vim.g.vimtex_inded_enabled = 1
       vim.g.vimtex_complete_closed_braces = 1
       vim.g.vimtex_view_method = get_filename(os.getenv("READER"))
     end,
+    ft = { "tex" },
   },
 }

@@ -28,9 +28,24 @@ return {
   },
   {
     "notjedi/nvim-rooter.lua", -- auto cd to projec root directory
+    opts = { manual = false },
+  },
+  {
+    "folke/trouble.nvim", -- diagnostic interface
+    dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
-      require("nvim-rooter").setup { manual = false }
+      require("cfg.trouble")
     end,
+  },
+  {
+    "liuchengxu/vista.vim", -- symbol browser
+    config = function()
+      require("cfg.vista")
+    end,
+  },
+  {
+    "knubie/vim-kitty-navigator",
+    build = "cp ./*.py ~/.config/kitty/"
   },
   {
     "tpope/vim-eunuch", -- misc but useful
