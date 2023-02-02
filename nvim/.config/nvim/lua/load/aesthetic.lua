@@ -1,6 +1,6 @@
 return {
   {
-    "nxvu699134/vn-night.nvim", -- color schemes
+    "nxvu699134/vn-night.nvim", -- main color scheme
     lazy = false,
     priority = 1000,
     config = function()
@@ -8,7 +8,7 @@ return {
     end
   },
   {
-    "ofirgall/ofirkai.nvim",
+    "ofirgall/ofirkai.nvim", -- alt colorschemes
     "lourenci/github-colors",
   },
   {

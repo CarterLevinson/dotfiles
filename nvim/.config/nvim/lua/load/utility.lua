@@ -46,12 +46,16 @@ return {
   },
   {
     "knubie/vim-kitty-navigator",
-    build = "cp ./*.py ~/.config/kitty/"
+    cond = os.getenv("TERM") == "xterm-kitty",
+    config = function()
+      require("cfg.kitty-navigator")
+    end,
+    build = "cp ./*.py ~/.config/kitty/",
   },
   {
     "tpope/vim-eunuch", -- misc but useful
     "mbbill/undotree",
-    -- "vim-scripts/unicode.vim",
+    "vim-scripts/unicode.vim",
     "aymericbeaumet/vim-symlink",
     "jghauser/mkdir.nvim",
   },

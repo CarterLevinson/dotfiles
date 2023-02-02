@@ -1,21 +1,18 @@
 -- set some basic normal mode keymaps, mostly using leader
 nmap("<leader>w", cmd "write")
 nmap("<leader>c", cmd "close")
-nmap("<space>", cmd "nohlsearch")
+nmap("<space>",   cmd "nohlsearch")
+
 -- fast buffer switch
 nmap("<leader>b", ":ls<CR>:b<space>")
--- pseudo auto close
+
+-- pseudo auto close for '{' & '}'
 imap("{<CR>", "{<CR>}<ESC>O")
 
 -- follow :h Terminal and bring back the escape key
 tmap("<ESC>", "<C-\\><C-n>")
 
--- only uncomment these if not using vim-kitty-navigator
--- ntmap("<C-h>", cmd "wincmd h")
--- ntmap("<C-j>", cmd "wincmd j")
--- ntmap("<C-k>", cmd "wincmd k")
--- ntmap("<C-l>", cmd "wincmd l")
-
+-- tpope inspired mappings w/o heavy plugin
 nmap("[b", cmd "bprev")
 nmap("]b", cmd "bnext")
 nmap("[B", cmd "bfirst")
@@ -39,14 +36,20 @@ nmap("]Q", cmd "clast")
 nmap("[d", vim.diagnostic.goto_prev)
 nmap("]d", vim.diagnostic.goto_next)
 
--- insert blank lines, using '[' and ']' as leader
-nmap("[<space>", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
-nmap("]<space>", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
+-- insert / remove blank lines, using '[' and ']' as leader
+nmap("[s", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
+nmap("]s", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
+nmap('[S', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
+nmap(']S', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
 
--- remove blank lines, using "[' and ']' as leader
-nmap('[s', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
-nmap(']s', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
-
---TODO: keymaps to exchange lines with [e and ]e
+-- keymaps to exchange lines with [e and ]e as leader
 nmap('[e', [[:m .+1<CR>==]])
 nmap(']e', [[:m .-2<CR>==]])
+
+-- only if not using vim-kitty-navigator
+if os.getenv("TERM") ~= "xterm-kitty" then
+  ntmap("<C-h>", cmd "wincmd h")
+  ntmap("<C-j>", cmd "wincmd j")
+  ntmap("<C-k>", cmd "wincmd k")
+  ntmap("<C-l>", cmd "wincmd l")
+end

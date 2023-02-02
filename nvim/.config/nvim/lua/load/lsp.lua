@@ -19,7 +19,7 @@ return {
     dependencies = "antoinemadec/FixCursorHold.nvim",
     config = function()
       require("nvim-lightbulb").setup { autocmd = { enabled = true } }
-      vim.fn.sign_define("LightBulbSign", { text = ' ' })
+      vim.fn.sign_define("LightBulbSign", { text = " " })
     end
   },
   { "j-hui/fidget.nvim", config = true },

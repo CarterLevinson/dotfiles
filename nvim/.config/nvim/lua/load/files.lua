@@ -66,6 +66,5 @@ return {
       vim.g.vimtex_complete_closed_braces = 1
       vim.g.vimtex_view_method = get_filename(os.getenv("READER"))
     end,
-    ft = { "tex" },
   },
 }

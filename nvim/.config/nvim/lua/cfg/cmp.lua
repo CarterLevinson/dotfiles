@@ -133,17 +133,14 @@ cmp.setup {
       item.menu = ({
         buffer = "[Buf]",
         nvim_lsp = "[LSP]",
-        nvim_lsp_signature_help = "[LSP]",
-        nvim_lsp_document_symbol = "[LSP]",
-        treesitter = "[TS]",
+        nvim_lsp_signature_help = "[Sig]",
+        nvim_lsp_document_symbol = "[Sym]",
+        cmdline = "[CMD]",
         snippy = "[Snip]",
-        lua_latex_symbols = "[TeX]",
         git = "[Git]",
         path = "[Path]",
-        rg = "[RG]",
-        calc = "[Expr]",
-        dap = "[DAP]",
-        cmdline = "[CMD]",
+        rg = "[Grep]",
+        ["lua-latex-symbols"] = "[TeX]",
       })[entry.source.name]
       return item
     end,
@@ -153,11 +150,9 @@ cmp.setup {
     { name = "nvim_lsp_signature_help" },
     { name = "nvim_lsp" },
     { name = "snippy" },
-    { name = "treesitter" },
     { name = "rg" },
     { name = "path" },
-    { name = "lua_latex_symbols" },
-    { name = "calc" },
+    { name = "lua-latex-symbols" },
   })
 }
 
@@ -170,6 +165,7 @@ cmp.setup.filetype({ "sql", "mysql", "plsql" }, {
   })
 })
 
+
 -- Set configuration for specific filetype (i.e. git commit).
 cmp_git.setup {}
 cmp.setup.filetype("gitcommit", {
@@ -180,11 +176,12 @@ cmp.setup.filetype("gitcommit", {
   })
 })
 
-cmp.setup.filetype("tex", {
+cmp.setup.filetype({"tex", "plaintex"}, {
   sources = cmp.config.sources({
     { name = "omni" },
     { name = "snippy" },
     { name = "buffer" },
+    { name = "lua-latex-symbols" },
   })
 })
 
