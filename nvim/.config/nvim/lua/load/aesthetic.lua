@@ -35,7 +35,7 @@ return {
     config = function()
       require("cfg.windows")
     end,
-    enabled = false,
     event = "BufWinEnter",
+    enabled = false,
   },
 }

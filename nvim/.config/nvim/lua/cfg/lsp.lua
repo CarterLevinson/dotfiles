@@ -1,16 +1,24 @@
 local clangd_tools = require("clangd_extensions")
 local haskell_tools = require("haskell-tools")
+
+local lspconfig = require("lspconfig")
+local cmp = require("cmp_nvim_lsp")
+
 local neodev = require("neodev")
 neodev.setup {}
 
 local goto_preview = require('goto-preview')
 goto_preview.setup {}
 
-local lspconfig = require("lspconfig")
-local cmp = require("cmp_nvim_lsp")
+
+local diaglist = require("diaglist")
+diaglist.init {}
+
+nmap("<leader>dw", diaglist.open_all_diagnostics)
+nmap("<leader>db", diaglist.open_buffer_diagnostics)
 
 --create nvim-cmp capabilities for lsp client
-local cap = cmp.default_capabilities()
+local capabilities = cmp.default_capabilities()
 
 -- callback function on lsp buffer attatch
 -- define keymaps for LSP buffers
@@ -28,7 +36,7 @@ local function callback(_, bufnr)
 
   nmap("K", vim.lsp.buf.hover, opts)
   nmap("<leader>h", vim.lsp.buf.signature_help, opts)
-  nmap("<leader>d", vim.lsp.buf.type_definition, opts)
+  nmap("<leader>D", vim.lsp.buf.type_definition, opts)
   nmap("<leader>ca", cmd "CodeActionMenu", opts)
   nmap("<leader>rn", ":IncRename ", opts)
   -- nmap("<leader>rn", vim.lsp.buf.rename, opts)
@@ -56,7 +64,7 @@ vim.diagnostic.config { virtual_text = false, signs = false }
 local conf = {
   on_attach = callback,
   settings = {
-    capabilities = cap,
+    capabilities = capabilities,
     telemetry = { enable = false },
   },
   single_file_support = true,

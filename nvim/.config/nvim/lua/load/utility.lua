@@ -36,6 +36,7 @@ return {
     config = function()
       require("cfg.trouble")
     end,
+    enabled = false,
   },
   {
     "liuchengxu/vista.vim", -- symbol browser
@@ -49,8 +50,8 @@ return {
   },
   {
     "tpope/vim-eunuch", -- misc but useful
-    "vim-scripts/unicode.vim",
     "mbbill/undotree",
+    -- "vim-scripts/unicode.vim",
     "aymericbeaumet/vim-symlink",
     "jghauser/mkdir.nvim",
   },

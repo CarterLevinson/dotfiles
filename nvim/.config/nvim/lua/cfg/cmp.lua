@@ -1,6 +1,7 @@
 local snippy = require("snippy.mapping")
 local cmp_git = require("cmp_git")
 local cmp = require("cmp")
+local set = vim.opt
 
 -- cmp mappings
 local function select_next(fallback)
@@ -88,34 +89,6 @@ local lsp_icons = {
   TypeParameter = " ",
 }
 
-local cmp_kinds = {
-  Text = '  ',
-  Method = '  ',
-  Function = '  ',
-  Constructor = '  ',
-  Field = '  ',
-  Variable = '  ',
-  Class = '  ',
-  Interface = '  ',
-  Module = '  ',
-  Property = '  ',
-  Unit = '  ',
-  Value = '  ',
-  Enum = '  ',
-  Keyword = '  ',
-  Snippet = '  ',
-  Color = '  ',
-  File = '  ',
-  Reference = '  ',
-  Folder = '  ',
-  EnumMember = '  ',
-  Constant = '  ',
-  Struct = '  ',
-  Event = '  ',
-  Operator = '  ',
-  TypeParameter = '  ',
-}
-
 -- snippy mappings
 imap("<Tab>", snippy.expand_or_advance("<Tab>"))
 smap("<Tab>", snippy.next("<Tab>"))
@@ -123,6 +96,7 @@ ismap("S-<Tab>", snippy.previous("S-<Tab>"))
 xmap("<Tab>", snippy.cut_text, { remap = true })
 nmap("g<Tab>", snippy.cut_text, { remap = true })
 
+set.completeopt = { "menu", "menuone", "noselect" }
 -- setup cmp
 cmp.setup {
   -- nvim snippy
@@ -173,26 +147,6 @@ cmp.setup {
       })[entry.source.name]
       return item
     end,
-    -- format = function(entry, item)
-      -- item.kind = string.format('%s %s', lsp_icons[item.kind], item.kind)
-      -- item.kind = lsp_icons[item.kind]
-      -- item.menu = ({
-      --   buffer = "[Buf]",
-      --   nvim_lsp = "[LSP]",
-      --   nvim_lsp_signature_help = "[LSP]",
-      --   nvim_lsp_document_symbol = "[LSP]",
-      --   treesitter = "[TS]",
-      --   snippy = "[Snip]",
-      --   lua_latex_symbols = "[TeX]",
-      --   git = "[Git]",
-      --   path = "[Path]",
-      --   rg = "[RG]",
-      --   calc = "[Expr]",
-      --   dap = "[DAP]",
-      --   cmdline = "[CMD]",
-      -- })[entry.source.name]
-      -- return item
-    -- end
   },
   -- set up sources
   sources = cmp.config.sources({
@@ -235,11 +189,11 @@ cmp.setup.filetype("tex", {
 })
 
 -- use buffer and lsp document symbol source for `/`
-cmp.setup.cmdline("/", {
+cmp.setup.cmdline({ "/", "?" }, {
   mapping = cmp.mapping.preset.cmdline(cmp_mappings),
-  -- view = {
-  --   entries = { name = "wildmenu", separator = "|" }
-  -- },
+  view = {
+    entries = { name = "custom", selection_order = "near_cursor" }
+  },
   sources = cmp.config.sources({
     { name = "nvim_lsp_document_symbol" }
   }, {
