@@ -10,17 +10,10 @@ g.loaded_netrw            = 1
 g.loaded_netrwPlugin      = 1
 g.loaded_netrwSettings    = 1
 
-set.spelllang             = "en_us"
-set.wildignore            = {
-  "*.o",
-  "*.so",
-  "*.pyc",
-  "*.class",
-  "*.hi"
-}
-
 set.confirm               = true
 set.vb                    = true
+
+set.spelllang             = "en_us"
 
 set.browsedir             = "buffer"
 set.diffopt               = "vertical"
@@ -66,6 +59,15 @@ set.foldmethod            = "expr"
 set.foldexpr              = "nvim_treesitter#foldexpr()"
 set.foldenable            = false
 
+-- ignore compiled files
+set.wildignore            = {
+  "*.o",
+  "*.so",
+  "*.pyc",
+  "*.class",
+  "*.hi"
+}
+
 -- set custom listchars
 set.listchars             = {
   eol                     = "↲",
@@ -78,6 +80,8 @@ set.listchars             = {
   nbsp                    = "☠",
 }
 
--- set :grep to use ripgrep
-vim.cmd [[set grepprg=rg\ --vimgrep\ --no-heading]]
-vim.cmd [[set grepformat=%f:%l:%c:%m,%f:%l:%m]]
+-- set :grep to use ripgrep if installed
+if vim.fn.executable("rg") == 1 then
+  set.grepprg    = "rg --vimgrep --no-heading"
+  set.grepformat = "%f:%l:%c:%m,%f:%l:%m"
+end

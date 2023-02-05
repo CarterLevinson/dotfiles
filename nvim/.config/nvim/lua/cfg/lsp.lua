@@ -1,4 +1,4 @@
-local clangd_tools = require("clangd_extensions")
+local clangd_extensions = require("clangd_extensions")
 local haskell_tools = require("haskell-tools")
 
 local lspconfig = require("lspconfig")
@@ -9,13 +9,6 @@ neodev.setup {}
 
 local goto_preview = require('goto-preview')
 goto_preview.setup {}
-
-
-local diaglist = require("diaglist")
-diaglist.init {}
-
-nmap("<leader>dw", diaglist.open_all_diagnostics)
-nmap("<leader>db", diaglist.open_buffer_diagnostics)
 
 --create nvim-cmp capabilities for lsp client
 local capabilities = cmp.default_capabilities()
@@ -37,9 +30,8 @@ local function callback(_, bufnr)
   nmap("K", vim.lsp.buf.hover, opts)
   nmap("<leader>h", vim.lsp.buf.signature_help, opts)
   nmap("<leader>D", vim.lsp.buf.type_definition, opts)
+  nmap("<leader>rn", vim.lsp.buf.rename, opts)
   nmap("<leader>ca", cmd "CodeActionMenu", opts)
-  nmap("<leader>rn", ":IncRename ", opts)
-  -- nmap("<leader>rn", vim.lsp.buf.rename, opts)
 
   nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
   nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
@@ -71,10 +63,33 @@ local conf = {
 }
 
 local sumneko_conf = {
-  Lua = {
-    completion = { callSnippet = "Replace" },
-    diagnostics = { globals = { "vim" } },
+  settings = {
+    Lua = {
+      completion = { callSnippet = "Replace" },
+      diagnostics = { globals = { "vim" } },
+    }
   }
+}
+
+local haskell_conf = {
+  settings = {
+    haskell = {
+      hlintOn = true,
+      checkProject = true,
+      formattingProvider = "formolu",
+    }
+  }
+}
+
+local clangd_conf = {
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy",
+    -- "--function-arg-placeholders",
+    "--suggest-missing-includes",
+    "--header-insertion=iwyu",
+  },
 }
 
 local servers = {
@@ -90,19 +105,21 @@ local servers = {
 }
 
 -- setup lsp servers
-for lsp, settings in pairs(servers) do
+for lsp, opts in pairs(servers) do
   local options = conf
-  if not (next(settings) == nil) then
-    options.settings = vim.tbl_extend("force", options.settings, settings)
+  if not (next(opts) == nil) then
+    options = vim.tbl_extend("force", options, opts)
   end
   lspconfig[lsp].setup(options)
 end
 
 -- set up clangd lsp extensions
-clangd_tools.setup { server = conf }
+clangd_extensions.setup {
+  server = vim.tbl_extend("force", conf, clangd_conf)
+}
 
 -- setup haskell tools
 haskell_tools.setup {
-  hls = conf,
+  hls = vim.tbl_extend("force", conf, haskell_conf),
   tools = { repl = { handler = "toggleterm" } },
 }

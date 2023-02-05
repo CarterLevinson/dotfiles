@@ -10,4 +10,19 @@ return {
     end,
     event = "BufWinEnter",
   },
+  {
+    "utilyre/barbecue.nvim",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "kyazdani42/nvim-web-devicons",
+    },
+    opts = {
+      theme = {
+        dirname = { fg = "#FAF9F6" },
+        basename = { bold = true },
+        context = {},
+      },
+    },
+  }
 }

@@ -21,11 +21,6 @@ return {
   },
 
   {
-    "mpickering/hlint-refactor-vim", -- Haskell
-    ft = { "haskell", "lhaskell" }
-  },
-
-  {
     "neovimhaskell/haskell-vim",
     ft = { "haskell", "lhaskell" }
   },

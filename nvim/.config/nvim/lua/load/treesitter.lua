@@ -24,6 +24,7 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     dependencies = "nvim-treesitter",
     config = true,
+    enabled = false,
   },
   {
     "windwp/nvim-ts-autotag",

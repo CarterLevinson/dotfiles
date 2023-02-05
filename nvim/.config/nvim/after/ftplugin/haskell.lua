@@ -4,11 +4,6 @@ setlocal.shiftwidth  = 4
 setlocal.softtabstop = 4
 setlocal.equalprg    = "hindent"
 
--- hlint refactor plugin
--- bindings:
--- `to` apply one hint at cursor pos
--- `ta` apply all suggestions in the file
-
 -- haskell point free plugin
 nxmap("<leader>pf", "<Plug>Pointfree", { buffer = 0 })
 

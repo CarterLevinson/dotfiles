@@ -11,6 +11,7 @@ return {
     "hrsh7th/cmp-nvim-lsp-signature-help",
     "hrsh7th/cmp-nvim-lsp-document-symbol",
     "petertriho/cmp-git", -- extra cmp src plugins
+    -- "rcarriga/cmp-dap",
     "kristijanhusak/vim-dadbod-completion",
     "amarakon/nvim-cmp-lua-latex-symbols",
     "lukas-reineke/cmp-rg",

@@ -1,25 +1,5 @@
 return {
   {
-    "akinsho/toggleterm.nvim", -- better terminal integration
-    config = function()
-      require("cfg.toggleterm")
-    end,
-    version = "v2.*",
-  },
-  {
-    "radenling/vim-dispatch-neovim", -- async :make
-    dependencies = "tpope/vim-dispatch",
-    config = function()
-      vim.g.dispatch_no_maps = 1
-    end,
-    event = "CmdlineEnter",
-  },
-  {
-    "kristijanhusak/vim-dadbod-ui",
-    dependencies = "tpope/vim-dadbod",
-    cmd = { "DB", "DBUI" },
-  },
-  {
     "ibhagwan/fzf-lua", -- fuzzy finder
     dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
@@ -27,8 +7,11 @@ return {
     end
   },
   {
-    "notjedi/nvim-rooter.lua", -- auto cd to projec root directory
-    opts = { manual = false },
+    "akinsho/toggleterm.nvim", -- better terminal integration
+    config = function()
+      require("cfg.toggleterm")
+    end,
+    version = "v2.*",
   },
   {
     "folke/trouble.nvim", -- diagnostic interface
@@ -36,13 +19,29 @@ return {
     config = function()
       require("cfg.trouble")
     end,
-    enabled = false,
   },
   {
     "liuchengxu/vista.vim", -- symbol browser
     config = function()
       require("cfg.vista")
     end,
+  },
+  {
+    "radenling/vim-dispatch-neovim", -- async build cmds
+    dependencies = "tpope/vim-dispatch",
+    config = function()
+      vim.g.dispatch_no_maps = 1
+    end,
+    event = "CmdlineEnter",
+  },
+  {
+    "kristijanhusak/vim-dadbod-ui", -- vim database interface
+    dependencies = "tpope/vim-dadbod",
+    cmd = { "DB", "DBUI" },
+  },
+  {
+    "notjedi/nvim-rooter.lua", -- auto cd to projec root directory
+    opts = { manual = false },
   },
   {
     "knubie/vim-kitty-navigator",
@@ -52,11 +51,7 @@ return {
     end,
     build = "cp ./*.py ~/.config/kitty/",
   },
-  {
-    "tpope/vim-eunuch", -- misc but useful
-    "mbbill/undotree",
-    "vim-scripts/unicode.vim",
-    "aymericbeaumet/vim-symlink",
-    "jghauser/mkdir.nvim",
-  },
+  { "tpope/vim-eunuch" },
+  { "aymericbeaumet/vim-symlink" },
+  { "jghauser/mkdir.nvim" },
 }

@@ -16,4 +16,6 @@ return {
       nxmap('ga', '<Plug>(EasyAlign)')
     end,
   },
+  { "mbbill/undotree" },
+  { "vim-scripts/unicode.vim", enabled = false },
 }

@@ -1,5 +1,4 @@
 require("trouble").setup{}
---set up trouble keybindings
 
 -- Trouble keymaps
 nmap("<leader>x",  cmd "TroubleToggle")
