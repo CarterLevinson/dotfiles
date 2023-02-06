@@ -1,15 +1,18 @@
 return {
   {
-    "nxvu699134/vn-night.nvim", -- main color scheme
+    "catppuccin/nvim",
     lazy = false,
     priority = 1000,
+    name = "catppuccin",
     config = function()
-      vim.cmd.colorscheme("vn-night")
+      vim.cmd.colorscheme [[catppuccin]]
     end
   },
   {
     "ofirgall/ofirkai.nvim", -- alt colorschemes
+    "shaunsingh/moonlight.nvim",
     "lourenci/github-colors",
+    "bluz71/vim-nightfly-colors",
   },
   {
     "uga-rosa/ccc.nvim", -- colorizer and color picker

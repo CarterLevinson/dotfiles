@@ -41,7 +41,7 @@ return {
   },
   {
     "notjedi/nvim-rooter.lua", -- auto cd to projec root directory
-    opts = { manual = false },
+    config = true,
   },
   {
     "knubie/vim-kitty-navigator",

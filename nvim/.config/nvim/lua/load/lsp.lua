@@ -14,6 +14,19 @@ return {
     end,
   },
   {
+    "j-hui/fidget.nvim",
+    config = true
+  },
+  {
+    "weilbith/nvim-code-action-menu",
+    cmd = 'CodeActionMenu'
+  },
+  {
+    "amrbashir/nvim-docs-view",
+    cmd = "DocsViewToggle",
+    config = true
+  },
+  {
     "kosayoda/nvim-lightbulb",
     dependencies = "antoinemadec/FixCursorHold.nvim",
     config = function()
@@ -21,7 +34,4 @@ return {
       vim.fn.sign_define("LightBulbSign", { text = " " })
     end
   },
-  { "j-hui/fidget.nvim", config = true },
-  { "weilbith/nvim-code-action-menu", cmd = 'CodeActionMenu' },
-  { "amrbashir/nvim-docs-view", cmd = "DocsViewToggle", config = true },
 }

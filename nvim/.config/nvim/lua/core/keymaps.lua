@@ -49,9 +49,9 @@ nmap('[e', [[:m .+1<CR>==]])
 nmap(']e', [[:m .-2<CR>==]])
 
 -- insert / remove blank lines, using '[' and ']' as leader
-nmap("[s", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
-nmap("]s", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
-nmap('[S', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
-nmap(']S', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
+nmap("[<space>", [[:set paste<CR>m`O<ESC>``:set nopaste<CR>]])
+nmap("]<space>", [[:set paste<CR>m`o<ESC>``:set nopaste<CR>]])
+-- nmap('[S', [[m`:silent -g/\m^s*$/d<CR>``:noh<CR>]])
+-- nmap(']S', [[m`:silent +g/\m^\s*$/d<CR>``:noh<CR>]])
 
 

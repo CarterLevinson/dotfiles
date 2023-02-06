@@ -38,7 +38,7 @@ end
 
 local function select_entry(fallback)
   if cmp.visible() then
-    cmp.confirm({ select = true })
+    cmp.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace })
   else
     fallback()
   end
@@ -58,35 +58,6 @@ local cmp_mappings = {
   ["<C-f>"] = cmp.mapping.scroll_docs(4),
 
   ["<C-space>"] = cmp.mapping(select_entry)
-}
-
--- icon reference: https://www.nerdfonts.com/cheat-sheet
-local lsp_icons = {
-  Text = " ",
-  Method = " ",
-  Function = " ",
-  Constructor = " ",
-  Field = "ﰠ ",
-  Variable = " ",
-  Class = " ",
-  Interface = "ﳤ ",
-  Module = " ",
-  Property = "襁",
-  Unit = "塞",
-  Value = " ",
-  Keyword = " ",
-  Snippet = " ",
-  Color = " ",
-  Enum = "練",
-  File = " ",
-  Reference = " ",
-  Folder = " ",
-  EnumMember = "ﴯ ",
-  Constant = " ",
-  Struct = "פּ ",
-  Event = " ",
-  Operator = " ",
-  TypeParameter = " ",
 }
 
 -- snippy mappings
@@ -129,7 +100,34 @@ cmp.setup {
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, item)
-      item.kind = lsp_icons[item.kind]
+      -- item.kind = lsp_icons[item.kind]
+      item.kind = ({
+        Text = " ",
+        Method = " ",
+        Function = " ",
+        Constructor = " ",
+        Field = "ﰠ ",
+        Variable = " ",
+        Class = " ",
+        Interface = "ﳤ ",
+        Module = " ",
+        Property = "襁",
+        Unit = "塞",
+        Value = " ",
+        Keyword = " ",
+        Snippet = " ",
+        Color = " ",
+        Enum = "練",
+        File = " ",
+        Reference = " ",
+        Folder = " ",
+        EnumMember = "ﴯ ",
+        Constant = " ",
+        Struct = "פּ ",
+        Event = " ",
+        Operator = " ",
+        TypeParameter = " ",
+      })[item.kind]
       item.menu = ({
         buffer = "[Buf]",
         nvim_lsp = "[LSP]",
@@ -150,7 +148,7 @@ cmp.setup {
     { name = "nvim_lsp_signature_help" },
     { name = "nvim_lsp" },
     { name = "snippy" },
-    { name = "rg" },
+    { name = "rg", max_item_count = 15 },
     { name = "path" },
     { name = "lua-latex-symbols" },
   })

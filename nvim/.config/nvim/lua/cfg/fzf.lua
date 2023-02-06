@@ -1,6 +1,6 @@
 local fzf = require("fzf-lua")
 
-fzf.setup { winopts = { split = "belowright new" } }
+fzf.setup { winopts = { fullscreen = true } }
 
 -- fzf keymaps
 nmap("<leader>f",  fzf.files)
@@ -18,4 +18,4 @@ nmap("<leader>fS", fzf.lsp_workspace_symbols)
 nmap("<leader>fi", fzf.lsp_implementations)
 
 -- command aliases
-vim.cmd[[cnoreabbrev FZF FzfLua]]
+vim.cmd [[cnoreabbrev FZF FzfLua]]

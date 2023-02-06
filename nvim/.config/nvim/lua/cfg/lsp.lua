@@ -53,7 +53,7 @@ end
 -- use trouble as interface to diagnostics
 vim.diagnostic.config { virtual_text = false, signs = false }
 
-local conf = {
+local default_conf = {
   on_attach = callback,
   settings = {
     capabilities = capabilities,
@@ -84,10 +84,11 @@ local haskell_conf = {
 local clangd_conf = {
   cmd = {
     "clangd",
-    "--background-index",
     "--clang-tidy",
-    -- "--function-arg-placeholders",
-    "--suggest-missing-includes",
+    "--background-index",
+    "--all-scopes-completion",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
     "--header-insertion=iwyu",
   },
 }
@@ -106,20 +107,20 @@ local servers = {
 
 -- setup lsp servers
 for lsp, opts in pairs(servers) do
-  local options = conf
+  local options = default_conf
   if not (next(opts) == nil) then
-    options = vim.tbl_extend("force", options, opts)
+    options = vim.tbl_deep_extend("force", options, opts)
   end
   lspconfig[lsp].setup(options)
 end
 
 -- set up clangd lsp extensions
 clangd_extensions.setup {
-  server = vim.tbl_extend("force", conf, clangd_conf)
+  server = vim.tbl_deep_extend("force", default_conf, clangd_conf)
 }
 
 -- setup haskell tools
 haskell_tools.setup {
-  hls = vim.tbl_extend("force", conf, haskell_conf),
+  hls = vim.tbl_deep_extend("force", default_conf, haskell_conf),
   tools = { repl = { handler = "toggleterm" } },
 }

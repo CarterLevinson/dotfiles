@@ -39,14 +39,14 @@ local diag = {
 
 local display_byte = [["0x%B"]]
 
-require("tabline").setup {
-  enable = false,
-  options = {
-    show_filename_only = true,
-    show_bufnr = true,
-    show_tabs_always = true,
-  }
-}
+-- require("tabline").setup {
+--   enable = false,
+--   options = {
+--     show_filename_only = true,
+--     show_bufnr = true,
+--     show_tabs_always = true,
+--   }
+-- }
 
 require("lualine").setup {
   options = {
@@ -56,7 +56,7 @@ require("lualine").setup {
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = true,
-    theme = "vn-night",
+    theme = "catppuccin",
   },
   sections = {
     lualine_a = { "mode" },
@@ -74,14 +74,7 @@ require("lualine").setup {
     lualine_y = {},
     lualine_z = {}
   },
-  tabline = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { require "tabline".tabline_buffers },
-    lualine_x = { require "tabline".tabline_tabs },
-    lualine_y = {},
-    lualine_z = {},
-  },
+  tabline = {},
   extensions = {
     "fugitive",
     "man",
