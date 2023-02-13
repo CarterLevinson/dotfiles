@@ -23,7 +23,7 @@ CYN=$(tput setaf 6)
 WHT=$(tput setaf 7)
 CLR=$(tput sgr0)
 
-PROMPT="[$PURλ $BLU\$ $PURξ$WHT] $CYN\W "
+PROMPT="$REDλ $BLU\$ $REDξ$WHT $CYN\W "
 PROMPT+='$(__git_ps1 "$WHT $GRN%s ")'
 PROMPT+="$WHT--->> $CLR"
 
@@ -32,25 +32,15 @@ PS1=$PROMPT
 # set environment variables
 export EDITOR=/usr/bin/vi
 export VISUAL=/usr/bin/nvim
-export BROWSER=/usr/bin/chromium
-#export BROWSER=qutebrowser
-#export BROWSER=firefox
+export BROWSER=/usr/bin/qutebrowser
 export CLIPBOARD=/usr/bin/xclip
 export READER=/usr/bin/zathura
 export OPENER=/usr/bin/rifle
 export VIEWER=/usr/local/bin/nsxiv
 export TERMINAL=/usr/bin/kitty
-export PAGER=/usr/bin/less
-
-# export LESS='--RAW-CONTROL-CHARS'
-# for colored man pages
-# export LESS_TERMCAP_mb=$'\e[01;31m'       # begin blinking
-# export LESS_TERMCAP_md=$'\e[01;37m'       # begin bold
-# export LESS_TERMCAP_me=$'\e[0m'           # end all mode like so, us, mb, md, mr
-# export LESS_TERMCAP_se=$'\e[0m'           # end standout-mode
-# export LESS_TERMCAP_so=$'\e[45;93m'       # start standout mode
-# export LESS_TERMCAP_ue=$'\e[0m'           # end underline
-# export LESS_TERMCAP_us=$'\e[4;93m'        # start underlining
+export PAGER=/usr/bin/nvimpager
+export MANPAGER=/usr/bin/nvimpager
+export MANAGER=/usr/bin/ranger
 
 GPG_TTY=$(tty)
 export GPG_TTY
@@ -71,12 +61,12 @@ export FZF_DEFAULT_COMMAND="fd $FD_OPTS -tf -td"
 # shell aliases
 alias pip='pip3'
 alias python='python3'
-alias ipy='ipython'
+alias ipy='ipython3'
 
 alias ydl='youtube-dl'
 alias vbm='VBoxManage'
 
-alias md='mdless'
+alias md='glow'
 alias mutt='neomutt'
 alias pm='pacman'
 alias pac='pacman'
@@ -89,8 +79,8 @@ alias vim='$EDITOR'
 alias open='$OPENER'
 alias ed='ex'
 
-alias edit='vi -O'
-alias R='R -q'
+alias edit='$VISUAL -O'
+alias r='R -q --no-save'
 alias rad='radian -q --no-save'
 
 alias info='info --vi-keys'
@@ -102,7 +92,7 @@ alias cls='clear'
 alias q='exit'
 alias quit='exit'
 
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --hyperlink=auto'
 alias la='ls -a'
 alias ll='ls -l'
 alias lh='ls -d .?*'
@@ -128,6 +118,15 @@ alias d2h='convert-base 10 16'
 alias h2b='convert-base 16 2'
 alias h2d='convert-base 16 10'
 
+alias pac-list-orphans='pacman -Qdt'
+alias pac-list-explicit='pacman -Qet'
+
+if [[ "$TERM" == "xterm-kitty" ]]; then
+  alias ssh='kitty +kitten ssh'
+  alias icat='kitty +kitten icat'
+  alias diff='kitty +kitten diff'
+fi
+
 # bash options
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="%F %T "
@@ -137,12 +136,10 @@ HISTFILESIZE=20000
 shopt -s autocd
 shopt -s histappend
 
-# bind "\e]" : "fg\n"
-# bind -m vi-insert '"\M-z"':"fg" # alt+z
-# bind -m vi-command '"\M-z"':"fg" # alt+z
+# bind <C-a> to fg
+bind -x '"\C-a"':'"fg"'
 
-
-# cl() - cd and ls at once time
+# cl() - cd and ls at same time
 cl() {
   dir=$1 && dir=${dir:=$HOME}
   cd "$dir" && ls || return;
@@ -232,7 +229,7 @@ encrypt() {
   fi
 }
 
-# decrypt(): decrypt + expand with gpgp & tar
+# decrypt(): decrypt + expand with gpg & tar
 decrypt() {
   if [[ "$#" -ne 1 ]] || [[ "$1" != *.tar.gpg ]]; then
     echo "USAGE: $0 /path/to/encrypted/file.tar.gpg" >&2
@@ -242,7 +239,7 @@ decrypt() {
 }
 
 # ghcup-env setup
-[[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
+# [[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
 
 # Start the ssh-agent in the background and
 # make sure only one instance is ever running
