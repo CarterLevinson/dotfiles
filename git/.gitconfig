@@ -22,8 +22,6 @@
   prompt       = true
 [mergetool "fugitive"]
   cmd          = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
-[mergetool "vimdiff"]
-  path          = nvim
 [difftool "nvimdiff"]
   cmd          = nvim -d \"$LOCAL\" \"$REMOTE\"
 [alias]
@@ -39,7 +37,7 @@
   c            = commit --verbose
   cc           = commit --amend --verbose
   cm           = commit -m
-  cam          = commit -a -m 
+  cam          = commit -a -m
 
   # git-checkout
   co           = checkout
