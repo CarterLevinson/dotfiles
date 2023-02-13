@@ -3,8 +3,8 @@ nmap("<leader>w", cmd "write")
 nmap("<leader>c", cmd "close")
 nmap("<space>",   cmd "nohlsearch")
 
--- fast buffer switch
-nmap("<leader>b", ":ls<CR>:b<space>")
+-- fast buffer switch, look for buffer plugin
+-- nmap("<leader>b", ":ls<CR>:b<space>")
 
 -- pseudo auto close for '{' & '}'
 imap("{<CR>", "{<CR>}<ESC>O")

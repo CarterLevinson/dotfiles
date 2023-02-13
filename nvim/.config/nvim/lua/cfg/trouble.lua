@@ -1,4 +1,4 @@
-require("trouble").setup{}
+require "trouble".setup {}
 
 -- Trouble keymaps
 nmap("<leader>x",  cmd "TroubleToggle")
@@ -10,7 +10,7 @@ nmap("<leader>xc", cmd "TroubleClose")
 nmap("<leader>xt", cmd "TroubleToggle")
 
 -- command aliases
-vim.cmd[[cnoreabbrev copen Trouble quickfix]]
-vim.cmd[[cnoreabbrev cclose TroubleClose]]
-vim.cmd[[cnoreabbrev lopen Trouble loclist]]
-vim.cmd[[cnoreabbrev lclose TroubleClose]]
+vim.cmd [[cnoreabbrev copen Trouble quickfix]]
+vim.cmd [[cnoreabbrev cclose TroubleClose]]
+vim.cmd [[cnoreabbrev lopen Trouble loclist]]
+vim.cmd [[cnoreabbrev lclose TroubleClose]]

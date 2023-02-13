@@ -31,7 +31,7 @@ set.termguicolors         = true
 
 -- status
 set.laststatus            = 3
-set.showtabline           = 0
+set.showtabline           = 1
 
 -- line breaks
 set.tw                    = 80

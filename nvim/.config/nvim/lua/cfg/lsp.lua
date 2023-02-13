@@ -1,22 +1,32 @@
-local clangd_extensions = require("clangd_extensions")
-local haskell_tools = require("haskell-tools")
+local clangd_extensions = require "clangd_extensions"
+local haskell_tools = require "haskell-tools"
+local rust_tools = require "rust-tools"
 
-local lspconfig = require("lspconfig")
-local cmp = require("cmp_nvim_lsp")
+local lspconfig = require "lspconfig"
+local cmp = require "cmp_nvim_lsp"
 
-local neodev = require("neodev")
+local neodev = require "neodev"
 neodev.setup {}
 
-local goto_preview = require('goto-preview')
+local goto_preview = require "goto-preview"
 goto_preview.setup {}
 
 --create nvim-cmp capabilities for lsp client
 local capabilities = cmp.default_capabilities()
 
--- callback function on lsp buffer attatch
--- define keymaps for LSP buffers
-local function callback(_, bufnr)
-  local opts = { noremap = true, silent = true, buffer = bufnr }
+local function create_lsp_user_commands(bufnr)
+  vim.api.nvim_buf_create_user_command(bufnr, "ListWS",
+      function(_) vim.pretty_print(vim.lsp.buf.list_workspace_folders()) end,
+      { desc = "Print all folders in LSP workspace" }
+  )
+
+  vim.api.nvim_buf_create_user_command(bufnr, "Format",
+      function(_) vim.lsp.buf.format { async = true } end,
+      { desc = "Format current buffer with LSP" }
+  )
+end
+
+local function create_lsp_keymaps(opts)
   nmap("gd", vim.lsp.buf.definition, opts) -- go to definition
   nmap("gD", vim.lsp.buf.declaration, opts) -- go to declaration
   nmap("gr", vim.lsp.buf.references, opts) -- list all refs in qf
@@ -37,16 +47,24 @@ local function callback(_, bufnr)
   nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
 
   nmap("<leader>cl", vim.lsp.codelens.run, opts)
+end
 
-  vim.api.nvim_buf_create_user_command(bufnr, "ListWS",
-    function(_) vim.pretty_print(vim.lsp.buf.list_workspace_folders()) end,
-    { desc = "Print all folders in LSP workspace" }
-  )
+local function create_lsp_autocmds()
+  vim.api.nvim_create_augroup("Format", { clear = true })
 
-  vim.api.nvim_buf_create_user_command(bufnr, "Format",
-    function(_) vim.lsp.buf.format { async = true } end,
-    { desc = "Format current buffer with LSP" }
-  )
+  vim.api.nvim_create_autocmd("BufWritePost", {
+      group = "Format",
+      pattern = { "*.cc", "*.cpp", "*.h", "*.hpp", "*.hs", "*.lhs" },
+      callback = function() vim.lsp.buf.format { async = true } end,
+  })
+end
+
+-- callback function on lsp buffer attatch
+-- define keymaps for LSP buffers
+local function callback(_, bufnr)
+  create_lsp_keymaps({ noremap = true, silent = true, buffer = bufnr })
+  create_lsp_user_commands(bufnr)
+  create_lsp_autocmds()
 end
 
 -- disable diagnostic inline virtual text and sign column, keep underline
@@ -54,55 +72,55 @@ end
 vim.diagnostic.config { virtual_text = false, signs = false }
 
 local default_conf = {
-  on_attach = callback,
-  settings = {
-    capabilities = capabilities,
-    telemetry = { enable = false },
-  },
-  single_file_support = true,
+    on_attach = callback,
+    settings = {
+        capabilities = capabilities,
+        telemetry = { enable = false },
+    },
+    single_file_support = true,
 }
 
-local sumneko_conf = {
-  settings = {
-    Lua = {
-      completion = { callSnippet = "Replace" },
-      diagnostics = { globals = { "vim" } },
+local lua_conf = {
+    settings = {
+        Lua = {
+            completion = { callSnippet = "Replace" },
+            diagnostics = { globals = { "vim" } },
+        }
     }
-  }
 }
 
 local haskell_conf = {
-  settings = {
-    haskell = {
-      hlintOn = true,
-      checkProject = true,
-      formattingProvider = "formolu",
+    settings = {
+        haskell = {
+            hlintOn = true,
+            checkProject = true,
+            formattingProvider = "formolu",
+        }
     }
-  }
 }
 
 local clangd_conf = {
-  cmd = {
-    "clangd",
-    "--clang-tidy",
-    "--background-index",
-    "--all-scopes-completion",
-    "--completion-style=detailed",
-    "--function-arg-placeholders",
-    "--header-insertion=iwyu",
-  },
+    cmd = {
+        "clangd",
+        "--clang-tidy",
+        "--background-index",
+        "--all-scopes-completion",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        -- "--header-insertion=iwyu",
+    },
 }
 
 local servers = {
-  awk_ls = {},
-  bashls = {},
-  cmake = {},
-  cssls = {},
-  html = {},
-  jsonls = {},
-  pyright = {},
-  r_language_server = {},
-  sumneko_lua = sumneko_conf,
+    awk_ls = {},
+    bashls = {},
+    cmake = {},
+    cssls = {},
+    html = {},
+    jsonls = {},
+    pyright = {},
+    r_language_server = {},
+    lua_ls = lua_conf,
 }
 
 -- setup lsp servers
@@ -116,11 +134,16 @@ end
 
 -- set up clangd lsp extensions
 clangd_extensions.setup {
-  server = vim.tbl_deep_extend("force", default_conf, clangd_conf)
+    server = vim.tbl_deep_extend("force", default_conf, clangd_conf)
+}
+
+-- setup rust lsp extensions
+rust_tools.setup {
+    server = default_conf
 }
 
 -- setup haskell tools
 haskell_tools.setup {
-  hls = vim.tbl_deep_extend("force", default_conf, haskell_conf),
-  tools = { repl = { handler = "toggleterm" } },
+    hls = vim.tbl_deep_extend("force", default_conf, haskell_conf),
+    tools = { repl = { handler = "toggleterm" } },
 }
