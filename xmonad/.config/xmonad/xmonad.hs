@@ -1,73 +1,80 @@
-{-# LANGUAGE NoMonomorphismRestriction #-}
 
-import XMonad
+import           XMonad
 
-import Control.Monad
+import           System.Exit                        (exitSuccess)
 
-import Data.Monoid
+import           Control.Monad
 
-import Data.Map qualified as M
+import           Data.Monoid
 
-import System.Exit (exitSuccess)
+-- import System.Taffybar.XMonadLog (dbusLog)
+import           Codec.Binary.UTF8.String           as UTF8
+import qualified DBus                               as D
+import qualified DBus.Client                        as D
+import qualified Data.Map                           as M
 
-import XMonad.StackSet qualified as W
+import qualified XMonad.StackSet                    as W
 
-import XMonad.Actions.Commands
-import XMonad.Actions.CopyWindow (copy)
-import XMonad.Actions.CycleSelectedLayouts
-import XMonad.Actions.CycleWS
-import XMonad.Actions.GridSelect
-import XMonad.Actions.Minimize
-import XMonad.Actions.MouseResize (mouseResize)
-import XMonad.Actions.TreeSelect qualified as TS
+import           XMonad.Actions.Commands
+import           XMonad.Actions.CopyWindow          (copy)
+import           XMonad.Actions.CycleWS
+import           XMonad.Actions.DynamicWorkspaces   as DW
+import           XMonad.Actions.GridSelect
+import           XMonad.Actions.MouseResize         (mouseResize)
+import qualified XMonad.Actions.Search              as S
+import           XMonad.Actions.TopicSpace
+import qualified XMonad.Actions.TreeSelect          as TS
+import           XMonad.Actions.WindowBringer
+import           XMonad.Actions.WindowMenu          (windowMenu)
+import           XMonad.Actions.WorkspaceNames
 
-import XMonad.Actions.Sift
-import XMonad.Actions.WindowBringer
-import XMonad.Actions.WindowMenu (windowMenu)
 
-import XMonad.Actions.Search qualified as S
-import XMonad.Actions.Submap qualified as SM
+import qualified XMonad.Actions.Submap              as SM
 
-import XMonad.Hooks.DynamicIcons
-import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.Modal
-import XMonad.Hooks.RefocusLast
-import XMonad.Hooks.StatusBar
-import XMonad.Hooks.StatusBar.PP
-import XMonad.Hooks.WindowSwallowing
-import XMonad.Hooks.WorkspaceHistory
+import           XMonad.Hooks.DynamicIcons
+import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.EwmhDesktops
+import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.Modal
+import           XMonad.Hooks.WindowSwallowing
+import           XMonad.Hooks.WorkspaceHistory
 
-import XMonad.Layout.IndependentScreens
-import XMonad.Layout.LayoutCombinators (JumpToLayout (..))
-import XMonad.Layout.Magnifier
-import XMonad.Layout.Maximize
-import XMonad.Layout.Minimize
-import XMonad.Layout.NoBorders
-import XMonad.Layout.SubLayouts
-import XMonad.Layout.WindowArranger
-import XMonad.Layout.WindowNavigation
+import qualified XMonad.Layout.BinarySpacePartition as BSP
+import           XMonad.Layout.LayoutCombinators    (JumpToLayout (..))
+import           XMonad.Layout.NoBorders
+import           XMonad.Layout.Spiral
+import           XMonad.Layout.SubLayouts
+import           XMonad.Layout.WindowArranger
+import           XMonad.Layout.WindowNavigation
 
-import XMonad.Layout.BinarySpacePartition qualified as BSP
-import XMonad.Layout.Mosaic
-import XMonad.Layout.Spiral
 
-import XMonad.Layout.MultiToggle qualified as MT
-import XMonad.Layout.ToggleLayouts qualified as T
+import qualified XMonad.Layout.MultiToggle          as MT
+import qualified XMonad.Layout.ToggleLayouts        as T
 
--- import           XMonad.Util.ClickableWorkspaces
--- import           XMonad.Util.Loggers
--- import           XMonad.Util.WorkspaceCompare
+import           XMonad.Prompt                      as P
+import           XMonad.Util.Dzen                   as DZ
+import           XMonad.Util.EZConfig
+import           XMonad.Util.Paste                  (pasteSelection)
+import           XMonad.Util.Run                    (runInTerm)
+import           XMonad.Util.Scratchpad
+import           XMonad.Util.SpawnOnce              (spawnOnce)
+import           XMonad.Util.Ungrab                 (unGrab)
 
-import XMonad.Util.Dmenu
-import XMonad.Util.Dzen as DZ
-import XMonad.Util.EZConfig
-import XMonad.Util.Paste (pasteSelection)
-import XMonad.Util.Run (runInTerm)
-import XMonad.Util.Scratchpad
-import XMonad.Util.SpawnOnce (spawnOnce)
-import XMonad.Util.Ungrab (unGrab)
+
+-- import XMonad.Hooks.RefocusLast
+-- import XMonad.Hooks.StatusBar
+-- import XMonad.Hooks.StatusBar.PP
+-- import XMonad.Util.Dmenu
+-- import XMonad.Layout.Mosaic
+-- import XMonad.Layout.Magnifier
+-- import XMonad.Layout.Maximize
+-- import XMonad.Layout.Minimize
+-- import XMonad.Layout.IndependentScreens
+-- import XMonad.Actions.Sift
+-- import XMonad.Actions.CycleSelectedLayouts
+-- import XMonad.Actions.Minimize
+
 
 -- TODO: dmenu
 -- TODO: Advanced layuouts config
@@ -80,14 +87,14 @@ import XMonad.Util.Ungrab (unGrab)
 xmWs :: [String]
 xmWs = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-isOnScreen :: ScreenId -> WindowSpace -> Bool
-isOnScreen s ws = s == unmarshallS (W.tag ws)
+-- isOnScreen :: ScreenId -> WindowSpace -> Bool
+-- isOnScreen s ws = s == unmarshallS (W.tag ws)
 
 currentScreen :: X ScreenId
 currentScreen = gets (W.screen . W.current . windowset)
 
-spacesOnCurrentScreen :: WSType
-spacesOnCurrentScreen = WSIs (isOnScreen <$> currentScreen)
+-- spacesOnCurrentScreen :: WSType
+-- spacesOnCurrentScreen = WSIs (isOnScreen <$> currentScreen)
 
 -------------------------------------------------------------------------------
 
@@ -413,8 +420,8 @@ xmKeyMaps =
     , -- workspace commands
       -- <M-z> toggleWS?
       ((xmMod, xK_z), toggleWS)
-    , ((xmMod, xK_Tab), moveTo Next spacesOnCurrentScreen)
-    , ((xmModShift, xK_Tab), moveTo Prev spacesOnCurrentScreen)
+    -- , ((xmMod, xK_Tab), moveTo Next spacesOnCurrentScreen)
+    -- , ((xmModShift, xK_Tab), moveTo Prev spacesOnCurrentScreen)
     , ((xmModShift, xK_x), exit)
     , -- <M-q> kill focused window
       ((xmMod, xK_q), kill)
@@ -433,10 +440,10 @@ xmKeyMaps =
     , -- TODO Debug these
       ((0, xK_Print), unGrab *> spawn scrot)
     ]
-        ++ [ ((m .|. xmMod, k), windows $ onCurrentScreen f i)
-           | (i, k) <- zip (workspaces' xmConf) [xK_1 .. xK_9]
-           , (f, m) <- [(W.view, 0), (W.shift, shift)]
-           ] -- switch ws on screen
+        -- ++ [ ((m .|. xmMod, k), windows $ onCurrentScreen f i)
+        --    | (i, k) <- zip (workspaces' xmConf) [xK_1 .. xK_9]
+        --    , (f, m) <- [(W.view, 0), (W.shift, shift)]
+        --    ] -- switch ws on screen
         ++ [ ((m .|. xmMod, k), screenWorkspace sc >>= flip whenJust (windows . f))
            | (k, sc) <- zip [xK_bracketleft, xK_bracketright] [0 ..]
            , (f, m) <- [(W.view, 0), (W.shift, shift)]
@@ -458,33 +465,29 @@ xmKeyMaps =
 
 ------------------------------------------------------------------------------
 
-xmobarMain :: StatusBarConfig
-xmobarMain = statusBarPropTo "_XMONAD_LOG_0" cmd $ pure (marshallPP (S 0) def)
-  where
-    cmd = "xmobar -x 0 ~/.config/xmobar/main.xmobarrc"
-
-xmobarAlt :: StatusBarConfig
-xmobarAlt = statusBarPropTo "_XMONAD_LOG_1" cmd $ pure (marshallPP (S 1) def)
-  where
-    cmd = "xmobar -x 1 ~/.config/xmobar/alt.xmobarrc"
-
+-- xmobarMain :: StatusBarConfig
+-- xmobarMain = statusBarPropTo "_XMONAD_LOG_0" cmd $ pure (marshallPP (S 0) def)
+--   where
+--     cmd = "xmobar -x 0 ~/.config/xmobar/main.xmobarrc"
+--
+-- xmobarAlt :: StatusBarConfig
+-- xmobarAlt = statusBarPropTo "_XMONAD_LOG_1" cmd $ pure (marshallPP (S 1) def)
+--   where
+--     cmd = "xmobar -x 1 ~/.config/xmobar/alt.xmobarrc"
+--
 ------------------------------------------------------------------------------
 
 xmStartupHook :: X ()
 xmStartupHook = do
     -- start some nice programs
-    spawnOnce "~/.fehbg"
-    spawnOnce "picom"
     spawnOnce "xrandr --output DP1 --primary --output HDMI1 --left-of DP1"
+    spawnOnce "picom"
+    spawnOnce "~/.fehbg"
+    spawnOnce "pasystray"
+    spawnOnce "blueman-applet"
+    spawnOnce "nm-applet --sm-disable --indicator"
+    spawnOnce "~/.config/polybar/launch.sh"
     spawnOnce "xscreensaver -no-splash"
-    -- Focus the second screen.
-    screenWorkspace 1 >>= flip whenJust (windows . W.view)
-    -- Force the second screen to "1_1", e.g. if the first screen already has
-    -- the workspace associated the screens will swap workspaces.
-    windows $ W.greedyView "1_1"
-    -- Focus the first screen again.
-    -- For tab cycle
-    windows $ W.view "0_1"
 
 -- Note that each layout is separated by ||| which denotes layout choice.
 
@@ -538,6 +541,50 @@ xmEventHook = swallowEventHook query (return True)
 xmLogHook :: X ()
 xmLogHook = workspaceHistoryHook
 
+xmPolybarLogHook :: D.Client -> X()
+xmPolybarLogHook dbus = xmLogHook <+> dynamicLogWithPP (polybarHook dbus)
+
+polybarHook :: D.Client -> PP
+polybarHook dbus =
+    let wrapper c s | s /= "NSP" = wrap ("%{F" <> c <> "} ") " %{F-}" s | otherwise = mempty
+        green     = "#b8bb26"
+        darkgreen = "#98971a"
+        red       = "#fb4934"
+        darkred   = "#cc241d"
+        orange    = "#fabd2f"
+        blue      = "#2E9AFE"
+        gray      = "#7F7F7F"
+        purple    = "#8e7dc3"
+        aqua      = "#8ec07c"
+    in  def
+    { ppOutput = dbusOutput dbus
+    , ppCurrent = wrapper blue
+    , ppVisible = wrapper gray
+    , ppUrgent = wrapper orange
+    , ppHidden = wrapper gray
+    , ppWsSep = ""
+    , ppSep = " : "
+    , ppTitle = shorten 100 . wrapper purple
+    }
+
+makeDbusClient :: IO D.Client
+makeDbusClient = do
+    dbus <- D.connectSession
+    D.requestName dbus (D.busName_ "org.xmonad.Log") opts
+    return dbus
+    where
+        opts = [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+
+-- Emit a DBus signal on log updates
+dbusOutput :: D.Client -> String -> IO ()
+dbusOutput dbus str =
+  let opath  = D.objectPath_ "/org/xmonad/Log"
+      iname  = D.interfaceName_ "org.xmonad.Log"
+      mname  = D.memberName_ "Update"
+      signal = D.signal opath iname mname
+      body   = [D.toVariant $ UTF8.decodeString str]
+  in  D.emit dbus $ signal { D.signalBody = body }
+
 ------------------------------------------------------------------------------
 
 xmMod, alt, shift, ctrl :: KeyMask
@@ -581,7 +628,7 @@ xmConf =
         { terminal = term
         , borderWidth = xmBW
         , modMask = xmMod
-        , workspaces = withScreens 2 xmWs
+        , workspaces = xmWs
         , normalBorderColor = xmNBC
         , focusedBorderColor = xmFBC
         , layoutHook = xmLayoutHook
@@ -594,14 +641,26 @@ xmConf =
         -- , mouseBindings = xmMouseMap
         }
 
--------------------------------------------------------------------------------
-main :: IO ()
-main =
+main' :: D.Client -> IO ()
+main' dbus =
     xmonad
-        . withSB (xmobarMain <> xmobarAlt)
         . ewmhFullscreen
         . ewmh
         . docks
-        $ xmConf
+        $ xmConf { logHook = xmPolybarLogHook dbus }
             `removeKeys` rmKeyPairs
             `additionalKeys` xmKeyMaps
+
+main :: IO ()
+main = makeDbusClient >>= main'
+-------------------------------------------------------------------------------
+-- main :: IO ()
+-- main =
+--     xmonad
+--         -- . withSB (xmobarMain <> xmobarAlt)
+--         . ewmhFullscreen
+--         . ewmh
+--         . docks
+--         $ xmConf
+--             `removeKeys` rmKeyPairs
+--             `additionalKeys` xmKeyMaps
