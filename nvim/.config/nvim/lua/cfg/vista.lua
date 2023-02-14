@@ -25,19 +25,18 @@ g.vista_executive_for = {
 }
 
 -- vista keymaps
+-- \s open the vista window
+nmap("<leader>s",  cmd "Vista!!")
+-- \st toggle the vista window
+nmap("<leader>st", cmd "Vista!!")
+-- \sf focus open vista window
+nmap("<leader>sf", cmd "Vista focus")
+-- \sc: close open vista window
+nmap("<leader>sc", cmd "Vista!")
+-- \mm: open markdown toc
+nmap("<leader>sm", cmd "Vista toc")
 
--- \v open the vista window
-nmap('<leader>v',  cmd "Vista!!")
--- \vt toggle the vista window
-nmap('<leader>vt', cmd "Vista!!")
--- \vf focus open vista window
-nmap('<leader>vf', cmd "Vista focus")
--- \vc: close open vista window
-nmap('<leader>vc', cmd "Vista!")
--- \vm: open markdown toc
-nmap('<leader>vm', cmd "Vista toc")
-
--- \vl open vista using nvim lsp
-nmap('<leader>vl', cmd 'Vista nvim_lsp')
--- \vt open vista using ctags
-nmap('<leader>vt', cmd 'Vista ctags')
+-- \sl open vista using nvim lsp
+nmap('<leader>sl', cmd 'Vista nvim_lsp')
+-- \st open vista using ctags
+nmap('<leader>st', cmd 'Vista ctags')

@@ -242,3 +242,9 @@ snippet af "auto function?"
 	auto ${1:name}(${2}) -> ${3:void}	{
 		${0}
 	};
+
+snippet .. "pointer to member"
+	->${0:${VISUAL}}
+
+snippet . "array member"
+	[${1}]${0:${VISUAL}}

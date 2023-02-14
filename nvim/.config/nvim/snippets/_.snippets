@@ -1,6 +1,6 @@
 snippet c) "(c) holds no legal value ;)"
 	Copyright `&enc[:2] == "utf" ? "©" : "(c)"` `strftime("%Y")`
-	${1:Carter S. Levinson}. All Rights Reserved.
+	${1:`g:snips_author`}. All Rights Reserved.
 
 snippet date
 	`strftime("%Y-%m-%d")`

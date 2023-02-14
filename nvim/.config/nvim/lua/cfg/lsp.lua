@@ -94,7 +94,7 @@ local haskell_conf = {
         haskell = {
             hlintOn = true,
             checkProject = true,
-            formattingProvider = "formolu",
+            formattingProvider = "stylish-haskell",
         }
     }
 }
