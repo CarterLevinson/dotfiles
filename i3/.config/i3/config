@@ -1,36 +1,29 @@
 # vim: filetype=i3config
 
-# this file and re-run i3-config-wizard(1).
-#
 #
 # i3 config file (v4)
-#
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
+#
 
-# use Super as mod key
+# use super as mod key
 set $mod Mod4
 set $alt Mod1
 
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 # Font for window titles. Will also be used by the bar unless a different font
-# This font is widely installed, provides lots of unicode glyphs, right-to-left and is used in the bar {} block below.
-#font pango:monospace 8
-
 font pango:pango:Source Code Pro 8
-# font pango:pango Hack 10
 
 # Autostart programs
 
 exec --no-startup-id xrandr --output DP1 --primary --output HDMI1 --left-of DP1
-## xss-lock: transfers session control to i3lock, activated usinng loginctl lock-session cmd
+## xss-lock: transfers session control to i3lock,
+## activated using loginctl lock-session cmd
 set $img $HOME/pictures/wallpapers/aphex_twin.png
 exec --no-startup-id xss-lock -l -- i3lock --image=$img -tf --nofork
 ## xset: default screensave comes on after 30 minutes
 exec --no-startup-id xset s 1800
-
 ## start the compositor
 exec --no-startup-id picom &
-# exec_always picom -f
 ## use the feh script to generate desktop wallpaper
 exec --no-startup-id  ~/.fehbg &
 
@@ -365,11 +358,9 @@ mode "$mode_gaps_outer" {
   bindsym Escape mode "default"
 }
 
-exec_always $HOME/.config/polybar/launch.sh
-
-# # "py3" status bar
-# bar {
-#   position top
-#   # position bottom
-#   status_command py3status
-# }
+# "py3" status bar
+bar {
+  position top
+  # position bottom
+  status_command py3status
+}
