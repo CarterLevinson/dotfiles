@@ -21,9 +21,9 @@ Config
           , "<fn=2>\xFA92</fn> Chicago: <tempC>°C <fn=2>\xF2C7</fn>"
           , "-L", "0"
           , "-H", "25"
-          , "--low", "lightblue"
-          , "--normal", "#F8F8F2"
-          , "--high" "red"
+          , "-l", "lightblue"
+          , "-n", "#F8F8F2"
+          , "-h", "red"
           ]
           36000
       , Run Date "<fn=2>\xF273</fn> %a %d-%m-%Y" "date" 10

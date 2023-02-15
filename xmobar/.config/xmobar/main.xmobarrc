@@ -25,7 +25,7 @@ Config
           10
       , Run
           CpuFreq
-          ["-t", "Freq: <avg>GHz"
+          [ "-t", "Freq: <avg>GHz"
           , "-H", "4"
           , "-L", "1"
           , "-h", "red"
