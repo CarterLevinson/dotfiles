@@ -1,30 +1,28 @@
--- import System.Taffybar.XMonadLog (dbusLog)
-import           Codec.Binary.UTF8.String              as UTF8
+{-# LANGUAGE NoMonomorphismRestriction #-}
 
 import           Control.Monad                         ((>=>))
 
-import qualified DBus                                  as D
-import qualified DBus.Client                           as D
-
 import qualified Data.Map                              as M
 import           Data.Monoid
+import           Data.Tree
 
 import           System.Exit                           (exitSuccess)
 
 import           XMonad
+import qualified XMonad.Prompt                         as P
+import qualified XMonad.StackSet                       as W
 
 import           XMonad.Actions.Commands
 import           XMonad.Actions.CopyWindow             (copy)
 import           XMonad.Actions.CycleWorkspaceByScreen
-import           XMonad.Actions.DynamicWorkspaces      as DW
+import           XMonad.Actions.DynamicWorkspaces
 import           XMonad.Actions.GridSelect
+import           XMonad.Actions.Minimize
 import           XMonad.Actions.MouseResize            (mouseResize)
 import qualified XMonad.Actions.Search                 as S
 import           XMonad.Actions.TopicSpace
-import qualified XMonad.Actions.TreeSelect             as TS
-import           XMonad.Actions.WindowBringer
+import           XMonad.Actions.TreeSelect             as TS
 import           XMonad.Actions.WindowMenu             (windowMenu)
-import           XMonad.Actions.WorkspaceNames
 
 import           XMonad.Hooks.DynamicIcons
 import           XMonad.Hooks.DynamicLog
@@ -32,12 +30,15 @@ import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.Modal
+import           XMonad.Hooks.StatusBar
+import           XMonad.Hooks.StatusBar.PP
 import           XMonad.Hooks.WindowSwallowing
 import           XMonad.Hooks.WorkspaceHistory
 
 import qualified XMonad.Layout.BinarySpacePartition    as BSP
 import           XMonad.Layout.LayoutCombinators       (JumpToLayout (..))
 import           XMonad.Layout.Magnifier
+import           XMonad.Layout.Minimize
 import qualified XMonad.Layout.MultiToggle             as MT
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.Spiral
@@ -46,218 +47,220 @@ import qualified XMonad.Layout.ToggleLayouts           as T
 import           XMonad.Layout.WindowArranger
 import           XMonad.Layout.WindowNavigation
 
-import           XMonad.Prompt                         as P
-
-import qualified XMonad.StackSet                       as W
 
 import           XMonad.Util.Dzen                      as DZ
-import           XMonad.Util.EZConfig                  (additionalKeys,
-                                                        removeKeys)
+import           XMonad.Util.EZConfig
 import           XMonad.Util.Paste                     (pasteSelection)
 import           XMonad.Util.Run                       (runInTerm)
-import           XMonad.Util.Scratchpad
 import           XMonad.Util.SpawnOnce                 (spawnOnce)
 import           XMonad.Util.Ungrab                    (unGrab)
 
 -- import XMonad.Actions.CycleWS
+-- import XMonad.Actions.WindowBringer
 -- import XMonad.Hooks.RefocusLast
--- import XMonad.Hooks.StatusBar
--- import XMonad.Hooks.StatusBar.PP
 -- import XMonad.Util.Dmenu
 -- import XMonad.Layout.Mosaic
--- import XMonad.Layout.Magnifier
--- import XMonad.Layout.Maximize
--- import XMonad.Layout.Minimize
--- import XMonad.Layout.IndependentScreens
 -- import XMonad.Actions.Sift
--- import XMonad.Actions.CycleSelectedLayouts
--- import XMonad.Actions.Minimize
 
 -- TODO: dmenu
 -- TODO: Advanced layuouts config
 -- TODO: XMonad.contrib modal
 -- TODO: more workspace and monitor control
 
--------------------------------------------------------------------------------
+shellGrid :: [(String, String)]
+shellGrid =
+    let (names, cmds) = unzip grid
+     in zip names (map (\s -> term ++ " -e " ++ s) cmds)
+    where
+        hledger = "hledger-ui -f ~/finance/.hledger.journal"
+        bc      = "bc -q"
+        grid    =
+          [ ("Ipython", "ipython")
+          , ("GHCi", "ghci")
+          , ("Radian", "radian")
+          , ("GiNsh", "ginsh")
+          , ("Basic Calculator", bc)
+          , ("Maxima", "maxima")
+          , ("Cmus", "cmus")
+          , ("FriCAS", "fricas")
+          , ("Gap", "gap")
+          , ("VisiData", "vd")
+          , ("WeeChat", "weechat")
+          , ("Gnuplot", "gnuplot")
+          , ("Htop", "htop")
+          , ("Btop++", "btop")
+          , ("S-tui", "s-tui")
+          , ("Termshark", "termshark")
+          , ("Ncdu", "ncdu")
+          , ("Cfdisk", "cfdisk")
+          , ("Lvm Manager", "lvm")
+          , ("Ranger", "ranger")
+          , ("Hledger", hledger)
+          ]
 
-generateCmdFromStr :: String -> String
-generateCmdFromStr str = term ++ " -e " ++ str
+appGrid :: [(String, String)]
+appGrid = shellGrid ++ grid
+    where
+        grid =
+          [ ("Vimiv", "vimiv")
+          , ("Spotify", "spotify")
+          , ("Gimp", "gimp")
+          , ("wxMaxima", "wxmaxima")
+          , ("Xasy", "xasy")
+          , ("Inkscape", "inkscape")
+          , ("Trader Workstation", "tws")
+          , ("TradingView", "tradingview")
+          ]
 
--- define grid selects
+dotfilesGrid :: [(String, String)]
+dotfilesGrid =
+    let (names, paths) = unzip grid
+     in  zip names (map (\p -> term ++ " -e " ++ editor ++ " " ++ p) paths)
+    where
+        grid =
+          [ ("Neovim", "~/.config/nvim")
+          , ("Kitty", "~/.config/kitty/kitty.conf")
+          , ("ranger", "~/.config/ranger/rc.conf")
+          , ("qutebrowser", "~/.config/qutebrowser")
+          , ("XMonad", "~/.config/xmonad/xmonad.hs")
+          , ("KMonad", "~/.config/kmonad")
+          , ("i3", "~/.config/i3/config")
+          , ("py3status", "~/.config/py3status/config")
+          , ("polybar", "~/.config/polybar/config.ini")
+          , ("taffybar", "~/.config/taffybar/taffybar.hs")
+          , ("zathura", "~/.config/zathura/zathurarc")
+          ]
 
-cliShellGrid :: [(String, String)]
-cliShellGrid =
-  [ ("Ipython", "ipython"),
-    ("GHCi", "ghci"),
-    ("Radian", "radian"),
-    ("GiNsh", "ginsh"),
-    ("Basic Calculator", "bc -q"),
-    ("Maxima", "maxima"),
-    ("FriCAS", "fricas"),
-    ("Gap", "gap"),
-    ("Gnuplot", "gnuplot")
-  ] -- sqlite, psql, pgcli
 
-guiShellGrid :: [(String, String)]
-guiShellGrid =
-  [ ("wxMaxima", "wxmaxima"),
-    ("Xasy", "xasy")
-  ]
+bookmarkGrid :: [(String, String)]
+bookmarkGrid =
+    let (names, urls) = unzip grid
+     in zip names (map (\u -> browser ++ " https://" ++ u) urls)
+    where
+        grid =
+          [ ("Gmail", "mail.google.com")
+          , ("Posteo", "posteo.de/en")
+          , ("LessWrong", "lesswrong.com")
+          , ("Leetcode", "leetcode.com")
+          , ("Python Documentation", "docs.python.com")
+          , ("Haskell Wiki", "wiki.haskell.org")
+          , ("Vim cheatsheet", "vim.rotrr.com")
+          , ("Neovim Documenation", "neovio.io/doc")
+          , ("Git Documentation", "git-scm.com/doc")
+          , ("Arch Wiki", "wiki.archlinux.org")
+          , ("Linux manpages", "linux.die.net/man")
+          , ("Wikichip", "wikichip.org")
+          , ("Libgen", "libgen.is")
+          , ("Sci-hub", "sc-hubtw.hkvisa.net")
+          , ("Wikibooks", "wikibooks.org")
+          , ("Open Library", "openlibrary.org")
+          , ("arXiv", "arxiv.org")
+          , ("SSRN", "ssrn.com")
+          , ("JSTOR", "jstor.org")
+          , ("Lexis Nexis", "lexisnexis.org")
+          , ("ACM Library", "dl.acm.org")
+          , ("CIA World Factbook", "cia.gov/the-world-factbook")
+          , ("Project Euler", "projecteuler.net")
+          , ("Wolfram Mathworld", "mathworld.wolfram.com")
+          ]
 
-shellSpawnGrid :: [(String, String)]
-shellSpawnGrid = zip names (map generateCmdFromStr cmds) ++ guiShellGrid
-  where
-    (names, cmds) = unzip cliShellGrid
-
-guiGrid :: [(String, String)]
-guiGrid =
-  [ ("Vimiv", "vimiv"),
-    ("Spotify", "spotify"),
-    ("Gimp", "gimp"),
-    ("Inkscape", "inkscape"),
-    ("TradingView", "tradingview")
-  ]
-
-tuiGrid :: [(String, String)]
-tuiGrid =
-  [ ("Ledger", "ledger"),
-    ("Hledger", "hledger"),
-    ("VisiData", "vd"),
-    ("Cmus", "cmus"),
-    ("Mpv", "mpv"),
-    ("Papis", "papis"),
-    ("WeeChat", "weechat")
-  ]
-
-appSpawnGrid :: [(String, String)]
-appSpawnGrid = zip names (map generateCmdFromStr cmds) ++ guiGrid
-  where
-    (names, cmds) = unzip tuiGrid
-
-utilGrid :: [(String, String)]
-utilGrid =
-  [ ("Htop", "htop"),
-    ("Btop++", "btop"),
-    ("S-tui", "s-tui"),
-    ("Termshark", "termshark"),
-    ("Ncdu", "ncdu"),
-    ("Cfdisk", "cfdisk"),
-    ("Lvm Manager", "lvm"),
-    ("Ranger", "ranger")
-  ]
-
-utilSpawnGrid :: [(String, String)]
-utilSpawnGrid = zip names (map generateCmdFromStr cmds)
-  where
-    (names, cmds) = unzip utilGrid
-
-fullSpawnGrid :: [(String, String)]
-fullSpawnGrid = appSpawnGrid ++ shellSpawnGrid ++ utilSpawnGrid
-
--- replace with treeselect
-dfGrid :: [(String, String)]
-dfGrid =
-  [ ("Neovim", "~/.config/nvim"),
-    ("XMonad", "~/.config/xmonad"),
-    ("XMobar", "~/.config/xmobar"),
-    ("KMonad", "~/.config/kmonad"),
-    ("Kitty", "~/.config/kitty"),
-    ("Papis", "~/.config/papis"),
-    ("Ranger", "~/.config/ranger"),
-    ("i3", "~/.config/i3/config"),
-    ("py3status", "~/.config/py3status/config"),
-    ("Zathura", "~/.config/zathura/zathurarc"),
-    ("Aerc", "~/.config/aerc"),
-    ("qutebrowser", "~/.config/qutebrowser")
-  ]
-
--- replace with treeselect or dmenu
-bookmarksGrid :: [(String, String)]
-bookmarksGrid =
-  [ ("Gmail", "mail.google.com"),
-    ("Posteo", "posteo.de/en"),
-    ("YouTube", "youtube.com"),
-    ("LessWrong", "lesswrong.com"),
-    ("Github", "github.com"),
-    ("LeetCode", "leetcode.com"),
-    ("Cppreference", "en.cppreference.com"),
-    ("Python docs", "docs.python.com"),
-    ("Haskell wiki", "wiki.haskell.org"),
-    ("Vim cheatsheet", "vim.rotrr.com"),
-    ("Neovim docs", "neovim.io/doc"),
-    ("Git docs", "git-scm.com/docs"),
-    ("Arch wiki", "wiki.archlinux.org"),
-    ("Linux man pages", "linux.die.net/man"),
-    ("Wikichip", "wikichip.org"),
-    ("Libgen", "libgen.is"),
-    ("Sci-hub", "sci-hubtw.hkvisa.net"),
-    ("Wikibooks", "wikibooks.org"),
-    ("Open Library", "openlibrary.org"),
-    ("arXiv", "arxiv.org"),
-    ("SSRN", "ssrn.com"),
-    ("Jstor", "jstor.org"),
-    ("Lexis Nexis", "lexisnexis.com"),
-    ("ACM Digital Library", "dl.acm.org"),
-    ("CIA World Factbook", "cia.gov/the-world-factbook"),
-    ("Project Euler", "projecteuler.net"),
-    ("Wolfram MathWorld", "mathworld.wolfram.com")
-  ]
-
-dfSpawnGrid :: [(String, String)]
-dfSpawnGrid = zip names (map (\p -> term ++ " -e " ++ nvim ++ " " ++ p) paths)
-  where
-    (names, paths) = unzip dfGrid
-
-bmSpawnGrid :: [(String, String)]
-bmSpawnGrid = zip names (map (\url -> browser ++ " " ++ url) urls)
-  where
-    (names, urls) = unzip bookmarksGrid
-
-gridSelectOpener :: X()
-gridSelectOpener = spawnSelected' fullSpawnGrid
-  where
-    spawnSelected' l = gridselect gsConf l >>= flip whenJust spawn
-
+-- spawnSelected' lst
+gridSelectSpawn grid = gridselect gsConf grid >>= flip whenJust spawn
 
 gsConf :: GSConfig String
 gsConf =
-  def
-     { gs_cellheight = 40
-     , gs_cellwidth = 200
-     , gs_cellpadding = 6
-     , gs_originFractX = 0.5
-     , gs_originFractY = 0.5
-     , gs_font = xmFont
-     }
+    def
+      { gs_cellheight = 40
+      , gs_cellwidth = 200
+      , gs_cellpadding = 6
+      , gs_originFractX = 0.5
+      , gs_originFractY = 0.5
+      , gs_font = xmFont
+      }
+
+-- bookmarksTree =
+--   [ Node (TSNode "Browser Bookmarks" "" (return ()))
+--       [ Node (TSNode "Gmail" "" (browse "mail.google.com")) []
+--       , Node (TSNode "Posteo" "" (browse "poste.de/en")) []
+--       , Node (TSNode "LessWrong" "" (browse "lesswrong.com")) []
+--       , Node (TSNode "Leetcode" "" (browse "leetcode.com")) []
+--       , Node (TSNode "Cppreference" "" (browse "en.cppreference.com")) []
+--       , Node (TSNode "Python docs" "" (browse "docs.python.com")) []
+--       , Node (TSNode "Haskell wiki" "" (browse "wiki.haskell.org")) []
+--       , Node (TSNode "Vim cheatsheet" "" (browse "vim.rotrr.com")) []
+--       , Node (TSNode "Neovim docs" "" (browse "neovim.io/doc")) []
+--       , Node (TSNode "Git docs" "" (browse "git-scm.com/doc")) []
+--       , Node (TSNode "Arch wiki" "" (browse "wiki.archlinux.org")) []
+--       , Node (TSNode "Linux manpages" "" (browse "linux.die.net/man")) []
+--       , Node (TSNode "Wikichip" "" (browse "wikichip.org")) []
+--       , Node (TSNode "Libgen" "" (browse "libgen.is")) []
+--       , Node (TSNode "Sci-hub" "" (browse "sc-hubtw.hkvisa.net")) []
+--       , Node (TSNode "Wikibooks" "" (browse "wikibooks.org")) []
+--       , Node (TSNode "Open Library" "" (browse "openlibrary.org")) []
+--       , Node (TSNode "arXiv" "" (browse "arxiv.org")) []
+--       , Node (TSNode "SSRN" "" (browse "ssrn.com")) []
+--       , Node (TSNode "Jstor" "" (browse "jstor.org")) []
+--       , Node (TSNode "Lexis Nexis" "" (browse "lexisnexis.com")) []
+--       , Node (TSNode "ACM Library" "" (browse "dl.acm.org")) []
+--       , Node (TSNode "CIA Factbook" "" (browse "cia.gov/the-world-factbook")) []
+--       , Node (TSNode "Project Euler" "" (browse "projecteuler.net")) []
+--       , Node (TSNode "Wolfram Mathworld" "" (browse "mathworld.wolfram.com")) []
+--       ]
+--   ]
+--     where
+--         browse site = spawn (browser ++ " https://" ++ site)
+
+-- searchTree =
+--     [ Node (TSNode "Search Engines" "" (return ()))
+--         [ Node (TSNode "WolframAlpha" "" (psearch S.alpha)) []
+--         , Node (TSNode "arXiv" "" (psearch S.arXiv)) []
+--         , Node (TSNode "AUR" "" (psearch S.aur)) []
+--         , Node (TSNode "Dictionary" "" (psearch S.dictionary)) []
+--         , Node (TSNode "Github" "" (psearch S.github)) []
+--         , Node (TSNode "Google" "" (psearch S.google)) []
+--         , Node (TSNode "Hackage" "" (psearch S.hackage)) []
+--         , Node (TSNode "Hoogle" "" (psearch S.hoogle)) []
+--         , Node (TSNode "IMDB" "" (psearch S.imdb)) []
+--         , Node (TSNode "Mathworld" "" (psearch S.mathworld)) []
+--         , Node (TSNode "Google Scholar" "" (psearch S.scholar)) []
+--         , Node (TSNode "Thesaurus" "" (psearch S.thesaurus)) []
+--         , Node (TSNode "Wikipedia" "" (psearch S.wikipedia)) []
+--         , Node (TSNode "Youtube" "" (psearch S.youtube)) []
+--         ]
+--     ]
+--         where
+--             psearch = S.promptSearch promptConfig
+--
+-- tsConfig = def { ts_font = xmFont }
 -------------------------------------------------------------------------------
+
+xmModes :: [Mode]
+xmModes = [xmExitMode, xmLaunchMode, xmWorkspaceMode, xmResizeMode]
+
+
+
+-- letter: focus workspace beginning with letter 'a' to 'z'
+-- shift+letter: move to workspace beginning with letter 'a' to 'z'
+xmWorkspaceMode :: Mode
+xmWorkspaceMode = mode "workspace" $ \cfg ->
+    M.fromList $ focus ++ move
+        where
+            focus = zip ( zip (repeat noModMask) [xK_a..xK_z])
+                      ( map (withLetWorkspace W.greedyView) ['a'.. 'z'])
+            move = zip ( zip (repeat shift) [xK_a..xK_z])
+                     ( map (withLetWorkspace W.shift) ['a'..'z'])
 
 withLetWorkspace :: (String -> WindowSet -> WindowSet) -> Char -> X ()
 withLetWorkspace job fstLet =
-    do  ws <- gets (map W.tag . W.hidden . windowset)
+    do  ws      <- gets (map W.tag . W.hidden . windowset)
         current <- gets (W.currentTag . windowset)
-        if head current == fstLet
-           then appJob $ filter (/= current) ws
-           else appJob ws
-        where
-            appJob :: [String] -> X()
-            appJob ws =
+        let appJob ws =
                 case take 1 $ filter (\w -> fstLet == head w) ws of
                   (w:_) -> windows $ job w
-                  []    -> return ()
-
-
-xmWorkspaceMode :: Mode
-xmWorkspaceMode = mode "workspace" $ \cfg ->
-    M.fromList lst
-        where
-            -- focus workspace beginning with letter
-            focus = zip ( zip (repeat noModMask) [xK_a..xK_z])
-                      ( map (withLetWorkspace W.greedyView) ['a'.. 'z'])
-            -- move to worksapce beginning with letter
-            move = zip ( zip (repeat shift) [xK_a..xK_z])
-                     ( map (withLetWorkspace W.shift) ['a'..'z'])
-            lst = focus ++ move
-
+                  []    -> return()
+         in if head current == fstLet
+           then appJob $ filter (/= current) ws
+           else appJob ws
 
 xmExitMode :: Mode
 xmExitMode = mode "exit" $ \cfg ->
@@ -274,126 +277,138 @@ xmExitMode = mode "exit" $ \cfg ->
 xmLaunchMode :: Mode
 xmLaunchMode = mode "launch" $ \cfg ->
     M.fromList
-      [ ((noModMask, xK_f), runInTerm "" ranger      >> exitMode)
-      , ((noModMask, xK_b), spawn browser            >> exitMode)
-      , ((noModMask, xK_h), runInTerm "" "htop"      >> exitMode)
-      , ((noModMask, xK_e), runInTerm "" "nvim"      >> exitMode)
-      , ((noModMask, xK_s), spawn "spotify-launcher" >> exitMode)
-      , ((shift,     xK_f), spawn "firefox"          >> exitMode)
+      [ ((noModMask, xK_f), runInTerm "" "ranger"        >> exitMode)
+      , ((noModMask, xK_b), spawn     browser            >> exitMode)
+      , ((noModMask, xK_h), runInTerm "" "htop"          >> exitMode)
+      , ((noModMask, xK_e), runInTerm "" "nvim"          >> exitMode)
+      , ((noModMask, xK_s), spawn     "spotify-launcher" >> exitMode)
+      , ((noModMask, xK_c), runInTerm "" "bc -q"         >> exitMode)
+      , ((noModMask, xK_w), spawn     "firefox"          >> exitMode)
+      , ((shift,     xK_w), spawn     "chromium"         >> exitMode)
       ]
 
-exit :: X ()
-exit = dz str >> setMode "exit"
-    where
-        str =  "(l)ock;(p)oweroff;(r)eboot;(s)uspend;(h)ibernate;(e)xit;"
+xmResizeMode :: Mode
+xmResizeMode = mode "resize" $ \cfg ->
+    M.fromList []
 
+type KeyPair = (KeyMask, KeySym)
+rmKeys :: [KeyPair]
+rmKeys =
+  [ (modm, xK_Return)
+  , (modShift, xK_Return)
+  , (modm, xK_comma)
+  , (modShift, xK_comma)
+  , (modm, xK_period)
+  , (modShift, xK_period)
+  , (modm, xK_slash)
+  , (modShift, xK_slash)
+  , (modm, xK_space)
+  -- , (modShift, xK_space)
+  ]
+  ++ zip (repeat modm)      [xK_a..xK_z]
+  ++ zip (repeat modShift)  [xK_a..xK_z]
+  ++ zip (repeat modm)      [xK_1..xK_9]
+  ++ zip (repeat modShift)  [xK_1..xK_9]
+
+type KeyMap = (KeyPair, X ())
+addKeys :: [KeyMap]
+addKeys =
+  [ ((modShift, xK_h),       sendMessage $ Swap L) -- vi-style swap windows
+  , ((modShift, xK_j),       sendMessage $ Swap D)
+  , ((modShift, xK_k),       sendMessage $ Swap U)
+  , ((modShift, xK_l),       sendMessage $ Swap R)
+  , ((modm, xK_h),           sendMessage $ Go L) -- vi-style move focus
+  , ((modm, xK_j),           sendMessage $ Go D)
+  , ((modm, xK_k),           sendMessage $ Go U)
+  , ((modm, xK_l),           sendMessage $ Go R)
+
+  , ((modm, xK_t),           sendMessage ToggleStruts)
+  , ((modShift, xK_t),       withFocused $ windows . W.sink)
+
+  , ((alt, xK_Tab),          windows W.focusUp) -- cycle window focus
+  , ((altShift, xK_Tab),     windows W.focusDown)
+
+  , ((modShift, xK_comma),   sendMessage Shrink) -- "<" == shrink
+  , ((modShift, xK_period),  sendMessage Expand) -- ">" == grow
+
+  , ((modm, xK_space),       sendMessage NextLayout)
+  -- , ((modShift,xK_space),    setLayout $ xmLayoutHook)
+
+  , ((modm, xK_s),           selectWorkspace promptConfig) -- dynamic ws
+  , ((modm, xK_a),           appendWorkspacePrompt promptConfig)
+  , ((modm, xK_r),           renameWorkspace promptConfig)
+  , ((modm, xK_m),           withWorkspace promptConfig (windows . W.shift))
+  , ((modShift, xK_m),       withWorkspace promptConfig (windows . copy))
+
+  , ((modCtrl, xK_plus),     sendMessage MagnifyMore ) -- magnify commands
+  , ((modCtrl, xK_minus),    sendMessage MagnifyLess)
+  , ((modCtrl, xK_m),        sendMessage Toggle)
+
+  , ((modm, xK_underscore),  withFocused minimizeWindow) -- minimize commands
+
+
+  , ((modShift, xK_w),       windowMenu) -- grid select commands
+  , ((modShift, xK_b),       bringSelected def)
+  , ((modShift, xK_g),       goToSelected def)
+  , ((modShift, xK_c),       gridSelectSpawn dotfilesGrid)
+  , ((modShift, xK_o),       gridSelectSpawn appGrid)
+
+  , ((modm, xK_q),           kill)
+  , ((modShift, xK_r),       spawn reloadConfig)
+
+  , ((modm, xK_w),           setMode "workspace") -- modes
+  , ((modm, xK_o),           setMode "launch")
+  , ((modShift, xK_x),       setMode "exit")
+
+  , ((modm, xK_Return),      spawn term)
+  , ((modShift, xK_Return),  runInBash "'cf ~'") -- terminal
+  , ((modAlt, xK_Return),    runInBash "'rcd'")
+  , ((altShift, xK_Return),  runInBash "'cf /'")
+  , ((modm, xK_c),           runInBash "'cf ~/.dotfiles'")
+
+  , ((modm, xK_d),           spawn dmenu_run)
+  , ((modm, xK_p),           defaultCommands >>= runCommand)
+
+    -- TODO Debug these
+  , ((noModMask, xK_Print),  unGrab *> spawn scrot)
+  , ((noModMask, xK_Insert), pasteSelection)
+  ]
+  -- ++ -- switch to ws at index n
+  -- zip (zip (repeat modm)) [xK_1..xK_9] (map (withWorkspaceIndex W.view) [1..])
+  -- ++ -- set index N to the current workspace
+  -- zip (zip (repeat modCtrl)) [xK_1..xK_9] (map setWorkspaceIndex [1..])
+  ++ -- switch ws between screens
+  [ ((m .|. modm, k), screenWorkspace sc >>= flip whenJust (windows . f))
+         | (k, sc) <- zip [xK_bracketleft, xK_bracketright] [0 ..]
+         , (f, m) <- [(W.view, 0), (W.shift, shift)]
+  ]
+    where
+        dmenu_run = "dmenu_run -b -h 20 -p 'Yes, Master?'"
+
+        reloadConfig = "xmonad --recompile; xmonad --restart"
+
+        scrot = "sleep 0.2; scrot -sf -q 100 -t 25 " ++ scrotFile
+        scrotFile = "~/pictures/screnshots/%Y-%m-%d-%T-screenshot.png"
+
+        exitMsg = "(l)ock;(p)oweroff;(r)eboot;(s)uspend;(h)ibernate;(e)xit;"
+
+        runInBash prog = runInTerm "" ("bash -is eval " ++ prog)
 
 dz :: String -> X ()
 dz = DZ.dzenConfig (timeout 10 >=> onCurr xScreen)
 
-type KeyPair = (KeyMask, KeySym)
-rmKeyPairs :: [KeyPair]
-rmKeyPairs =
-  [ (xmMod, xK_Return)
-  , (xmModShift, xK_Return)
-  , (xmMod, xK_comma)
-  , (xmModShift, xK_comma)
-  , (xmMod, xK_period)
-  , (xmModShift, xK_period)
-  , (xmMod, xK_slash)
-  , (xmModShift, xK_slash)
-  -- , (xmMod, xK_space)
-  -- , (xmModShift, xK_space)
-  ]
-  ++ zip (repeat xmMod)      [xK_a..xK_z]
-  ++ zip (repeat xmModShift) [xK_a..xK_z]
-  ++ zip (repeat xmMod)      [xK_1..xK_9]
-  ++ zip (repeat xmModShift) [xK_1..xK_9]
-
-type KeyMap = (KeyPair, X ())
-xmKeyMaps :: [KeyMap]
-xmKeyMaps =
-  [ ((xmMod, xK_Return),      spawn term)
-  , ((xmModShift, xK_h),      sendMessage $ Swap L) -- vi-style swap windows
-  , ((xmModShift, xK_j),      sendMessage $ Swap D)
-  , ((xmModShift, xK_k),      sendMessage $ Swap U)
-  , ((xmModShift, xK_l),      sendMessage $ Swap R)
-  , ((xmMod, xK_h),           sendMessage $ Go L) -- vi-style move focus
-  , ((xmMod, xK_j),           sendMessage $ Go D)
-  , ((xmMod, xK_k),           sendMessage $ Go U)
-  , ((xmMod, xK_l),           sendMessage $ Go R)
-  , ((xmMod, xK_t),           sendMessage ToggleStruts)
-  , ((xmModShift, xK_t),      withFocused $ windows . W.sink)
-  , ((alt, xK_Tab),           windows W.focusUp) -- cycle window focus
-  , ((altShift, xK_Tab),      windows W.focusDown)
-  , ((xmModShift, xK_comma),  sendMessage Shrink) -- "<" == shrink
-  , ((xmModShift, xK_period), sendMessage Expand) -- ">" == grow
-    -- manage dynamic workspaces
-  , ((xmModShift, xK_v),      selectWorkspace def)
-  , ((xmMod, xK_m),           withWorkspace def (windows . W.shift))
-  , ((xmModShift, xK_m),      withWorkspace def (windows . copy))
-  , ((xmModShift, xK_r),      DW.renameWorkspace def)
-  , ((xmMod, xK_a),           appendWorkspacePrompt def)
-    -- magnify commands
-  , ((xmModCtrl, xK_plus),    sendMessage MagnifyMore)
-  , ((xmModCtrl, xK_minus),   sendMessage MagnifyLess)
-  , ((xmModCtrl, xK_m),       sendMessage Toggle)
-    -- minimize
-    -- ((xmMod, xK_m), withFocused minimizeWindow)
-    -- maximize
-    -- ((xmModAlt, xK_m), withFocused (sendMessage . maximizeRestore))
-    -- ((xmModShift, xK_m), withLastMinimized maximizeWindowAndFocus)
-    -- system
-  , ((xmModShift, xK_x),      exit)
-  , ((xmMod, xK_q),           kill)
-  , ((xmModShift, xK_c),      reloadConfig)
-     -- grid select
-  , ((xmModShift, xK_w),      windowMenu)
-  , ((xmMod, xK_b),           bringSelected def)
-  , ((xmMod, xK_g),           goToSelected def)
-  , ((xmModShift, xK_o),      gridSelectOpener)
-     -- terminals
-  , ((xmModShift, xK_Return), runInBash "'cf ~'")
-  , ((xmModAlt, xK_Return),   runInBash "'rcd'")
-  , ((altShift, xK_Return),   runInBash "'cf /'")
-  , ((xmMod, xK_d),           spawn dmenu_run)
-  , ((xmMod, xK_o),           defaultCommands >>= runCommand)
-  , ((xmMod, xK_c),           editConfig) -- change to dotfiles gridselect
-    -- TODO Debug these
-  , ((0, xK_Print),           unGrab *> spawn scrot)
-  , ((0, xK_Insert),          pasteSelection)
-  ]
-  ++ -- switch ws between screens
-  [ ((m .|. xmMod, k), screenWorkspace sc >>= flip whenJust (windows . f))
-         | (k, sc) <- zip [xK_bracketleft, xK_bracketright] [0 ..]
-         , (f, m) <- [(W.view, 0), (W.shift, shift)]
-  ]
-  where
-    dmenu_args = ["-b", "-h", "20"]
-    dmenu_run = "dmenu_run " ++ unlines dmenu_args ++ " -p 'Yes, Master?'"
-    runInBash prog = runInTerm "" ("bash -is eval " ++ prog)
-    editConfig = runInTerm "" (nvim ++ " " ++ configFile)
-    reloadConfig = spawn "xmonad --recompile; xmonad --restart"
-
-    configFile = "~/.config/xmonad/xmonad.hs"
-    scrotFile = "~/pictures/screnshots/%Y-%m-%d-%T-screenshot.png"
-
-    scrot = "sleep 0.2; scrot -sf -q 100 -t 25 " ++ scrotFile
-
-
-
-
+-- use loginctl?
+-- start some nice programs
 xmStartupHook :: X ()
 xmStartupHook = do
-  -- start some nice programs
   spawnOnce "xrandr --output DP1 --primary --output HDMI1 --left-of DP1"
-  spawnOnce "picom"
   spawnOnce "~/.fehbg"
-  spawnOnce "pasystray"
-  spawnOnce "blueman-applet"
-  spawnOnce "nm-applet --sm-disable --indicator"
-  spawnOnce "~/.config/polybar/launch.sh"
+  spawnOnce "picom"
   spawnOnce "xscreensaver -no-splash"
+
+  -- spawnOnce "pasystray"
+  -- spawnOnce "blueman-applet"
+  -- spawnOnce "nm-applet --sm-disable --indicator"
 
 -- Note that each layout is separated by ||| which denotes layout choice.
 
@@ -404,36 +419,33 @@ xmLayoutHook =
     . smartBorders
     . avoidStruts
     . magnifier
+    . minimize
     $ noBorders Full -- The available layouts start here
       ||| BSP.emptyBSP
       ||| spiral (6 / 7)
 
-xmIcons :: Query [String]
-xmIcons =
-  composeAll
-    [ className =? "Firefox" --> appIcon "\xE745",
-      className =? "Spotify" --> appIcon "\xF1BC"
-    ]
-
 -- not quite done tweaking layout list yet, also renaming layouts?
+-- nested layouts?
+-- Toggle layouts?
+--
 
 -- create some X window rules:
 -- look into the hook helpers import
 xmManageHook :: Query (Endo WindowSet)
 xmManageHook =
   composeAll
-    [ isDialog --> doFloat
-    , className =? "mpv" --> doFloat
-    , className =? "Gimp" --> doFloat
-    , className =? "toolbar" --> doFloat
+    [ isDialog                    --> doFloat
+    , className =? "mpv"          --> doFloat
+    , className =? "Gimp"         --> doFloat
+    , className =? "toolbar"      --> doFloat
+    , className =? "confirm"      --> doFloat
+    , className =? "error"        --> doFloat
+    , className =? "download"     --> doFloat
     , className =? "notification" --> doFloat
-    , className =? "confirm" --> doFloat
-    , className =? "error" --> doFloat
-    , className =? "download" --> doFloat
-    , className =? "Toolkit" --> doFloat
-    , className =? "Xmessage" --> doFloat
-    , className =? "pinentry-qt" --> doFloat
-    , className =? "pinentry" --> doFloat
+    , className =? "Toolkit"      --> doFloat
+    , className =? "Xmessage"     --> doFloat
+    , className =? "pinentry"     --> doFloat
+    , className =? "pinentry-qt"  --> doFloat
     ]
 
 xmEventHook :: Event -> X All
@@ -448,119 +460,81 @@ xmEventHook = swallowEventHook query (return True)
 xmLogHook :: X ()
 xmLogHook = workspaceHistoryHook
 
-xmPolybarLogHook :: D.Client -> X ()
-xmPolybarLogHook dbus = xmLogHook <+> dynamicLogWithPP (polybarHook dbus)
+promptConfig =
+    def
+      { P.font = xmFont
+      , P.bgColor = "#000000"
+      , P.fgColor= xmFBC
+      , P.borderColor= xmFBC
+      , P.position = P.Bottom
+      }
 
-polybarHook :: D.Client -> PP
-polybarHook dbus =
-  let wrapper c s
-        | s /= "NSP" = wrap ("%{F" <> c <> "} ") " %{F-}" s
-        | otherwise = mempty
-      green = "#b8bb26"
-      darkgreen = "#98971a"
-      red = "#fb4934"
-      darkred = "#cc241d"
-      orange = "#fabd2f"
-      blue = "#2E9AFE"
-      gray = "#7F7F7F"
-      purple = "#8e7dc3"
-      aqua = "#8ec07c"
-   in def
-        { ppOutput = dbusOutput dbus,
-          ppCurrent = wrapper blue,
-          ppVisible = wrapper gray,
-          ppUrgent = wrapper orange,
-          ppHidden = wrapper gray,
-          ppWsSep = "",
-          ppSep = " : ",
-          ppTitle = shorten 100 . wrapper purple
-        }
+xmobarMain = let xmobar = home   ++ "/.local/bin/xmobar"
+                 cmd    = xmobar ++ " -x 0 " ++ "~/.config/xmobar/main.xmobarrc"
+              in statusBarPropTo "_XMONAD_LOG_0" cmd (pure def)
 
--- create dbus client for connection
-makeDbusClient :: IO D.Client
-makeDbusClient = do
-  dbus <- D.connectSession
-  D.requestName dbus (D.busName_ "org.xmonad.Log") opts
-  return dbus
-  where
-    opts = [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
-
--- Emit a DBus signal on log updates
-dbusOutput :: D.Client -> String -> IO ()
-dbusOutput dbus str =
-  let opath = D.objectPath_ "/org/xmonad/Log"
-      iname = D.interfaceName_ "org.xmonad.Log"
-      mname = D.memberName_ "Update"
-      signal = D.signal opath iname mname
-      body = [D.toVariant $ UTF8.decodeString str]
-   in D.emit dbus $ signal {D.signalBody = body}
+xmobarAlt = let xmobar = home ++ "/.local/bin/xmobar"
+                cmd    = xmobar ++ " -x 1 " ++ "~/.config/xmobar/alt.xmobarrc"
+             in statusBarPropTo "_XMONAD_LOG_1" cmd (pure def)
 
 ------------------------------------------------------------------------------
 
-xmWs :: [String]
-xmWs = map show [1..9]
+xmWS :: [String]
+xmWS = map show [1..9] ++ [ "music", "email", "irc"]
 
-xmMod, alt, shift, ctrl :: KeyMask
-xmMod = mod4Mask
-alt = mod1Mask
+modm, alt, shift, ctrl :: KeyMask
+modm  = mod4Mask
+alt   = mod1Mask
 shift = shiftMask
-ctrl = controlMask
+ctrl  = controlMask
 
-xmModShift, xmModCtrl, xmModAlt :: KeyMask
-xmModShift = xmMod .|. shift
-xmModCtrl = xmMod .|. ctrl
-xmModAlt = xmMod .|. alt
+modShift, modCtrl, modAlt :: KeyMask
+modShift = modm .|. shift
+modCtrl  = modm .|. ctrl
+modAlt   = modm .|. alt
 
 altShift, ctrlAlt :: KeyMask
-altShift = alt .|. shift
-ctrlAlt = alt .|. ctrl
+altShift = alt  .|. shift
+ctrlAlt  = alt  .|. ctrl
 
-term, browser, ranger, nvim, home :: String
-term = "kitty"
+term, browser, editor, home :: String
+term    = "kitty"
 browser = "qutebrowser"
-nvim = "nvim"
-ranger = "ranger"
-home = "/home/carterlevo"
+editor  = "nvim"
+home    = "/home/carterlevo"
 
 xmNBC, xmFBC, xmFont :: String
-xmNBC = "#DDDDDD"
-xmFBC = "#A865C9"
+xmNBC  = "#DDDDDD"
+xmFBC  = "#A865C9"
 xmFont = "xft:Anonymous Pro Mono:weight=bold:pixelsize=14:antialias=true"
 
 xmBW :: Dimension
 xmBW = 2
 
-xmFocusFollowsMouse, xmClickJustFocuses :: Bool
-xmFocusFollowsMouse = False
-xmClickJustFocuses = True
-
 -------------------------------------------------------------------------------
 
-main' :: D.Client -> IO ()
-main' dbus =
+main :: IO()
+main =
   xmonad
-    . modal [xmExitMode, xmLaunchMode, xmWorkspaceMode, floatMode 5]
+    . modal xmModes
     . ewmhFullscreen
     . ewmh
     . docks
+    . withSB (xmobarMain <> xmobarAlt)
     $ def
-      { terminal = term
-      , borderWidth = xmBW
-      , modMask = xmMod
-      , workspaces = xmWs
-      , normalBorderColor = xmNBC
-      , focusedBorderColor = xmFBC
-      , layoutHook = xmLayoutHook
-      , logHook = xmPolybarLogHook dbus
-      , manageHook = xmManageHook <+> manageHook def
-      , handleEventHook = xmEventHook
-      , startupHook = xmStartupHook
-      , focusFollowsMouse = xmFocusFollowsMouse
-      , clickJustFocuses = xmClickJustFocuses
-        -- , mouseBindings = xmMouseMap
-      }
-      `removeKeys` rmKeyPairs
-      `additionalKeys` xmKeyMaps
-
-main :: IO ()
-main = makeDbusClient >>= main'
+        { terminal = term
+        , borderWidth = xmBW
+        , modMask = modm
+        , workspaces = xmWS
+        , normalBorderColor = xmNBC
+        , focusedBorderColor = xmFBC
+        , layoutHook = xmLayoutHook
+        , logHook = xmLogHook
+        , manageHook = xmManageHook <+> manageHook def
+        , handleEventHook = xmEventHook
+        , startupHook = xmStartupHook
+        , focusFollowsMouse = False
+        , clickJustFocuses = True
+        }
+        `removeKeys` rmKeys
+        `additionalKeys` addKeys
