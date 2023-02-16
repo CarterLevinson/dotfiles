@@ -40,6 +40,12 @@ return {
     cmd = { "DB", "DBUI" },
   },
   {
+    "miversen33/netman.nvim",
+    config = function()
+      require "netman"
+    end,
+  },
+  {
     "knubie/vim-kitty-navigator",
     cond = os.getenv("TERM") == "xterm-kitty",
     config = function()

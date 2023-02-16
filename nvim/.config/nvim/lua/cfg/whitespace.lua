@@ -2,6 +2,7 @@ local whitespace = require("whitespace-nvim")
 
 whitespace.setup {
     ignored_filetypes = {
+        'checkhealth',
         'diff',
         'fugitive',
         'fzf',
