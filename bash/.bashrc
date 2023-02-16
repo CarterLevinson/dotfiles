@@ -239,7 +239,7 @@ decrypt() {
 }
 
 # ghcup-env setup
-# [[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
+[[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
 
 # Start the ssh-agent in the background and
 # make sure only one instance is ever running
