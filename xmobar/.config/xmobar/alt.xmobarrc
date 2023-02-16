@@ -2,16 +2,16 @@
 -- TODO: email notification command/plugin
 Config
   { overrideRedirect = False
-  , bgColor = "#000000"
-  , fgColor = "#646464"
-  , position = TopW L 100
+  , position    = TopW L 100
+  , border      = NoBorder
+  , bgColor     = "#000000"
+  , fgColor     = "#646464"
   , borderColor = "#F8F8F2"
-  , iconRoot = "/home/carterlevo/.config/xmobar/xpm"
-  , font = "xft:Anonymous Pro:weight=bold:pixelsize=14:antialias=true"
+  , alpha       = 255
+  , iconRoot    = "/home/carterlevo/.config/xmobar/xpm"
+  , font        = "xft:Anonymous Pro:weight=bold:pixelsize=14:antialias=true"
   , additionalFonts =
-      [ "xft:Material Icons:pixelsize=14:anitalias=true:hinting=true"
-      , "xft:Symbols Nerd Font:pixelsize=14:anitalias=true:hinting=true"
-      ]
+      [ "xft:Symbols Nerd Font:pixelsize=14:anitalias=true:hinting=true"]
   , commands =
       [ Run XPropertyLog "_XMONAD_LOG_1"
       , Run
@@ -29,13 +29,13 @@ Config
       , Run Date "<fn=2>\xF273</fn> %a %d-%m-%Y" "date" 10
       , Run Date "<fc=#FFFFFF>%H:%M</fc>" "time" 10
 
-      , Run Com "pacupdates" [] "updates" 3600
-      , Run Com "echo" ["<fn=2>\xF0F3</fn>"] "bell" 3600
+      , Run Com "echo" ["<fn=1>\xF0F3</fn>"] "bell" 36000
+      , Run Com "echo" ["<fn=1>\xF303</fn>"] "arch" 36000
+      , Run Com "echo" ["<fn=1>\xE22C</fn>"] "pi" 36000
+      , Run Com "echo" ["<fn=1>\xFB26</fn>"] "lambda" 36000
+      , Run Com "echo" ["<fn=1>\xF64F</fn>"] "clock" 36000
 
-      , Run Com "echo" ["<fn=2>\xF303</fn>"] "arch" 3600
-      , Run Com "echo" ["<fn=2>\xE22C</fn>"] "pi" 3600
-      , Run Com "echo" ["<fn=2>\xFB26</fn>"] "lambda" 3600
-      , Run Com "echo" ["<fn=2>\xF64F</fn>"] "clock" 3600
+      , Run Com "sh"   [ "-c", "checkupdates | wc -l"] "updates" 3600
       ]
   , template =
       "<icon=Archlinux-icon-white-20x20-scaled.xpm/> %_XMONAD_LOG_1% }{\
