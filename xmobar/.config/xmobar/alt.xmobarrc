@@ -38,6 +38,6 @@ Config
       , Run Com "sh"   [ "-c", "checkupdates | wc -l"] "updates" 3600
       ]
   , template =
-      "<icon=Archlinux-icon-white-20x20-scaled.xpm/> %_XMONAD_LOG_1% }{\
+      "<icon=arch-linux-2.xpm/> %_XMONAD_LOG_1% }{\
                 \| %bell% %updates% | %KMDW% | %time% | %lambda% "
   }

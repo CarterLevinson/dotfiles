@@ -72,7 +72,7 @@ Config
       , Run Com "echo" ["<fn=1>\xF64F</fn>"] "clock" 36000
       ]
   , template =
-      "<icon=Archlinux-icon-white-20x20-scaled.xpm/> %_XMONAD_LOG_0% }{\
+      "<icon=arch-linux-2.xpm/> %_XMONAD_LOG_0% }{\
         \| %arch% %cpu% %cpufreq% %multicoretemp% | %memory% %swap% \
         \| %wlp8s0% | %clock% %uptime% | %date% | %time% | %lambda% "
   }
