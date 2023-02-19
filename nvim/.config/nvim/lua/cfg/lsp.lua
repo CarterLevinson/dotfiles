@@ -54,7 +54,7 @@ local function create_lsp_autocmds()
 
   vim.api.nvim_create_autocmd("BufWritePost", {
       group = "Format",
-      pattern = { "*.cc", "*.cpp", "*.h", "*.hpp", "*.hs", "*.lhs" },
+      pattern = { "*.cc", "*.cpp", "*.h", "*.hpp" },
       callback = function() vim.lsp.buf.format { async = true } end,
   })
 end

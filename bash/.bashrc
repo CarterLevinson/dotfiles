@@ -111,6 +111,8 @@ alias cfr='cf /'
 alias vdf='vf ~/.dotfiles'
 alias vcfg='vf ~/.config'
 
+alias mbsync='mbsync -c ~/.config/mbsync/config'
+
 alias b2d='convert-base 2 10'
 alias b2h='convert-base 2 16'
 alias d2b='convert-base 10 2'
