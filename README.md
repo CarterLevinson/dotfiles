@@ -1,10 +1,12 @@
 # dotfiles
-These are my personal dotfiles on Arch Linux. Currently using:
-* WM: Xmonad
+These are my personal dotfiles on Arch Linux (BTW). Currently running:
+
+* WM: [XMonad] (https://github.com/carterlevo/xmonad.hs/README.md)
+* Bar: [Xmobar] (https://github.com/carterlevo/xmonad.hs/README.md)
+* Editor: [Neovim] (https://github.com/carterlevo/nvim/README.md)
 * Shell: Bash
-* Terminal: Kitty
-* Editor: Neovim
-* File Manager: Ranger
-* Document Viewer: Zathura
+* Terminal: kitty
+* File Manager: ranger
+* Document Viewer: zathura
 * Image viewer: nsxiv
-* Browser: Chromium / Qutebrowser
+* Browser: Firefox / Qutebrowser / Chromium
