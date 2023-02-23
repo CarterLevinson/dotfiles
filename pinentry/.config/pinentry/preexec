@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+export QT_QPA_PLATFORMTHEME=qt5ct
+test -e /usr/lib/libQt5Widgets.so.5 &&
+  exec /usr/bin/pinentry-qt "$@"
+
+
+# export QT_QPA_PLATFORMTHEME=
+# exec  /usr/bin/pinentry-qt "$@"

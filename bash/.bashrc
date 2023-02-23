@@ -216,6 +216,14 @@ pac-remove() {
   paru -Qq | fzf -q "$1" -m --preview 'paru -Qi {1}' | xargs -ro 'paru -Rns'
 }
 
+# hoogle-search-copy(): fzf to search hoogle and copy with xclip
+hoogle-search-copy() {
+  hoogle --json "$1" \
+    | jq -r ".[] | \"import \\(.module.name)\\n\\(.package.name)\\n--\"" \
+    | fzf \
+    | xclip
+}
+
 # encrypt(): compress file / directory with gpg/tar,
 # optionally with a recipient
 encrypt() {
