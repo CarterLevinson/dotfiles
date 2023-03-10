@@ -1,9 +1,12 @@
+# vim: set ft = R
 .First <- function() {
-    options(repos=structure(c(CRAN="http://cran.rstudio.com/")))
-    options(browser="qutebrowser")
-    options(pdfviewer="zathura")
-    options(width=250)
-    options(defaultPackages=c(getOption("defaultPackages"), "data.table"))
+  options(repos=structure(c(CRAN="http://cran.rstudio.com/")))
+  options(browser=Sys.getenv("BROWSER"))
+  options(pdfviewer=Sys.getenv("VIEWER"))
+  options(editor=Sys.getenv("VISUAL"))
+  options(pager=c("less", "-R"))
+  options(width=250)
+  options(defaultPackages=c(getOption("defaultPackages"), "data.table"))
 }
 
 list_installed_packages <- function() {
