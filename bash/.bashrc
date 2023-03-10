@@ -13,18 +13,18 @@ done
 # source git status plugin for prompt
 source /usr/share/git/completion/git-prompt.sh
 
-BLK=$(tput setaf 0)
-RED=$(tput setaf 1)
-GRN=$(tput setaf 2)
-YLW=$(tput setaf 3)
-BLU=$(tput setaf 4)
-PUR=$(tput setaf 5)
-CYN=$(tput setaf 6)
-WHT=$(tput setaf 7)
-CLR=$(tput sgr0)
+BLK="\[$(tput setaf 0)\]"
+RED="\[$(tput setaf 1)\]"
+GRN="\[$(tput setaf 2)\]"
+YLW="\[$(tput setaf 3)\]"
+BLU="\[$(tput setaf 4)\]"
+PUR="\[$(tput setaf 5)\]"
+CYN="\[$(tput setaf 6)\]"
+WHT="\[$(tput setaf 7)\]"
+CLR="\[$(tput sgr0)\]"
 
 PROMPT="$REDλ $BLU\$ $REDξ$WHT $CYN\W "
-PROMPT+='$(__git_ps1 "$WHT $GRN%s ")'
+PROMPT+=$(__git_ps1 "$WHT $GRN%s ")
 PROMPT+="$WHT--->> $CLR"
 
 PS1=$PROMPT
@@ -111,8 +111,6 @@ alias cfr='cf /'
 alias vdf='vf ~/.dotfiles'
 alias vcfg='vf ~/.config'
 
-alias mbsync='mbsync -c ~/.config/mbsync/config'
-
 alias b2d='convert-base 2 10'
 alias b2h='convert-base 2 16'
 alias d2b='convert-base 10 2'
@@ -137,6 +135,7 @@ HISTFILESIZE=20000
 
 shopt -s autocd
 shopt -s histappend
+shopt -s checkwinsize
 
 # bind <C-a> to fg
 bind -x '"\C-a"':'"fg"'
@@ -169,12 +168,27 @@ vf () {
 	"${VISUAL:-${EDITOR:-vi}}" "$@" "${files[@]}"
 }
 
+# sshf() - fuzzy search known ssh hosts
+sshf() {
+  ssh "$@" "$(awk '{print $1}')" < ~/.ssh/known_hosts \
+    | tr ',' '\n' \
+    | fzf
+}
+
 # fo() - fuzzy open files with $OPENER from anywhere
 fo() {
   find="fd $FD_OPTS -tf"
   files=$($find . "${1:-${PWD}}" | fzf -0 -1 -m)
 	(( ${#files} )) || return
 	"$OPENER" "$@" "${files[@]}"
+}
+
+# hoogle-search-copy(): fzf to search hoogle and copy with xclip
+hoogle-search-copy() {
+  hoogle --json "$1" \
+    | jq -r ".[] | \"import \\(.module.name)\\n\\(.package.name)\\n--\"" \
+    | fzf \
+    | xclip
 }
 
 # rcd() - rangercd change shell dir using ranger
@@ -201,9 +215,9 @@ is-git-repo() {
 
 # pac-ls(): list all directly installed packages
 pac-ls() {
-  paru -Qi | \
-    awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | \
-    sort -h
+  paru -Qi \
+  | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' \
+  | sort -h
 }
 
 # pac-install(): fuzzy install packages with pacman and fzf
@@ -216,13 +230,6 @@ pac-remove() {
   paru -Qq | fzf -q "$1" -m --preview 'paru -Qi {1}' | xargs -ro 'paru -Rns'
 }
 
-# hoogle-search-copy(): fzf to search hoogle and copy with xclip
-hoogle-search-copy() {
-  hoogle --json "$1" \
-    | jq -r ".[] | \"import \\(.module.name)\\n\\(.package.name)\\n--\"" \
-    | fzf \
-    | xclip
-}
 
 # encrypt(): compress file / directory with gpg/tar,
 # optionally with a recipient
