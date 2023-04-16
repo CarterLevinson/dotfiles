@@ -1,7 +1,6 @@
 set editing-mode vi
 
 set keymap vi-command
-p : i !!*\r
 j: history-search-forward
 k: history-search-backward
 # Up arrow

@@ -3,7 +3,7 @@
   email        = cslevo@posteo.net
 [core]
   editor       = nvim
-  pager        = delta
+  ; pager        = delta
   excludesfile = ~/.config/git/ignore
 [interative]
   diffFilter   = delta --color-only
@@ -51,6 +51,7 @@
   d            = diff
   ds           = diff --stat
   dc           = diff --cached
+
   # git-difftool
   dt           = diftool
 
@@ -64,6 +65,7 @@
 
   # git-merge
   m            = merge
+
   # git-mergetool
   mt           = mergetool
 
@@ -88,9 +90,11 @@
   # search type
   last         = log -1 HEAD --stat
   search       = '!git rev-list --all | xargs git grep -F'
+
   # draw out the DAG
   draw         = log --oneline --decorate --graph --all
   graph        = log --all --decorate --oneline --graph
+
   # roll all of your commit changes back into the local unstaged area
   undo         = reset HEAD~` --mixed
   unstage      = reset --soft HEAD^

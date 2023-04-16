@@ -1,4 +1,4 @@
-:set prompt "λ GHCi --> "
+:set prompt "λ GHCi ---> "
 :set editor nvim
 -- custom commands
 :def Hoogle \x -> return $ ":!hoogle \"" ++ x ++ "\""

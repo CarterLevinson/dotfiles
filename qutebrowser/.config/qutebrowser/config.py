@@ -18,7 +18,7 @@ config.load_autoconfig(True)
 # user agent settings
 agent ='Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0'
 config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
-config.set('content.headers.user_agent', agent) 
+config.set('content.headers.user_agent', agent)
 
 # Set aliases for qutebrowser commands (Dict)
 c.aliases = {'q' : 'quit', 'w' : 'session-save', 'wq' : 'quit --save'}
@@ -27,9 +27,9 @@ c.aliases = {'q' : 'quit', 'w' : 'session-save', 'wq' : 'quit --save'}
 c.colors.webpage.darkmode.enabled = True
 
 # use vertical tabs on the left (String)
-c.tabs.position = "left"
+# c.tabs.position = "left"
 # only show tabs if there is more than one
-c.tabs.show = 'always'
+# c.tabs.show = 'always'
 
 # downloads dir
 c.downloads.location.directory = '~/downloads'
@@ -41,7 +41,7 @@ c.url.searchengines = {
         'DEFAULT' : 'https://www.startpage.com/do/dsearch?query={}',
         'aw'      : 'https://wiki.archlinux.org/?search={}',
         'g'       : 'https://www.google.com/search/?q={}',
-        'w'       : 'https://en.wikipedia.org/wiki/{}', 
+        'w'       : 'https://en.wikipedia.org/wiki/{}',
         'yt'      : 'https://www.youtube.com/results?search_query={}',
         'so'      : 'https://stackoverflow.com/search?q={}',
         'gh'      : 'https://github.com/search?type=&q={}',

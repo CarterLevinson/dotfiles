@@ -3,11 +3,17 @@
 
 # zmodload zsh/zprof
 
-## source the zshell alias file
-. $HOME/.zsh-aliases
-
-## source shell completion config
-. $HOME/.zsh-completion
+## setup tab completion
+zmodload -i zsh/complist
+zstyle ':completion:*' completer _expand _complete _ignored _correct
+zstyle ':completion:*' max-errors 3 numeric
+zstyle ':completion:*' verbose true
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' menu select
+# zstyle ':completion:*' group-name ''
+zstyle ':completion:*' file-list all
+autoload -Uz compinit
+compinit
 
 ## source the plugin files
 PLUG=/usr/share/zsh/plugins
@@ -20,8 +26,109 @@ PLUG=/usr/share/zsh/plugins
 
 . $PLUG/zsh-autopair/autopair.zsh
 
-. $HOME/scripts/bd.zsh
-## shell user settings
+## shell aliases
+alias pip='pip3'
+alias python='python3'
+alias ipy='ipython3'
+
+alias ydl='youtube-dl'
+alias vbm='VBoxManage'
+
+alias md='glow'
+alias mutt='neomutt'
+alias pm='pacman'
+alias pac='pacman'
+
+alias g='git'
+
+alias nv='$VISUAL'
+alias vi='$VISUAL'
+alias vim='$EDITOR'
+alias open='$OPENER'
+alias ed='ex'
+
+alias edit='$VISUAL -O'
+alias rq='R -q --no-save'
+alias rad='radian -q --no-save'
+
+alias info='info --vi-keys'
+alias lynx='lynx -vikeys'
+
+alias null='/dev/null'
+
+alias cls='clear'
+alias q='exit'
+alias quit='exit'
+
+alias ls='ls --color=auto --hyperlink=auto'
+alias la='ls -a'
+alias ll='ls -l'
+alias lh='ls -d .?*'
+alias lhl='ls -ld .?*'
+alias lal='ls -al'
+alias lll='ls -alsh'
+
+alias cp='cp --interactive'
+alias rm='rm --interactive=once'
+alias mkdir='mkdir -p -v'
+
+alias reload='source ~/.bashrc'
+
+alias cfh='cf ~'
+alias cfr='cf /'
+alias vdf='vf ~/.dotfiles'
+alias vcfg='vf ~/.config'
+
+alias b2d='convert-base 2 10'
+alias b2h='convert-base 2 16'
+alias d2b='convert-base 10 2'
+alias d2h='convert-base 10 16'
+alias h2b='convert-base 16 2'
+alias h2d='convert-base 16 10'
+
+alias list-orphans='pacman -Qdt'
+alias list-explicit='pacman -Qet'
+
+# kitty terminal aliases
+if [[ "$TERM" == "xterm-kitty" ]]; then
+  alias ssh='kitty +kitten ssh'
+  alias icat='kitty +kitten icat'
+  alias diff='kitty +kitten diff'
+fi
+
+# zsh suffix aliases
+alias -s cc='$VISUAL'
+alias -s hh='$VISUAL'
+alias -s cpp='$VISUAL'
+alias -s hpp='$VISUAL'
+alias -s c='$VISUAL'
+alias -s h='$VISUAL'
+alias -s hs='$VISUAL'
+alias -s txt='$VISUAL'
+alias -s tex='$VISUAL'
+alias -s md='$VISUAL'
+alias -s lua=$VISUAL
+alias -s R='$VISUAL'
+alias -s Rmd='$VISUAL'
+alias -s csv='vd'
+alias -s tsv='vd'
+alias -s xml='vd'
+alias -s html='$VISUAL'
+alias -s jpg='$VIEWER'
+alias -s gif='$VIEWER'
+alias -s png=$VIEWER
+alias -s svg='akira'
+alias -s pdf='$READER'
+alias -s dvi='$READER'
+alias -s docx='zaread'
+alias -s pptx='zaread'
+alias -s xlsx='vd'
+alias -s mp4='mpv'
+alias -s avi='mpv'
+alias -s mkv='mpv'
+alias -s mp3='cmus'
+
+## shell user options
 
 # directory options
 setopt AUTO_PUSHD
@@ -117,32 +224,6 @@ echo -ne '\e[5 q'
 preexec() { echo -ne '\e[5 q'; }
 
 
-
-# some simple numeric base conversion functions
-bin-to-hex() {
-  echo "obase=16;ibase=2;"  $1 | bc
-}
-
-hex-to-bin() {
-  echo "obase=2;ibase=16;"  $1 | bc
-}
-
-hex-to-dec() {
-  echo "obase=10;ibase=16;" $1 | bc
-}
-
-dec-to-hex() {
-  echo "obase=16;ibase=10;" $1 | bc
-}
-
-bin-to-dec() {
-  echo "obase=10;ibase=2;"  $1 | bc
-}
-
-dec-to-bin() {
-   echo "obase=2;ibase=10;"  $1 | bc
-}
-
 # encrypt + compress file / directory with gpg/tar,
 # optionally with a recipient
 encrypt() {
@@ -184,6 +265,65 @@ rcd() {
       fi
     fi
   fi
+}
+
+# vf - fuzzy open with (neo)vim from anywhere
+# ex: vf word1 word2 ... (even part of a file name)
+# zsh autoload function
+vf() {
+  local files
+  files=(${(f)"$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1 -m)"})
+  if [[ -n $files ]]; then
+    vi -- $files
+    print -l $files[1]
+  fi
+}
+
+# cf - fuzzy cd from anywhere
+# ex: cf word1 word2 ... (even part of a file name)
+# zsh autoload function
+cf() {
+  local file
+  file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
+  if [[ -n $file ]];  then
+    if [[ -d $file ]];  then
+      cd -- $file
+    else
+      cd -- ${file:h}
+    fi
+  fi
+}
+
+# sshf() - fuzzy search known ssh hosts
+sshf() {
+  ssh "$@" "$(awk '{print $1}')" < ~/.ssh/known_hosts \
+    | tr ',' '\n' \
+    | fzf
+}
+
+# fo() - fuzzy open files with $OPENER from anywhere
+fo() {
+  find="fd --follow --hidden --ignore-vcs -tf"
+  files=$($find . "${1:-${PWD}}" | fzf -0 -1 -m)
+	(( ${#files} )) || return
+	"$OPENER" "$@" "${files[@]}"
+}
+
+# rga-fzf - use fzf and ripgrep to search various media
+# ex: rga-fzf [rga options][rg options]PATTERN[PATH..]
+# zsh autoload fn
+rga-fzf() {
+	RG_PREFIX="rga --files-with-matches"
+	local file
+	file="$(
+		FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
+			fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+				--phony -q "$1" \
+				--bind "change:reload:$RG_PREFIX {q}" \
+				--preview-window="70%:wrap"
+	)" &&
+	echo "opening $file" &&
+	$OPENER "$file"
 }
 
 
@@ -260,74 +400,8 @@ fkill() {
 #   fi
 # }
 
-# vf - fuzzy open with (neo)vim from anywhere
-# ex: vf word1 word2 ... (even part of a file name)
-# zsh autoload function
-vf() {
-  local files
-  files=(${(f)"$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1 -m)"})
-  if [[ -n $files ]]; then
-    vi -- $files
-    print -l $files[1]
-  fi
-}
-
-# cf - fuzzy cd from anywhere
-# ex: cf word1 word2 ... (even part of a file name)
-# zsh autoload function
-cf() {
-  local file
-  file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
-  if [[ -n $file ]];  then
-    if [[ -d $file ]];  then
-      cd -- $file
-    else
-      cd -- ${file:h}
-    fi
-  fi
-}
-
-# rga-fzf - use fzf and ripgrep to search various media
-# ex: rga-fzf [rga options][rg options]PATTERN[PATH..]
-# zsh autoload fn
-rga-fzf() {
-	RG_PREFIX="rga --files-with-matches"
-	local file
-	file="$(
-		FZF_DEFAULT_COMMAND="$RG_PREFIX '$1'" \
-			fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
-				--phony -q "$1" \
-				--bind "change:reload:$RG_PREFIX {q}" \
-				--preview-window="70%:wrap"
-	)" &&
-	echo "opening $file" &&
-	$OPENER "$file"
-}
-
-# wrapper function to color manpages
-# termcap
-# ks       make the keypad send commands
-# ke       make the keypad send digits
-# vb       emit visual bell
-# mb       start blink
-# md       start bold
-# me       turn off bold, blink and underline
-# so       start standout (reverse video)
-# se       stop standout
-# us       start underline
-# ue       stop underline
-function man() {
-	env \
-		LESS_TERMCAP_md=$(tput bold; tput setaf 4) \
-		LESS_TERMCAP_me=$(tput sgr0) \
-		LESS_TERMCAP_mb=$(tput blink) \
-		LESS_TERMCAP_us=$(tput setaf 2) \
-		LESS_TERMCAP_ue=$(tput sgr0) \
-		LESS_TERMCAP_so=$(tput smso) \
-		LESS_TERMCAP_se=$(tput rmso) \
-		PAGER="${commands[less]:-$PAGER}" \
-		man "$@"
-}
+# ghcup-env setup
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 
 # Start the ssh-agent in the background and
 # make sure only one instance is ever running
@@ -339,14 +413,12 @@ if [[ ! "$SSH_AUTH_SOCK" ]]; then
   source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
 fi
 
+
+
 # allows zsh to stay running after invoking eval in i3
 if [[ $1 == eval ]] then
     	"$@"
 	set --
 fi
-
-eval "$(_PAPIS_COMPLETE=source_zsh papis)"
-# ghcup-env setup
-[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 
 # zprof

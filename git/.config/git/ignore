@@ -220,10 +220,8 @@ po/*~
 # knitr
 *-concordance.tex
 
-# neovim remote editing config
-.AutoRemoteSync.json
-# random neovim file
-.luarc.json
 # clangd files
 compile_commands.json
 compile_flags.txt
+
+vgcore.*

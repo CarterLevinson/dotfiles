@@ -23,8 +23,9 @@ CYN="\[$(tput setaf 6)\]"
 WHT="\[$(tput setaf 7)\]"
 CLR="\[$(tput sgr0)\]"
 
+
 PROMPT="$REDλ $BLU\$ $REDξ$WHT $CYN\W "
-PROMPT+=$(__git_ps1 "$WHT $GRN%s ")
+# PROMPT+='$(__git_ps1 "$WHT $GRN%s")'
 PROMPT+="$WHT--->> $CLR"
 
 PS1=$PROMPT
